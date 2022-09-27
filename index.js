@@ -23,7 +23,6 @@ mongoose
 
 
 
-
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
@@ -31,6 +30,7 @@ app.get('/', (req, res) => {
 app.use('/admin',require('./routes/Admin'))
 app.use('/survey',require('./routes/survey'))
 app.use("/answer",require("./routes/answer"))
+app.use('/user',require('./routes/user'))
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

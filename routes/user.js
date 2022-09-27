@@ -4,3 +4,6 @@ const router = express.Router();
 const user  = require('../controller/user')
 
 router.get("/get", user.getQuestions);
+
+
+module.exports = router;
