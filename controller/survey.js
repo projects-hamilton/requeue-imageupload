@@ -73,8 +73,10 @@ const getByIDQuestions = async (req, res) => {
   }
 };
 
-//patch api  for book
 
+
+
+//patch api  for book
 const UpdateQuestionsDetails = async (req, res) => {
   let {  dataType, Question, extraValue } = req.body;
   let UserID =req.user
@@ -97,8 +99,9 @@ const UpdateQuestionsDetails = async (req, res) => {
   }
 };
 
-//Delete api
 
+
+//Delete api
 const DeleteQuestionsDetails = async (req, res) => {
   try {
     const deteleQuestionDetails = await Questions.findOneAndDelete({

@@ -3,8 +3,11 @@ const router = express.Router();
 
 const user  = require('../controller/user')
 
+
 router.get("/get", user.getQuestions);
-router.get("/getall", user.getallAnswer);
+router.get("/get/:id", user.getByIDQuestions);
+
+
 
 
 module.exports = router;

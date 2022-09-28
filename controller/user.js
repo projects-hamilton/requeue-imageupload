@@ -24,15 +24,15 @@ const getQuestions = async (req, res) => {
 
 
 
-//All Answer
-const getallAnswer = async (req, res) => {
+// get question by id
+const getByIDQuestions = async (req, res) => {
   try {
-    const getQuestionsdata = await Answers.find();
+    const getQuestionsdata = await Questions.findById({_id: req.params.id });
     if (!getQuestionsdata) {
-      res.json({ message: "there is no Answers", status: false });
+      res.json({ message: "there is no Questions", status: false });
     }
     res.json({
-      message: "Found  Answers",
+      message: "Found  Questions",
       data: getQuestionsdata,
       status: true,
     });
@@ -45,5 +45,5 @@ const getallAnswer = async (req, res) => {
 
 module.exports = {
   getQuestions,
-  getallAnswer
+  getByIDQuestions
 };
