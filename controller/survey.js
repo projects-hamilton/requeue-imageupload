@@ -1,38 +1,34 @@
 // const book = require("../modles/book");
 const Questions = require("../models/survey");
-const Answers = require('../models/answer')
+const Survey = require('../models/answer')
+
 // const auth = require("../middleware/authentication");
 
 //post API for book
 const postQuestion = async (req, res) => {
-  let {  dataType, Question, extraValue } = req.body;
-  let UserID =req.user
+  let { ...data} = req.body;
   try {
-    if (!(UserID && dataType && Question && extraValue)) {
-      res
-        .status(400)
-        .json({ message: "All fields are required", status: false });
-    } else {
-      const getResponce = await Questions.create({
-        UserID,
-        dataType,
-        Question,
-        extraValue,
-      });
+  
+  
+      const newSurvey = await new Survey({
+        ...req.body
+      
+      }).save();
+      res.status(200).send(newSurvey)
 
-      if (!getResponce) {
+      if (!newSurvey) {
         res
           .status(400)
           .json({ message: "postQuestion is not created", status: false });
       } else {
         res.status(200).json({
           message: "postQuestion is created successfully",
-          data: getResponce,
+          data: newSurvey,
           status: true,
         });
       }
     }
-  } catch (error) {
+  catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
 };
@@ -131,3 +127,4 @@ module.exports = {
   DeleteQuestionsDetails,
   // postAnswer,
 };
+

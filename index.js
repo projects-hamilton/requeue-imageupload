@@ -3,7 +3,7 @@ const express = require('express')
 // const admin = require("./routes/Admin")
 const app = express()
 require('dotenv').config();
-const db =process.env.DB_URI
+const db = process.env.DB_URI
 
 
 app.use(express.json())

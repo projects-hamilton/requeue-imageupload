@@ -3,12 +3,15 @@
 const Answers = require("../models/answer");
 const Question = require("../models/survey");
 const User = require("../models/Admin");
+const { json } = require("express");
+
+
 //post answer
 const postAnswer = async (req, res) => {
-  let { UserID, Answer } = req.body;
+  let { UserID, Answer,Question_ID } = req.body;
 
   try {
-    if (!(UserID && Answer)) {
+    if (!(UserID && Answer && Question_ID)) {
       res
         .status(400)
         .json({ message: "All fields are required", status: false });
@@ -16,6 +19,7 @@ const postAnswer = async (req, res) => {
       const getResponce = await Answers.create({
         UserID,
         Answer,
+        Question_ID
       });
 
       if (!getResponce) {
@@ -35,6 +39,7 @@ const postAnswer = async (req, res) => {
   }
 };
 
+
 //get all answer
 const getallAnswer = async (req, res) => {
   try {
@@ -52,7 +57,9 @@ const getallAnswer = async (req, res) => {
   }
 };
 
-//get all answer
+
+//get your question with answer by answerid
+
 const GetSingleQuestionAnswerAndUser = async (req, res) => {
   try {
     const getQuestionsdata = await Answers.findOne({ _id: req.params.id });
@@ -61,10 +68,10 @@ const GetSingleQuestionAnswerAndUser = async (req, res) => {
     }
     const getUser = await User.findOne({ _id: getQuestionsdata.UserID });
     const getQuestions = await Question.findOne({
-      _id: getQuestionsdata.QuestionID
+      _id: getQuestionsdata.Question_ID
     });
     res.json({
-      message: "Found  Answers",
+      message: "your question with the answer",
       data: {"User":getUser,"Question":getQuestions,"Answer":getQuestionsdata},
       status: true,
     });

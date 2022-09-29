@@ -1,17 +1,14 @@
 const mongoose = require("mongoose");
-const AnswerSchema = new mongoose.Schema(
+const surveySchema = new mongoose.Schema(
   {
 
-    Answer: {
-      type: String,
-      default: null,
-    },
-    UserID: {
-      type: String,
-      default: null,
-    },
+   data:[]
   },
 
   { timestamps: true }
 );
-module.exports = mongoose.model("Answer", AnswerSchema);
+// module.exports = mongoose.model("Answer", AnswerSchema);
+
+module.exports = mongoose.model("Answer",surveySchema)
+
+

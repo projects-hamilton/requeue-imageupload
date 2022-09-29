@@ -19,9 +19,19 @@ const QuestionSchema = new mongoose.Schema(
         type: String,
       },
     ],
+
+    select_type:{
+      type:String,
+      default: null,
+    },
+      ans:
+  {type:String}
+
   },
 
   { timestamps: true }
 );
 module.exports = mongoose. model("Question", QuestionSchema);
+
+
 
