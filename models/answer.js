@@ -12,8 +12,7 @@ const surveySchema = new mongoose.Schema(
      Question_ID: {
       type: String,
       default: null,
-    },
-    
+    },   
   },
 
   { timestamps: true }

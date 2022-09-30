@@ -8,36 +8,74 @@ const { json } = require("express");
 
 //post answer
 const postAnswer = async (req, res) => {
-  let { UserID, Answer,Question_ID } = req.body;
+  let bulkdata = []
+  for (let i = 0; i < req.body.length; i++) {
+    let { UserID, Answer, Question_ID } = req.body[i];
 
-  try {
-    if (!(UserID && Answer && Question_ID)) {
-      res
-        .status(400)
-        .json({ message: "All fields are required", status: false });
-    } else {
-      const getResponce = await Answers.create({
-        UserID,
-        Answer,
-        Question_ID
-      });
-
-      if (!getResponce) {
+    try {
+      if (!(UserID && Answer && Question_ID)) {
         res
           .status(400)
-          .json({ message: "Answers not  Has Posted", status: false });
+          .json({ message: "All fields are required", status: false });
       } else {
-        res.status(200).json({
-          message: "postAnswers is  created successfully",
-          data: getResponce,
-          status: true,
+        const getResponce = await Answers.create({
+          UserID,
+          Answer,
+          Question_ID
         });
+
+        if (!getResponce) {
+          res
+            .status(400)
+            .json({ message: "Answers not  Has Posted", status: false });
+        } else {
+          bulkdata = [...bulkdata, getResponce]
+        }
       }
+    } catch (error) {
+      res.status(400).json({ message: error.message, status: false });
     }
-  } catch (error) {
-    res.status(400).json({ message: error.message, status: false });
+
   }
+  res.status(200).json({
+    message: "postAnswers is  created successfully",
+    data: bulkdata,
+    status: true,
+  });
+
 };
+
+// const postAnswer = async (req, res) => {
+//   let { UserID, Answer,Question_ID } = req.body;
+
+//   try {
+//     if (!(UserID && Answer && Question_ID)) {
+//       res
+//         .status(400)
+//         .json({ message: "All fields are required", status: false });
+//     } else {
+//       const getResponce = await Answers.create({
+//         UserID,
+//         Answer,
+//         Question_ID
+//       });
+
+//       if (!getResponce) {
+//         res
+//           .status(400)
+//           .json({ message: "Answers not  Has Posted", status: false });
+//       } else {
+//         res.status(200).json({
+//           message: "postAnswers is  created successfully",
+//           data: getResponce,
+//           status: true,
+//         });
+//       }
+//     }
+//   } catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+//   }
+// };
 
 
 //get all answer
