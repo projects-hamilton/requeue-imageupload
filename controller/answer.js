@@ -7,7 +7,7 @@ const { json } = require("express");
 
 
 //post answer
-const postAnswer = async (req, res) => {
+const BulkpostAnswer = async (req, res) => {
   let bulkdata = []
   for (let i = 0; i < req.body.length; i++) {
     let { UserID, Answer, Question_ID } = req.body[i];
@@ -45,37 +45,37 @@ const postAnswer = async (req, res) => {
 
 };
 
-// const postAnswer = async (req, res) => {
-//   let { UserID, Answer,Question_ID } = req.body;
+const postAnswer = async (req, res) => {
+  let { UserID, Answer,Question_ID } = req.body;
 
-//   try {
-//     if (!(UserID && Answer && Question_ID)) {
-//       res
-//         .status(400)
-//         .json({ message: "All fields are required", status: false });
-//     } else {
-//       const getResponce = await Answers.create({
-//         UserID,
-//         Answer,
-//         Question_ID
-//       });
+  try {
+    if (!(UserID && Answer && Question_ID)) {
+      res
+        .status(400)
+        .json({ message: "All fields are required", status: false });
+    } else {
+      const getResponce = await Answers.create({
+        UserID,
+        Answer,
+        Question_ID
+      });
 
-//       if (!getResponce) {
-//         res
-//           .status(400)
-//           .json({ message: "Answers not  Has Posted", status: false });
-//       } else {
-//         res.status(200).json({
-//           message: "postAnswers is  created successfully",
-//           data: getResponce,
-//           status: true,
-//         });
-//       }
-//     }
-//   } catch (error) {
-//     res.status(400).json({ message: error.message, status: false });
-//   }
-// };
+      if (!getResponce) {
+        res
+          .status(400)
+          .json({ message: "Answers not  Has Posted", status: false });
+      } else {
+        res.status(200).json({
+          message: "postAnswers is  created successfully",
+          data: getResponce,
+          status: true,
+        });
+      }
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+  }
+};
 
 
 //get all answer
@@ -165,4 +165,5 @@ module.exports = {
   UpdateAnswersDetails,
   DeleteAnswersDetails,
   GetSingleQuestionAnswerAndUser,
+  BulkpostAnswer
 };
