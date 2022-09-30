@@ -1,37 +1,70 @@
 // const book = require("../modles/book");
 const Questions = require("../models/survey");
-const Survey = require('../models/answer')
+const Survey = require('../models/survey')
 
 // const auth = require("../middleware/authentication");
 
 //post API for book
 const postQuestion = async (req, res) => {
-  let { ...data} = req.body;
-  try {
-  
-  
-      const newSurvey = await new Survey({
-        ...req.body
-      
-      }).save();
-      res.status(200).send(newSurvey)
+  let {  dataType, Question, extraValue,UserID,} = req.body;
 
-      if (!newSurvey) {
+  try {
+    if (!(dataType && Question && extraValue && UserID)) {
+      res
+        .status(400)
+        .json({ message: "All fields are required", status: false });
+    } else {
+      const getResponce = await Survey.create({
+        UserID,
+        dataType,
+      extraValue,
+      Question
+      });
+
+      if (!getResponce) {
         res
           .status(400)
-          .json({ message: "postQuestion is not created", status: false });
+          .json({ message: "Answers not  Has Posted", status: false });
       } else {
         res.status(200).json({
-          message: "postQuestion is created successfully",
-          data: newSurvey,
+          message: "postAnswers is  created successfully",
+          data: getResponce,
           status: true,
         });
       }
     }
-  catch (error) {
+  } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
-};
+}
+
+// const postQuestion = async (req, res) => {
+//   let { dataType, Question, extraValue } = req.body;
+//   try {
+  
+  
+//       const newSurvey = await new Survey({
+//         ...req.body
+      
+//       }).save();
+//       res.status(200).send(newSurvey)
+
+//       if (!newSurvey) {
+//         res
+//           .status(400)
+//           .json({ message: "postQuestion is not created", status: false });
+//       } else {
+//         res.status(200).json({
+//           message: "postQuestion is created successfully",
+//           data: newSurvey,
+//           status: true,
+//         });
+//       }
+//     }
+//   catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+//   }
+// };
 
 //getAll  questions
 

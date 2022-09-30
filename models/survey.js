@@ -20,13 +20,6 @@ const QuestionSchema = new mongoose.Schema(
       },
     ],
 
-    select_type:{
-      type:String,
-      default: null,
-    },
-      ans:
-  {type:String}
-
   },
 
   { timestamps: true }
