@@ -10,7 +10,7 @@ router.post("/create/question",isAuthenticated, survey.postQuestion);
 router.get("/getquestion",isAuthenticated,survey.getQuestions);
 
 //patch api for book
-router.patch("/update/question/:id",isAuthenticated,survey.UpdateQuestionsDetails);
+router.put("/update/question/:id",isAuthenticated,survey.UpdateQuestionsDetails);
 
 //Delete api --
 router.delete("/delete/question/:id",isAuthenticated,survey.DeleteQuestionsDetails);
