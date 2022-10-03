@@ -6,7 +6,7 @@ const surveySchema = new mongoose.Schema(
       default: null,
     },
      Answer: {
-      type: String,
+      type: [String],
       default: null,
     },
      Question_ID: {
