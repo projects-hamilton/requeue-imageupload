@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const JWTkey = process.env.TOKEN_KEY;
-const admin = require('../models/Admin')
+// const admin = require('../models/Admin')
 // const User = require("../models/user");
 
 module.exports.generateJwtToken = (user) => {

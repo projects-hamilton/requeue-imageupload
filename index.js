@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const express = require('express')
-// const admin = require("./routes/Admin")
 const app = express()
 require('dotenv').config();
 const db = process.env.DB_URI
@@ -28,11 +27,10 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.use('/admin',require('./routes/Admin'))
-app.use('/survey',require('./routes/survey'))
-app.use("/answer",require("./routes/answer"))
-app.use('/user',require('./routes/user'))
 
+app.use('/',require('./routes/SupervisorRoutes'))
+app.use('/',require('./routes/user'))
+app.use('/',require('./routes/admin'))
 
 
 app.listen(port, () => {
