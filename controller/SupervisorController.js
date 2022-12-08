@@ -533,14 +533,13 @@ const driverApproval = async (req, res) => {
 const driverApprovalupdate = async (req, res) => {
   console.log("Enter");
   try {
-    await DriverDetailsAll.findOneAndUpdate(
+    await DeliveryDeatils.findOneAndUpdate(
       {
         _id:req.params.id
       },
-      {
-        where: {
-          status:req.body.status
-        },
+      
+     {status:req.body.status
+        
       }
     );
     res.status(200).json({ message: "Successs" });
@@ -548,6 +547,7 @@ const driverApprovalupdate = async (req, res) => {
     res.status(400).json({ message: error.message, status: false });
   }
 };
+
 
 
 // //GetallPendingFollowing
@@ -567,9 +567,6 @@ const GetPendingStatusWaitingForAppproved = async (req, res) => {
 
 
 
-
-
-
 const GetAllDriverList = async (req, res) => {
   try {
     const DriverList = await DriverProfiles.find();
@@ -580,6 +577,7 @@ const GetAllDriverList = async (req, res) => {
     res.send({ message: error.message, status: false });
   }
 };
+
 
 
 //GetByDriverid
@@ -597,12 +595,11 @@ const GetByDriverId = async (req, res) => {
 
 
 
-
 //getbystatus
 const GetByStatus = async(req,res) =>{
   try {
   const Status = req.params.status
-  let getResponce = await DriverDetailsAll.find({Status});
+    let getResponce = await DeliveryDeatils.find({Status});
   res.status(200).json({message:"Alll Status",getResponce});
     
   } catch (error) {
@@ -610,6 +607,7 @@ const GetByStatus = async(req,res) =>{
     
   }
 }
+
 
 
 module.exports = {
@@ -639,4 +637,6 @@ module.exports = {
   GetByStatus
   // driverApproval
 };
+
+
 
