@@ -537,10 +537,8 @@ const driverApprovalupdate = async (req, res) => {
       {
         _id:req.params.id
       },
-      {
-        where: {
-          status:req.body.status
-        },
+      {  status:req.body.status
+    
       }
     );
     res.status(200).json({ message: "Successs" });
@@ -564,9 +562,6 @@ const GetPendingStatusWaitingForAppproved = async (req, res) => {
     res.status(400).json({ message: error.message, status: false });
   }
 };
-
-
-
 
 
 
