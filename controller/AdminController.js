@@ -6,7 +6,7 @@ const DriverDetails = require("../models/driver-business-detail");
 const VehicleDetails = require("../models/vehicle ");
 // const DriverDetailsAll = require('../models/driver-business-detail')
 const DriverProfiles = require("../models/driver");
-const exceljs = require("exceljs");
+
 
 // const moment = require('moment');
 // // const yesterday = moment();
@@ -415,47 +415,6 @@ const AddAnyDrivers = async (req, res) => {
   }
 };
 
-//export users data
-const exportUsers = async (req, res) => {
-  try {
-    const workbook = new exceljs.Workbook();
-    const worksheet = workbook.addWorksheet("My Users");
-    worksheet.columns = [
-      { header: "ID", key: "_id" },
-      { header: "FirstName", key: "firstname" },
-      { header: "Lastname", key: "lastname" },
-      { header: "Password", key: "password" },
-      { header: "Email", key: "email" },
-      { header: "Role", key: "role" },
-    ];
-    let counter = 1;
-    const userdata = await User.find();
-    userdata.forEach((user) => {
-      user.s_no = counter;
-      worksheet.addRow(user);
-      counter++;
-    });
-    console.log(userdata);
-    worksheet.getRow(1).eachCell((cell) => {
-      cell.font = { bold: true };
-    });
-
-    res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheatml.sheet"
-    );
-
-    res.setHeader("Content-Disposition", `attatchement;filename=user.xlsx`);
-    return workbook.xlsx.write(res).then(() => {
-      // console.log("res", res);
-      res.status(200);
-    });
-  } catch (error) {
-    res.status(400).json({ message: error.message, status: false });
-  }
-};
-
-
 
 module.exports = {
   SearchAnyUserNamew,
@@ -468,5 +427,5 @@ module.exports = {
   EditVechileDetails,
   DeleteVichle,
   AddAnyDrivers,
-  exportUsers,
+
 };
