@@ -400,6 +400,7 @@ const DeliveryDeatilsAlll = async (req, res) => {
   }
 };
 
+
 //TotalDelivery
 // const TotalDelivery = async (req, res) => {
 //   try {
@@ -436,6 +437,9 @@ const DeliveryDeatilsAlll = async (req, res) => {
 //     res.json({ message: error.message, status: false });
 //   }
 // };
+
+
+
 
 //Amountforeachdriver
 const Amountforeachdriver = async (req, res) => {
@@ -478,6 +482,7 @@ const Amountforeachdriver = async (req, res) => {
   }
 };
 
+
 //The supervisor can see the due amount for each driver-
 const EachDreiverAmountGetByid = async (req, res) => {
   try {
@@ -511,8 +516,11 @@ const EachDreiverAmountGetByid = async (req, res) => {
 //   }
 // };
 
+<<<<<<< HEAD
 
 //Wrong api----
+=======
+>>>>>>> 843c2b6f57b48bce50ccc50aad41d48c82614c7a
 const driverApproval = async (req, res) => {
   try {
     let Search = Storedata(["driver_id", "status"], req.body);
@@ -542,9 +550,8 @@ const driverApprovalupdate = async (req, res) => {
       {
         _id:req.params.id
       },
-      
-     {status:req.body.status
-        
+      {  status:req.body.status
+    
       }
     );
 
@@ -602,7 +609,6 @@ const GetByDriverId = async (req, res) => {
 };
 
 
-
 //getbystatus
 const GetByStatus = async(req,res) =>{
   try {
@@ -616,6 +622,177 @@ const GetByStatus = async(req,res) =>{
   }
 }
 
+
+//export users data
+// const exportUsers = async (req, res) => {
+//   try {
+//     const workbook = new exceljs.Workbook();
+//     const worksheet = workbook.addWorksheet("My Users");
+//     worksheet.columns = [
+//       { header: "ID", key: "_id" },
+//       { header: "Status", key: "success" },
+//       { header: "AMOUNT", key: "amount_Value" },
+//       { header: "Pay_Types", key: "pay_type" },
+//       { header: "Delivery_Address", key: "delivery_address" },
+//       { header: "Distance", key: "distance" },
+//       { header: "Picked_Location", key: "picked_location" },
+
+//     ];
+//     let counter = 1;
+//     const userdata = await DeliveryDeatils.find();
+//     userdata.forEach((user) => {
+//       user.s_no = counter;
+//       worksheet.addRow(user);
+//       counter++;
+//     });
+//     console.log(userdata);
+//     worksheet.getRow(1).eachCell((cell) => {
+//       cell.font = { bold: true };
+//     });
+
+//     res.setHeader(
+//       "Content-Type",
+//       "application/vnd.openxmlformats-officedocument.spreadsheatml.sheet"
+//     );
+
+//     res.setHeader("Content-Disposition", `attatchement;filename=user.xlsx`);
+//     return workbook.xlsx.write(res).then(() => {
+//       // console.log("res", res);
+//       res.status(200);
+//     });
+//   } catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+//   }
+// };
+
+
+// const exportDelivery = async (req, res) => {
+//   try {
+    
+//     const workbook = new exceljs.Workbook();
+//     const worksheet = workbook.addWorksheet("My Users");
+//     worksheet.columns = [
+//       { header: "ID", key: "_id" },
+//       { header: "Delivered By", key: "firstname" },
+//       { header: "Delivery Address", key: "delivery_address" },
+//       { header: "date", key: "date" },
+//       { header: "Item", key: "itmes" },
+//       { header: "picked Location", key: "picked_location" },
+//       { header: "amount Value", key: "amount_Value" },
+//       { header: "pay Type", key: "pay_type" },
+//     ];
+//     let counter = 1;
+//     let Deliverdata = await Delivery.find({ status: req.query.status ? req.query.status : "pending" });
+//     Deliverdata.forEach((data) => {
+//       let name = await User.findById(data.driver_id);
+//       data.firstname = name.firstname
+//       data.s_no = counter;
+//       worksheet.addRow(data);
+//       counter++;
+//     });
+
+//     worksheet.getRow(1).eachCell((cell) => {
+//       cell.font = { bold: true };
+//     });
+
+//     res.setHeader(
+//       "Content-Type",
+//       "application/vnd.openxmlformats-officedocument.spreadsheatml.sheet"
+//     );
+
+//     res.setHeader("Content-Disposition", `attatchement;filename=user.xlsx`);
+//     return workbook.xlsx.write(res).then(() => {
+//       // console.log("res", res);
+//       res.status(200);
+//     });
+//   } catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+//   }
+// };
+
+
+const GetByDriverIdStatus = async(req,res) =>{
+  try {
+  const Driver_id = req.params.driver_id
+    let getResponce = await DeliveryDeatils.find({Driver_id});
+  res.status(200).json({message:"Alll Status",getResponce});
+    
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+    
+  }
+}
+
+//EditInvoceDeatils
+
+// const postMentorOnboard = async (req, res) => {
+//   let { Feld, Verification, DOB, CV, ID } = req.body;
+//   let userId = req.user;
+
+//   try { {
+//       res
+//         .status(400)
+//         .json({ message: "All fields are required", status: false });
+//     } else {
+//       let Existing = await MentorProfiles.findOne({ userId });
+
+//       if (Existing) {
+//         let getResponce = await MentorProfiles.findOneAndUpdate(
+//           { userId },
+//           {
+//             Feld,
+//             Verification,
+//             DOB,
+//             CV,
+//             ID,
+//             userId,
+//           }
+//         );
+
+//         if (!getResponce) {
+//           res
+//             .status(400)
+//             .json({ message: "Mentor Onboard not updated ", status: false });
+
+//         } else {
+//           res.status(200).json({
+//             message: "Mentor Onboared is Updated successfully",
+//             data: getResponce,
+//             status: true,
+//           });
+    
+//   } catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+//   }
+// }}
+const UpdatedInvoiceDetails = async (req, res) => {
+  try {
+    let Search = Storedata(["amount_Value", "pay_type","driver_id","delivery_address","distance","picked_location","itmes"], req.body);
+    if (Search[0] == false)
+      res
+        .status(400)
+        .json({ message: `${Search[1]} Field Required`, data: [] });
+
+    const { amount_Value,pay_type, driver_id,delivery_address, distance,picked_location,itmes} = req.body;
+    let Existing = await DeliveryDeatils.findOneAndUpdate({_id:req.params.id },{
+      amount_Value,
+      pay_type, 
+      driver_id,
+      delivery_address, 
+      distance,
+      picked_location,
+      itmes
+
+    });
+    res.status(200).json({
+      message: "Status changed",
+      data: Existing,
+      status: true,
+    })
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+  }
+};
 
 
 const exportDelivery = async (req, res) => {
@@ -704,7 +881,13 @@ module.exports = {
   GetAllDriverList,
   GetByDriverId,
   GetByStatus,
+<<<<<<< HEAD
   exportDelivery
+=======
+  // exportDelivery,
+  GetByDriverIdStatus,
+  UpdatedInvoiceDetails
+>>>>>>> 843c2b6f57b48bce50ccc50aad41d48c82614c7a
   // driverApproval
 };
 

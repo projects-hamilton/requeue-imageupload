@@ -41,7 +41,6 @@ const Signup = async (req, res) => {
         "firstname",
         "password",
         "lastname",
-        "role",
         "email",
         "mobile",
         "country",
