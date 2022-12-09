@@ -8,6 +8,7 @@ const Walltes = require("../models/wallet");
 const DeliveryDeatils = require("../models/delivery ");
 const DriverProfiles = require('../models/driver')
 const exceljs = require("exceljs");
+const InvoiceDetails = require('../models/invoice')
 // const { read } = require("xlsx");
 
 const Storedata = (search, data) => {
@@ -401,45 +402,6 @@ const DeliveryDeatilsAlll = async (req, res) => {
 };
 
 
-//TotalDelivery
-// const TotalDelivery = async (req, res) => {
-//   try {
-//     const Total_Delivery = await DeliveryDeatils.find();
-//     res.status(200).json({
-//       message: "Total Delivery",
-//       Total_Number_Of_Delivery: Total_Delivery.length,
-//     });
-//   } catch (error) {
-//     res.json({ message: error.message, status: false });
-//   }
-// };
-
-// //TodayDelivery
-// const TodayDelivery = async (req, res) => {
-//   try {
-//     const Today_Delivery = await DeliveryDeatils.findOne();
-//     res
-//       .status(200)
-//       .json({ message: "Today Delivery", TodayDelivery: Today_Delivery });
-//   } catch (error) {
-//     res.json({ message: error.message, status: false });
-//   }
-// };
-
-//cashHand
-// const CashHandDelivery = async (req, res) => {
-//   try {
-//     const Total_Cash = await Walltes.findOne();
-//     res
-//       .status(200)
-//       .json({ message: "CashInHand", CashInHands: Total_Cash.length });
-//   } catch (error) {
-//     res.json({ message: error.message, status: false });
-//   }
-// };
-
-
-
 
 //Amountforeachdriver
 const Amountforeachdriver = async (req, res) => {
@@ -504,44 +466,6 @@ const EachDreiverAmountGetByid = async (req, res) => {
 };
 
 
-// const GetActiveStatus = async (req, res) => {
-//   try {
-//     const driver_id = req.params.id;
-//     let GetResponce = await DeliveryDeatils.find({ driver_id })
-//       .where("status")
-//       .equals("active");
-//     res.status(200).json({ message: "Approveed", GetResponce });
-//   } catch (e) {
-//     res.status(400).json(e.message);
-//   }
-// };
-
-<<<<<<< HEAD
-
-//Wrong api----
-=======
->>>>>>> 843c2b6f57b48bce50ccc50aad41d48c82614c7a
-const driverApproval = async (req, res) => {
-  try {
-    let Search = Storedata(["driver_id", "status"], req.body);
-    if (Search[0] == false)
-      res
-        .status(400)
-        .json({ message: `${Search[1]} Field Required`, data: [] });
-
-    const { status, driver_id } = req.body;
-    let Existing = await DeliveryDeatils.create({ status, driver_id });
-    res.status(200).json({
-      message: "Status changed",
-      data: Existing,
-      status: true,
-    })
-  } catch (error) {
-    res.status(400).json({ message: error.message, status: false });
-  }
-};
-
-
 //--------
 const driverApprovalupdate = async (req, res) => {
   console.log("Enter");
@@ -561,22 +485,6 @@ const driverApprovalupdate = async (req, res) => {
   }
 };
 
-
-
-// //GetallPendingFollowing
-// const GetPendingStatusWaitingForAppproved = async (req, res) => {
-//   try {
-//     const driver_id = req.params.id;
-//     let getResponce = await DeliveryDeatils.find({ driver_id })
-//       .where("status")
-//       .equals("pending");
-//     resdriverApproval
-//       .status(200)
-//       .json({ message: "Pending Waiting for Approved", getResponce });
-//   } catch (error) {
-//     res.status(400).json({ message: error.message, status: false });
-//   }
-// };
 
 
 //getbyUser pending...
@@ -623,93 +531,6 @@ const GetByStatus = async(req,res) =>{
 }
 
 
-//export users data
-// const exportUsers = async (req, res) => {
-//   try {
-//     const workbook = new exceljs.Workbook();
-//     const worksheet = workbook.addWorksheet("My Users");
-//     worksheet.columns = [
-//       { header: "ID", key: "_id" },
-//       { header: "Status", key: "success" },
-//       { header: "AMOUNT", key: "amount_Value" },
-//       { header: "Pay_Types", key: "pay_type" },
-//       { header: "Delivery_Address", key: "delivery_address" },
-//       { header: "Distance", key: "distance" },
-//       { header: "Picked_Location", key: "picked_location" },
-
-//     ];
-//     let counter = 1;
-//     const userdata = await DeliveryDeatils.find();
-//     userdata.forEach((user) => {
-//       user.s_no = counter;
-//       worksheet.addRow(user);
-//       counter++;
-//     });
-//     console.log(userdata);
-//     worksheet.getRow(1).eachCell((cell) => {
-//       cell.font = { bold: true };
-//     });
-
-//     res.setHeader(
-//       "Content-Type",
-//       "application/vnd.openxmlformats-officedocument.spreadsheatml.sheet"
-//     );
-
-//     res.setHeader("Content-Disposition", `attatchement;filename=user.xlsx`);
-//     return workbook.xlsx.write(res).then(() => {
-//       // console.log("res", res);
-//       res.status(200);
-//     });
-//   } catch (error) {
-//     res.status(400).json({ message: error.message, status: false });
-//   }
-// };
-
-
-// const exportDelivery = async (req, res) => {
-//   try {
-    
-//     const workbook = new exceljs.Workbook();
-//     const worksheet = workbook.addWorksheet("My Users");
-//     worksheet.columns = [
-//       { header: "ID", key: "_id" },
-//       { header: "Delivered By", key: "firstname" },
-//       { header: "Delivery Address", key: "delivery_address" },
-//       { header: "date", key: "date" },
-//       { header: "Item", key: "itmes" },
-//       { header: "picked Location", key: "picked_location" },
-//       { header: "amount Value", key: "amount_Value" },
-//       { header: "pay Type", key: "pay_type" },
-//     ];
-//     let counter = 1;
-//     let Deliverdata = await Delivery.find({ status: req.query.status ? req.query.status : "pending" });
-//     Deliverdata.forEach((data) => {
-//       let name = await User.findById(data.driver_id);
-//       data.firstname = name.firstname
-//       data.s_no = counter;
-//       worksheet.addRow(data);
-//       counter++;
-//     });
-
-//     worksheet.getRow(1).eachCell((cell) => {
-//       cell.font = { bold: true };
-//     });
-
-//     res.setHeader(
-//       "Content-Type",
-//       "application/vnd.openxmlformats-officedocument.spreadsheatml.sheet"
-//     );
-
-//     res.setHeader("Content-Disposition", `attatchement;filename=user.xlsx`);
-//     return workbook.xlsx.write(res).then(() => {
-//       // console.log("res", res);
-//       res.status(200);
-//     });
-//   } catch (error) {
-//     res.status(400).json({ message: error.message, status: false });
-//   }
-// };
-
 
 const GetByDriverIdStatus = async(req,res) =>{
   try {
@@ -723,86 +544,45 @@ const GetByDriverIdStatus = async(req,res) =>{
   }
 }
 
-//EditInvoceDeatils
-
-// const postMentorOnboard = async (req, res) => {
-//   let { Feld, Verification, DOB, CV, ID } = req.body;
-//   let userId = req.user;
-
-//   try { {
+// const UpdatedInvoiceDetails = async (req, res) => {
+//   try {
+//     let Search = Storedata(["amount_Value", "pay_type","driver_id","delivery_address","distance","picked_location","itmes"], req.body);
+//     if (Search[0] == false)
 //       res
 //         .status(400)
-//         .json({ message: "All fields are required", status: false });
-//     } else {
-//       let Existing = await MentorProfiles.findOne({ userId });
+//         .json({ message: `${Search[1]} Field Required`, data: [] });
 
-//       if (Existing) {
-//         let getResponce = await MentorProfiles.findOneAndUpdate(
-//           { userId },
-//           {
-//             Feld,
-//             Verification,
-//             DOB,
-//             CV,
-//             ID,
-//             userId,
-//           }
-//         );
+//     const { amount_Value,pay_type, driver_id,delivery_address, distance,picked_location,itmes} = req.body;
+//     let Existing = await DeliveryDeatils.findOneAndUpdate({_id:req.params.id },{
+//       amount_Value,
+//       pay_type, 
+//       driver_id,
+//       delivery_address, 
+//       distance,
+//       picked_location,
+//       itmes
 
-//         if (!getResponce) {
-//           res
-//             .status(400)
-//             .json({ message: "Mentor Onboard not updated ", status: false });
-
-//         } else {
-//           res.status(200).json({
-//             message: "Mentor Onboared is Updated successfully",
-//             data: getResponce,
-//             status: true,
-//           });
-    
+//     });
+//     res.status(200).json({
+//       message: "Status changed",
+//       data: Existing,
+//       status: true,
+//     })
 //   } catch (error) {
 //     res.status(400).json({ message: error.message, status: false });
 //   }
-// }}
-const UpdatedInvoiceDetails = async (req, res) => {
-  try {
-    let Search = Storedata(["amount_Value", "pay_type","driver_id","delivery_address","distance","picked_location","itmes"], req.body);
-    if (Search[0] == false)
-      res
-        .status(400)
-        .json({ message: `${Search[1]} Field Required`, data: [] });
-
-    const { amount_Value,pay_type, driver_id,delivery_address, distance,picked_location,itmes} = req.body;
-    let Existing = await DeliveryDeatils.findOneAndUpdate({_id:req.params.id },{
-      amount_Value,
-      pay_type, 
-      driver_id,
-      delivery_address, 
-      distance,
-      picked_location,
-      itmes
-
-    });
-    res.status(200).json({
-      message: "Status changed",
-      data: Existing,
-      status: true,
-    })
-  } catch (error) {
-    res.status(400).json({ message: error.message, status: false });
-  }
-};
+// };
 
 
 const exportDelivery = async (req, res) => {
   try {
 
     const workbook = new exceljs.Workbook();
-    const worksheet = workbook.addWorksheet("My Users");
+    const worksheet = workbook.addWorksheet("My Invoice");
     worksheet.columns = [
       { header: "ID", key: "_id" },
-      { header: "Delivered By", key:"firstname" },
+      { header: "Delivered By", key: "firstname" },
+      { header: "Driver_Id", key:"driver_id" },
       { header: "Delivery Address", key: "delivery_address" },
       { header: "date", key: "date" },
       { header: "Item", key: "itmes" },
@@ -811,13 +591,15 @@ const exportDelivery = async (req, res) => {
       { header: "pay Type", key: "pay_type" },
     ];
     let counter = 1;
-    let Deliverdata = await DeliveryDeatils.find({ status: req.query.status ? req.query.status : "pending" });
+    let Deliverdata = await InvoiceDetails.find();
     console.log(Deliverdata)
     
-
     for (let index = 0; index < Deliverdata.length; index++) {
       let data = Deliverdata[index]
-      let name = await User.findById(data.driver_id);
+
+      let id = data.driver_id;
+      let name = await User.findById(id);
+      console.log(name)
       data.firstname = name.firstname
       console.log(data)
       data.s_no = counter;
@@ -825,7 +607,6 @@ const exportDelivery = async (req, res) => {
       counter++;
   
     }
-
 
     // Deliverdata.forEach((data) => {
     //   let name = await User.findById(data.driver_id);
@@ -855,6 +636,49 @@ const exportDelivery = async (req, res) => {
   }
 };
 
+//createInvoiceGetAPIS
+const createInvoice = async(req,res) =>{
+  try {
+    const id =req.params.id
+    let userDetails = await User.findById(id);
+    const d = new Date();
+    let year = d.getFullYear();
+    let month = d.getMonth() + 1;
+    let day = d.getDate();
+    let date = year + "-" + month + "-" + day;
+    let Existing = await InvoiceDetails.find({driver_id:id,date})
+    console.log(Existing)
+    if(Existing.length>0){
+     return res.status(400).json({message:"All Ready Existing"})
+    }
+  let Delivery = await DeliveryDeatils.find({ driver_id: id, date })
+  let totalamount = 0
+
+    for (let index = 0; index < Delivery.length; index++) {
+    const element = Delivery[index];
+    totalamount+=100
+  }
+
+  let a = {
+    firstname:userDetails.firstname,
+    lastname:userDetails.lastname,
+    driver_id:id,
+    email:userDetails.email,
+    mobile:userDetails.mobile,
+    total_amount:totalamount,
+    today_total_delevery:Delivery.length,
+    date:date
+  }
+    let Invoice = await InvoiceDetails.create(a)
+    console.log(Invoice)
+    res.status(200).json({ message:"data",Invoice})
+    
+  } catch (error) {
+    res.status(403).json({message:error.message
+    })
+  }
+}
+
 
 module.exports = {
   DriverMultpleGroupPost,
@@ -875,21 +699,11 @@ module.exports = {
   // CashHandDelivery,
   EachDreiverAmountGetByid,
   // GetActiveStatus,
-  GetPendingStatusWaitingForAppproved,
-  driverApproval,
   driverApprovalupdate,
   GetAllDriverList,
   GetByDriverId,
   GetByStatus,
-<<<<<<< HEAD
-  exportDelivery
-=======
-  // exportDelivery,
-  GetByDriverIdStatus,
-  UpdatedInvoiceDetails
->>>>>>> 843c2b6f57b48bce50ccc50aad41d48c82614c7a
+  exportDelivery,
+  createInvoice
   // driverApproval
 };
-
-
-

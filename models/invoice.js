@@ -1,37 +1,45 @@
+const mongoose = require('mongoose');
 
-const mongoose = require("mongoose");
+const InvoiceDetailsschema = mongoose.Schema({
 
-const InvoiceSetailsSchema = new mongoose.Schema({
-
-    invoice_address: {
+  firstname: {
         type: String,
       },
       
-      itmes: {
+      lastname: {
+        type: String,
+        
+      },
+
+      driver_id: {
         type: String,
       },
 
-      amount: {
+    email: {
         type: String,
-        comment: "KWD,INR",
-      },
-      
-
-      date: {
-        type: String,
-      },
-
-
-      get_value: {
-        type: String
-      },
-
-      transation: {
-        type:String,
     },
 
+    mobile:{
+        type:String
+    },
+
+    today_total_delevery:{
+      type:String
+    },
+    
+  total_amount:{
+      type:String,
+    },
     
 
-}, { timestamps: true });
+    date:{
+      type:String
+    }
 
-module.exports = mongoose.model("Invoice", InvoiceSetailsSchema);
+
+},{ timestamps: true });
+
+
+module.exports = mongoose.model("Invoice", InvoiceDetailsschema);
+
+
