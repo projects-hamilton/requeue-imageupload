@@ -7,6 +7,7 @@ const DeliveryDetailsschema = mongoose.Schema({
       
       pay_type: {
         type: String,
+        
       },
 
       driver_id: {

@@ -30,10 +30,7 @@ const InvoiceSetailsSchema = new mongoose.Schema({
         type:String,
     },
 
-    Date:{
-        type:String
-    }
-
+    
 
 }, { timestamps: true });
 

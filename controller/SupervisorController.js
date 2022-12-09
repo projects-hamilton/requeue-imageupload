@@ -7,6 +7,7 @@ const VehiclAllDetails = require("../models/vehicle ");
 const Walltes = require("../models/wallet");
 const DeliveryDeatils = require("../models/delivery ");
 const DriverProfiles = require('../models/driver')
+const exceljs = require("exceljs");
 // const { read } = require("xlsx");
 
 const Storedata = (search, data) => {
@@ -21,6 +22,8 @@ const Storedata = (search, data) => {
   }
   return [true, ""];
 };
+
+
 
 //DriverMultpleGroupPost
 const DriverMultpleGroupPost = async (req, res) => {
@@ -299,6 +302,7 @@ const GetAllDriverDetailsAndVihcleDeatils = async (req, res) => {
 };
 
 
+
 //AddWalletsPost
 const AddWalletsPost = async (req, res) => {
   try {
@@ -508,6 +512,7 @@ const EachDreiverAmountGetByid = async (req, res) => {
 // };
 
 
+//Wrong api----
 const driverApproval = async (req, res) => {
   try {
     let Search = Storedata(["driver_id", "status"], req.body);
@@ -529,11 +534,11 @@ const driverApproval = async (req, res) => {
 };
 
 
-
+//--------
 const driverApprovalupdate = async (req, res) => {
   console.log("Enter");
   try {
-    await DeliveryDeatils.findOneAndUpdate(
+    let a = await DeliveryDeatils.findOneAndUpdate(
       {
         _id:req.params.id
       },
@@ -542,7 +547,8 @@ const driverApprovalupdate = async (req, res) => {
         
       }
     );
-    res.status(200).json({ message: "Successs" });
+
+    res.status(200).json({ message: "Successs",a});
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
@@ -551,21 +557,24 @@ const driverApprovalupdate = async (req, res) => {
 
 
 // //GetallPendingFollowing
-const GetPendingStatusWaitingForAppproved = async (req, res) => {
-  try {
-    const driver_id = req.params.id;
-    let getResponce = await DeliveryDeatils.find({ driver_id })
-      .where("status")
-      .equals("pending");
-    res
-      .status(200)
-      .json({ message: "Pending Waiting for Approved", getResponce });
-  } catch (error) {
-    res.status(400).json({ message: error.message, status: false });
-  }
-};
+// const GetPendingStatusWaitingForAppproved = async (req, res) => {
+//   try {
+//     const driver_id = req.params.id;
+//     let getResponce = await DeliveryDeatils.find({ driver_id })
+//       .where("status")
+//       .equals("pending");
+//     resdriverApproval
+//       .status(200)
+//       .json({ message: "Pending Waiting for Approved", getResponce });
+//   } catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+//   }
+// };
 
 
+//getbyUser pending...
+
+// Supervisor can see the pending, collected, full amount for each driver
 
 const GetAllDriverList = async (req, res) => {
   try {
@@ -577,7 +586,6 @@ const GetAllDriverList = async (req, res) => {
     res.send({ message: error.message, status: false });
   }
 };
-
 
 
 //GetByDriverid
@@ -610,6 +618,67 @@ const GetByStatus = async(req,res) =>{
 
 
 
+const exportDelivery = async (req, res) => {
+  try {
+
+    const workbook = new exceljs.Workbook();
+    const worksheet = workbook.addWorksheet("My Users");
+    worksheet.columns = [
+      { header: "ID", key: "_id" },
+      { header: "Delivered By", key:"firstname" },
+      { header: "Delivery Address", key: "delivery_address" },
+      { header: "date", key: "date" },
+      { header: "Item", key: "itmes" },
+      { header: "picked Location", key: "picked_location" },
+      { header: "amount Value", key: "amount_Value" },
+      { header: "pay Type", key: "pay_type" },
+    ];
+    let counter = 1;
+    let Deliverdata = await DeliveryDeatils.find({ status: req.query.status ? req.query.status : "pending" });
+    console.log(Deliverdata)
+    
+
+    for (let index = 0; index < Deliverdata.length; index++) {
+      let data = Deliverdata[index]
+      let name = await User.findById(data.driver_id);
+      data.firstname = name.firstname
+      console.log(data)
+      data.s_no = counter;
+      worksheet.addRow(data);
+      counter++;
+  
+    }
+
+
+    // Deliverdata.forEach((data) => {
+    //   let name = await User.findById(data.driver_id);
+    //   data.firstname = name.firstname
+    //   data.s_no = counter;
+    //   worksheet.addRow(data);
+    //   counter++;
+    // });
+
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.font = { bold: true };
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheatml.sheet"
+    );
+
+    res.setHeader("Content-Disposition", `attatchement;filename=user.xlsx`);
+    return workbook.xlsx.write(res).then(() => {
+      // console.log("res", res);
+      res.status(200);
+    });
+
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+  }
+};
+
+
 module.exports = {
   DriverMultpleGroupPost,
   UpdatedDriverMultipleGroups,
@@ -634,7 +703,8 @@ module.exports = {
   driverApprovalupdate,
   GetAllDriverList,
   GetByDriverId,
-  GetByStatus
+  GetByStatus,
+  exportDelivery
   // driverApproval
 };
 

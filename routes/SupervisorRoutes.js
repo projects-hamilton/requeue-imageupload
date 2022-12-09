@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = express.Router();
 
 
@@ -23,7 +24,8 @@ const { DriverMultpleGroupPost,
      driverApprovalupdate,
      GetAllDriverList,
      GetByDriverId,
-     GetByStatus} = require('../controller/SupervisorController');
+     GetByStatus,
+     exportDelivery} = require('../controller/SupervisorController');
 const { isAuthenticated } = require("../middilware/auth");
 
 router.post("/post-multple-driver-group",DriverMultpleGroupPost)
@@ -48,6 +50,7 @@ router.get('/pending-status/:id',GetPendingStatusWaitingForAppproved)
 router.get('/driver-all-list',isAuthenticated,GetAllDriverList)
 router.get('/get-by-driver-id/:id',isAuthenticated,GetByDriverId)
 router.get('/get-all-status/:Status',isAuthenticated,GetByStatus)
+router.get('/export-invoice-deatils',exportDelivery)
 // router.post("/login",User.Login)
 
 module.exports=router
