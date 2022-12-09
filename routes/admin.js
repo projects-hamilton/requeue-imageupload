@@ -6,7 +6,9 @@ const { SearchAnyUserNamew,
        AddVechileDetails, 
        EditVechileDetails, 
        DeleteVichle,
-        AddAnyDrivers,} = require("../controller/AdminController")
+       AddAnyDrivers }= require("../controller/AdminController")
+
+
 
 const express = require("express");
 const router = express.Router();

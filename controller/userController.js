@@ -102,10 +102,11 @@ const Signup = async (req, res) => {
       }
     }
 
+  
     // let encryptedPassword = await bcrypt.hash(password, 10);
     const hashedPassword = await encrypt(password);
     const otpGenerated = Math.floor(100000 + Math.random() * 9000);
-    console.log(otpGenerated, "jjjjjj");
+    console.log(otpGenerated);
 
     const user = await User.create({
       firstname,
@@ -166,7 +167,7 @@ const Login = async (req, res) => {
       // Create token
       // const token = generateJwtToken(user);
       const token = jwt.sign({ user }, process.env.TOKEN_KEY, {
-        expiresIn: "24h",
+        expiresIn: "24d",
       });
       // user.token = token;
       // user
