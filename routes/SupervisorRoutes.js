@@ -19,18 +19,13 @@ const { DriverMultpleGroupPost,
      TotalDelivery,
     //  TodayDelivery,
     //  CashHandDelivery,
-     GetPendingStatusWaitingForAppproved,
+     // GetPendingStatusWaitingForAppproved,
      driverApproval,
      driverApprovalupdate,
      GetAllDriverList,
      GetByDriverId,
      GetByStatus,
-<<<<<<< HEAD
      exportDelivery} = require('../controller/SupervisorController');
-=======
-     exportUsers,
-     GetByDriverIdStatus} = require('../controller/SupervisorController');
->>>>>>> 843c2b6f57b48bce50ccc50aad41d48c82614c7a
 const { isAuthenticated } = require("../middilware/auth");
 
 router.post("/post-multple-driver-group",DriverMultpleGroupPost)
@@ -51,17 +46,11 @@ router.get('/get-each-drive-amount',isAuthenticated,Amountforeachdriver)
 // router.get('/cash-in-hand',CashHandDelivery)
 router.post('/driver-aaproved',isAuthenticated,driverApproval)
 router.patch('/update-driver-approvel/:id',isAuthenticated,driverApprovalupdate)
-router.get('/pending-status/:id',GetPendingStatusWaitingForAppproved)
+// router.get('/pending-status/:id',GetPendingStatusWaitingForAppproved)
 router.get('/driver-all-list',isAuthenticated,GetAllDriverList)
 router.get('/get-by-driver-id/:id',isAuthenticated,GetByDriverId)
 router.get('/get-all-status/:Status',isAuthenticated,GetByStatus)
-<<<<<<< HEAD
 router.get('/export-invoice-deatils',exportDelivery)
-=======
-// router.get('/export-invoice-deatils',exportUsers)
-router.get('/get-by-driver-id-status/:Driver_id',isAuthenticated,GetByDriverIdStatus)
-
->>>>>>> 843c2b6f57b48bce50ccc50aad41d48c82614c7a
 // router.post("/login",User.Login)
 
 module.exports=router

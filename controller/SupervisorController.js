@@ -516,11 +516,8 @@ const EachDreiverAmountGetByid = async (req, res) => {
 //   }
 // };
 
-<<<<<<< HEAD
 
 //Wrong api----
-=======
->>>>>>> 843c2b6f57b48bce50ccc50aad41d48c82614c7a
 const driverApproval = async (req, res) => {
   try {
     let Search = Storedata(["driver_id", "status"], req.body);
@@ -875,19 +872,13 @@ module.exports = {
   // CashHandDelivery,
   EachDreiverAmountGetByid,
   // GetActiveStatus,
-  GetPendingStatusWaitingForAppproved,
+  // GetPendingStatusWaitingForAppproved,
   driverApproval,
   driverApprovalupdate,
   GetAllDriverList,
   GetByDriverId,
   GetByStatus,
-<<<<<<< HEAD
   exportDelivery
-=======
-  // exportDelivery,
-  GetByDriverIdStatus,
-  UpdatedInvoiceDetails
->>>>>>> 843c2b6f57b48bce50ccc50aad41d48c82614c7a
   // driverApproval
 };
 

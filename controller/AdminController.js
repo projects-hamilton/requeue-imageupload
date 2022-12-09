@@ -416,7 +416,6 @@ const AddAnyDrivers = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 // //export users data
 // const exportUsers = async (req, res) => {
 //   try {
@@ -459,8 +458,6 @@ const AddAnyDrivers = async (req, res) => {
 
 
 
-=======
->>>>>>> 843c2b6f57b48bce50ccc50aad41d48c82614c7a
 
 module.exports = {
   SearchAnyUserNamew,
@@ -473,9 +470,6 @@ module.exports = {
   EditVechileDetails,
   DeleteVichle,
   AddAnyDrivers,
-<<<<<<< HEAD
   // exportUsers,
-=======
->>>>>>> 843c2b6f57b48bce50ccc50aad41d48c82614c7a
 
 };
