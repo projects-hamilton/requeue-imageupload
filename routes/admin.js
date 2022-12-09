@@ -6,12 +6,9 @@ const { SearchAnyUserNamew,
        AddVechileDetails, 
        EditVechileDetails, 
        DeleteVichle,
-<<<<<<< HEAD
-        AddAnyDrivers, 
-         } = require("../controller/AdminController");
-=======
-        AddAnyDrivers,  } = require("../controller/AdminController");
->>>>>>> 843c2b6f57b48bce50ccc50aad41d48c82614c7a
+       AddAnyDrivers }= require("../controller/AdminController")
+
+
 
 const express = require("express");
 const router = express.Router();
@@ -45,10 +42,7 @@ router.post('/add-vechile-deatils',upload.single("imgUrl"),AddVechileDetails)
 router.patch('/edit-vihicle-detail/:id',upload.single("imgUrl"),EditVechileDetails)
 router.delete('/delete-vihcile/:id',DeleteVichle)
 router.post('/add-any-driver',upload.single("driver_images"),AddAnyDrivers)
-<<<<<<< HEAD
 // router.get('/export-users',exportUsers)
-=======
->>>>>>> 843c2b6f57b48bce50ccc50aad41d48c82614c7a
 
 
 module.exports= router

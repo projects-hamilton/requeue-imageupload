@@ -8,10 +8,10 @@ const InvoiceSetailsSchema = new mongoose.Schema({
       },
       
       itmes: {
-        type: String,
+        type: Array,
+        default: [],
       },
-
-      amount: {
+      amount_type: {
         type: String,
         comment: "KWD,INR",
       },
@@ -29,6 +29,14 @@ const InvoiceSetailsSchema = new mongoose.Schema({
       transation: {
         type:String,
     },
+
+    driver_id:{
+      type:String
+
+    },
+    Invoice_number:{
+      type:Number
+    }
 
     
 
