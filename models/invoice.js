@@ -30,7 +30,7 @@ const InvoiceDetailsschema = mongoose.Schema({
   total_amount:{
       type:String,
     },
-    
+
 
     date:{
       type:String

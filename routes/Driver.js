@@ -1,7 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const {getstatusbyDriverid } = require("../controller/DriverController");
+const {
+  getstatusbyDriverid,
+  getallSuccesseddelivery,
+  getallPendingdelivery,
+  getalldelivery,
+} = require("../controller/DriverController");
+
 const { isAuthenticated } = require("../middilware/auth");
 
 
@@ -12,4 +18,22 @@ router.get(
   isAuthenticated,
   getstatusbyDriverid
 );
+
+
+
+// get all successed delivery
+router.get(
+  "/get-all-success-delivery",
+  isAuthenticated,
+  getallSuccesseddelivery
+);
+
+// get all pending delivery
+router.get("/get-all-pending-delivery", isAuthenticated, getallPendingdelivery);
+
+
+
+// get all  delivery details
+router.get("/get-all-delivery-details", isAuthenticated, getalldelivery);
+
 module.exports= router

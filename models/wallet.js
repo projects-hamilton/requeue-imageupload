@@ -17,6 +17,25 @@ const WalletDetailsschema = mongoose.Schema({
         type: String,
         comment: "KWD,INR",
     },
+    amount_Paid:{
+      type:String
+    },
+    
+    balance: {
+      type: Number,
+      default: 0
+  },
+  Available_balance:{
+    type:Number,
+    default:false
+  },
+
+
+    role: {
+      type: String,
+      default: 'driver',
+      enum: ['driver']
+  },
     
 
 },{ timestamps: true });

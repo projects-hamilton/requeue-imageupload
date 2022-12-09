@@ -6,7 +6,7 @@ const DriverDetailsAll = require("../models/driver-business-detail");
 const VehiclAllDetails = require("../models/vehicle ");
 const Walltes = require("../models/wallet");
 const DeliveryDeatils = require("../models/delivery ");
-const DriverProfiles = require('../models/driver')
+const DriverProfiles = require("../models/driver");
 const exceljs = require("exceljs");
 const InvoiceDetails = require('../models/invoice')
 // const { read } = require("xlsx");
@@ -23,8 +23,6 @@ const Storedata = (search, data) => {
   }
   return [true, ""];
 };
-
-
 
 //DriverMultpleGroupPost
 const DriverMultpleGroupPost = async (req, res) => {
@@ -45,7 +43,6 @@ const DriverMultpleGroupPost = async (req, res) => {
     res.status(400).json({ message: error.message, status: false });
   }
 };
-
 
 //Edit
 const UpdatedDriverMultipleGroups = async (req, res) => {
@@ -70,8 +67,6 @@ const UpdatedDriverMultipleGroups = async (req, res) => {
   }
 };
 
-
-
 //Delete
 const DeleteDriverGroupsByID = async (req, res) => {
   try {
@@ -90,8 +85,6 @@ const DeleteDriverGroupsByID = async (req, res) => {
     res.send({ message: error.message, status: false });
   }
 };
-
-
 
 //GetDrevier
 const GetDriversGroups = async (req, res) => {
@@ -123,7 +116,6 @@ const GetDriversGroups = async (req, res) => {
   }
 };
 
-
 //DriverMultpleGroupPost
 const AddArea = async (req, res) => {
   try {
@@ -143,7 +135,6 @@ const AddArea = async (req, res) => {
     res.status(400).json({ message: error.message, status: false });
   }
 };
-
 
 //Edit
 const UpdatedArea = async (req, res) => {
@@ -168,7 +159,6 @@ const UpdatedArea = async (req, res) => {
   }
 };
 
-
 //Delete
 const DeleteArea = async (req, res) => {
   try {
@@ -187,7 +177,6 @@ const DeleteArea = async (req, res) => {
     res.send({ message: error.message, status: false });
   }
 };
-
 
 //GetAllLocation
 const GetAllLocation = async (req, res) => {
@@ -277,8 +266,6 @@ const dailystatusofthedriver = async (req, res) => {
   }
 };
 
-
-
 ///DriverDeatils
 const GetAllDriverDetailsAndVihcleDeatils = async (req, res) => {
   console.log("hhhh");
@@ -301,8 +288,6 @@ const GetAllDriverDetailsAndVihcleDeatils = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-
 
 //AddWalletsPost
 const AddWalletsPost = async (req, res) => {
@@ -346,7 +331,6 @@ const AddWalletsPost = async (req, res) => {
     res.status(400).json({ message: error.message, status: false });
   }
 };
-
 
 //DeliveryDetails
 const DeliveryDeatilsAlll = async (req, res) => {
@@ -402,7 +386,6 @@ const DeliveryDeatilsAlll = async (req, res) => {
 };
 
 
-
 //Amountforeachdriver
 const Amountforeachdriver = async (req, res) => {
   try {
@@ -444,7 +427,6 @@ const Amountforeachdriver = async (req, res) => {
   }
 };
 
-
 //The supervisor can see the due amount for each driver-
 const EachDreiverAmountGetByid = async (req, res) => {
   try {
@@ -472,19 +454,16 @@ const driverApprovalupdate = async (req, res) => {
   try {
     let a = await DeliveryDeatils.findOneAndUpdate(
       {
-        _id:req.params.id
+        _id: req.params.id,
       },
-      {  status:req.body.status
-    
-      }
+      { status: req.body.status }
     );
 
-    res.status(200).json({ message: "Successs",a});
+    res.status(200).json({ message: "Successs", a });
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
 };
-
 
 
 //getbyUser pending...
@@ -496,87 +475,43 @@ const GetAllDriverList = async (req, res) => {
     const DriverList = await DriverProfiles.find();
     res
       .status(200)
-      .json({ message: "SuccessFully Drivere List-", status: true, data: DriverList});
+      .json({
+        message: "SuccessFully Drivere List-",
+        status: true,
+        data: DriverList,
+      });
   } catch (error) {
     res.send({ message: error.message, status: false });
   }
 };
 
-
 //GetByDriverid
 const GetByDriverId = async (req, res) => {
   try {
     const driver_id = req.params.id;
-    let getResponce = await DriverProfiles.find({ driver_id })
+    let getResponce = await DriverProfiles.find({ driver_id });
     res
       .status(200)
-      .json({ message: "Drivers Groups", getResponce:getResponce.length });
+      .json({ message: "Drivers Groups", getResponce: getResponce.length });
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+  }
+};
+
+//getbystatus
+const GetByStatus = async (req, res) => {
+  try {
+    const Status = req.params.status;
+    let getResponce = await DeliveryDeatils.find({ Status });
+    res.status(200).json({ message: "Alll Status", getResponce });
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
 };
 
 
-//getbystatus
-const GetByStatus = async(req,res) =>{
-  try {
-  const Status = req.params.status
-    let getResponce = await DeliveryDeatils.find({Status});
-  res.status(200).json({message:"Alll Status",getResponce});
-    
-  } catch (error) {
-    res.status(400).json({ message: error.message, status: false });
-    
-  }
-}
-
-
-
-const GetByDriverIdStatus = async(req,res) =>{
-  try {
-  const Driver_id = req.params.driver_id
-    let getResponce = await DeliveryDeatils.find({Driver_id});
-  res.status(200).json({message:"Alll Status",getResponce});
-    
-  } catch (error) {
-    res.status(400).json({ message: error.message, status: false });
-    
-  }
-}
-
-// const UpdatedInvoiceDetails = async (req, res) => {
-//   try {
-//     let Search = Storedata(["amount_Value", "pay_type","driver_id","delivery_address","distance","picked_location","itmes"], req.body);
-//     if (Search[0] == false)
-//       res
-//         .status(400)
-//         .json({ message: `${Search[1]} Field Required`, data: [] });
-
-//     const { amount_Value,pay_type, driver_id,delivery_address, distance,picked_location,itmes} = req.body;
-//     let Existing = await DeliveryDeatils.findOneAndUpdate({_id:req.params.id },{
-//       amount_Value,
-//       pay_type, 
-//       driver_id,
-//       delivery_address, 
-//       distance,
-//       picked_location,
-//       itmes
-
-//     });
-//     res.status(200).json({
-//       message: "Status changed",
-//       data: Existing,
-//       status: true,
-//     })
-//   } catch (error) {
-//     res.status(400).json({ message: error.message, status: false });
-//   }
-// };
-
-
 const exportDelivery = async (req, res) => {
   try {
-
     const workbook = new exceljs.Workbook();
     const worksheet = workbook.addWorksheet("My Invoice");
     worksheet.columns = [
@@ -605,9 +540,7 @@ const exportDelivery = async (req, res) => {
       data.s_no = counter;
       worksheet.addRow(data);
       counter++;
-  
     }
-
     // Deliverdata.forEach((data) => {
     //   let name = await User.findById(data.driver_id);
     //   data.firstname = name.firstname
@@ -630,11 +563,11 @@ const exportDelivery = async (req, res) => {
       // console.log("res", res);
       res.status(200);
     });
-
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
 };
+
 
 //createInvoiceGetAPIS
 const createInvoice = async(req,res) =>{
@@ -680,6 +613,8 @@ const createInvoice = async(req,res) =>{
 }
 
 
+
+
 module.exports = {
   DriverMultpleGroupPost,
   UpdatedDriverMultipleGroups,
@@ -698,7 +633,6 @@ module.exports = {
   // TodayDelivery,
   // CashHandDelivery,
   EachDreiverAmountGetByid,
-  // GetActiveStatus,
   driverApprovalupdate,
   GetAllDriverList,
   GetByDriverId,
