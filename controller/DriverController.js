@@ -83,7 +83,7 @@ const getalldelivery = async (req, res) => {
   try {
     const Driver_id = req.params.driver_id;
     let getResponce = await DriverDetailsAll.find({ Driver_id });
-    res.status(200).json({ message: "All delivery", Data:getResponce});
+    res.status(200).json({ message: "All delivery", Data: getResponce });
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
@@ -119,6 +119,11 @@ const DetailDriverId = async (req, res) => {
     } else {
       let current1 = GetborrowedDetails.amount_Value
       let current2 = Getborrowedcash.amount_Value
+      if(current2+add_amount>20){
+        return res.status(400).json({ message: "limit exid" })
+
+      }
+
       let update = await Walltes.findOneAndUpdate({ driver_id, amount_type: "cash_in_hand" }, {
         amount_Value: current1 - add_amount
       });
@@ -127,7 +132,7 @@ const DetailDriverId = async (req, res) => {
       });
     }
 
-    const GetborrowedDetail = await Walltes.findOne({ driver_id });
+    const GetborrowedDetail = await Walltes.find({ driver_id });
 
     res.status(200).json({ message: "Borroed_cash", status: true, GetborrowedDetail })
   } catch (error) {
@@ -135,6 +140,10 @@ const DetailDriverId = async (req, res) => {
 
   }
 }
+
+
+
+
 
 
 module.exports = {

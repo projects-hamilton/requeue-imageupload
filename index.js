@@ -32,6 +32,7 @@ app.use('/',require('./routes/SupervisorRoutes'))
 app.use('/',require('./routes/user'))
 app.use('/',require('./routes/admin'))
 app.use('/',require("./routes/Driver"))
+app.use('/',require('./routes/TransferRoutes'))
 
 
 app.listen(port, () => {
