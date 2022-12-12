@@ -1,6 +1,8 @@
 //  count of success delivery
 const DriverDetailsAll = require("../models/delivery ");
 
+const Walltes = require('../models/wallet')
+
 const getstatusbyDriverid = async (req, res) => {
   try {
     const Driver_id = req.params.driver_id;
@@ -17,8 +19,22 @@ const getstatusbyDriverid = async (req, res) => {
   }
 };
 
-// get all Successed delivery
 
+//Storedata
+const Storedata = (search, data) => {
+  for (let i = 0; i < search.length; i++) {
+    if (
+      data[search[i]] == "" ||
+      data[search[i]] == undefined ||
+      data[search[i]] == null
+    ) {
+      return [false, search[i]];
+    }
+  }
+  return [true, ""];
+};
+
+// get all Successed delivery
 const getallSuccesseddelivery = async (req, res) => {
   try {
     const Driver_id = req.params.driver_id;
@@ -73,9 +89,58 @@ const getalldelivery = async (req, res) => {
   }
 };
 
+
+
+
+
+// postapi
+const DetailDriverId = async (req, res) => {
+  try {
+
+    let search = Storedata(["driver_id", "add_amount"], req.body);
+    if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
+
+    const { driver_id, add_amount } = req.body;
+
+
+    const GetborrowedDetails = await Walltes.findOne({ driver_id, amount_type: "cash_in_hand" });
+    const Getborrowedcash = await Walltes.findOne({ driver_id, amount_type: "borrowed_cash" });
+
+    if (!GetborrowedDetails) return res.status(400).json({ message: "No Cash in hand found" })
+    if (GetborrowedDetails.amount_Value < add_amount) return res.status(400).json({ message: "No balance" })
+    if (add_amount > 20) return res.status(400).json({ message: "limit exid" })
+
+    if (!Getborrowedcash) {
+      let current1 = GetborrowedDetails.amount_Value
+      let update = await Walltes.findOneAndUpdate({ driver_id, amount_type: "cash_in_hand" }, {
+        amount_Value: current1 - add_amount
+      });
+      let create = await Walltes.create({ driver_id, amount_type: "borrowed_cash", amount_Value: add_amount, currency: "KWD" });
+    } else {
+      let current1 = GetborrowedDetails.amount_Value
+      let current2 = Getborrowedcash.amount_Value
+      let update = await Walltes.findOneAndUpdate({ driver_id, amount_type: "cash_in_hand" }, {
+        amount_Value: current1 - add_amount
+      });
+      let update2 = await Walltes.findOneAndUpdate({ driver_id, amount_type: "borrowed_cash" }, {
+        amount_Value: current2 + add_amount
+      });
+    }
+
+    const GetborrowedDetail = await Walltes.findOne({ driver_id });
+
+    res.status(200).json({ message: "Borroed_cash", status: true, GetborrowedDetail })
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+
+  }
+}
+
+
 module.exports = {
   getstatusbyDriverid,
   getallSuccesseddelivery,
   getallPendingdelivery,
   getalldelivery,
+  DetailDriverId
 };

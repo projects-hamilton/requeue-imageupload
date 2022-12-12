@@ -6,6 +6,7 @@ const {
   getallSuccesseddelivery,
   getallPendingdelivery,
   getalldelivery,
+  DetailDriverId,
 } = require("../controller/DriverController");
 
 const { isAuthenticated } = require("../middilware/auth");
@@ -35,5 +36,7 @@ router.get("/get-all-pending-delivery", isAuthenticated, getallPendingdelivery);
 
 // get all  delivery details
 router.get("/get-all-delivery-details", isAuthenticated, getalldelivery);
+
+router.post('/get-deatils',DetailDriverId)
 
 module.exports= router
