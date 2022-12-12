@@ -4,6 +4,7 @@ const notification = require("../models/notification");
 const Transition = require("../models/transition");
 const Walltes = require('../models/wallet')
 const User = require("../models/user");
+const transition = require("../models/transition");
 
 // const {}=require('../models/allschemma')
 
@@ -78,16 +79,35 @@ const GetTransferRequest = async (req, res) => {
         res.send({ message: error.message, status: false });
     }
 };
+
 //driverApprovalupdate
-const driverApprovalupdate = async (req, res) => {
-    console.log("Enter");
+const TransferApproved = async (req, res) => {
     try {
+        const {status} = req.body
+        let Existing = await Transition.findOne({ _id: req.params.id})
+    
+        if (!Existing){
+           return  res.status(403).json({message:"somwthing went wrong"})
+        }
+
+        if (status =="accepted"){
+            let driver_id = Existing.driver_id
+    
+            const GetCashInhandValue = await Walltes.findOne({driver_id,amount_type: "cash_in_hand" }); 
+            if (!GetCashInhandValue) return res.status(400).json({ message: "No Cash in hand found" })
+            let current1Value = GetCashInhandValue.amount_Value-Existing.amount_Value
+            const getResponce = await Walltes.findOneAndUpdate({ driver_id, amount_type: "cash_in_hand" },{
+                amount_Value:current1Value
+            }); 
+        }
+        
         let a = await Transition.findOneAndUpdate(
             {
                 _id: req.params.id,
             },
-            { status: req.body.status }
+            { status }
         );
+       
 
         res.status(200).json({ message: "Successs", a });
     } catch (error) {
@@ -95,9 +115,13 @@ const driverApprovalupdate = async (req, res) => {
     }
 };
 
+
+
+
+
 module.exports = {
     transfer,
     GetTransferRequest,
-    driverApprovalupdate
+    TransferApproved
 
 }
