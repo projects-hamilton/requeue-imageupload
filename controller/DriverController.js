@@ -2,6 +2,9 @@
 const DriverDetailsAll = require("../models/delivery ");
 
 const Walltes = require('../models/wallet')
+const DeliveryDeatils = require("../models/delivery ");
+const User = require("../models/user");
+// const Walltes = require("../models/wallet");
 
 const getstatusbyDriverid = async (req, res) => {
   try {
@@ -141,9 +144,75 @@ const DetailDriverId = async (req, res) => {
   }
 }
 
+// const WeeklyReport = async (req,res) => {
+//   console.log("enter")
+//   try {
+//     let driver_id;
+//     let createdAt
+//     // let userId = req.user;
+//     let UserDeatils = await User.findOne(
+//       { _id: req.user },
+//       { _id: 1, firstname: 1, email: 1 }
+//     );
+//     // console.log(UserDeatils);
+//     console.log(req.user)
+//     const Total_Delivery = await DeliveryDeatils.find({ driver_id: req.user });
+//     // console.log(Total_Delivery)
+//     const GetWeeklyReport = await Walltes.find(driver_id,createdAt,{
+//       $gte:"Mon May 30 18:47:00 +0000 2015",
+//       $Lt:"Sun May 3020:40:36+0000 2010"})
+
+//       // console.log(GetWeeklyReport)
+//       let GetAllReportsData = await DeliveryDeatils .find({
+//         driver_id:req.user
+//       })
+//     // console.log(GetAllReportsData,"hhhhhh")
+//     res.status(200).json({message:"All Reports",UserDeatils,
+//     Total_Deliveries: Total_Delivery.length,
+//     Today_Deliveries: GetAllReportsData.length,GetWeeklyReport})
+
+//   } catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+    
+//   }
+// }
 
 
 
+const WeeklyReport = async (req, res) => {
+  try {
+    let date = new Date();
+    let driver_id
+    let pastdate =new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
+
+    // let UserDeatils = await User.findById(req.user);
+    let UserDeatils = await User.findOne(
+      { _id: req.user },
+      { _id: 1, firstname: 1, email: 1 }
+    );
+
+    // console.log(req.user)
+
+    const Total_Delivery = await DeliveryDeatils.find({
+      driver_id: req.user, createdAt: {
+        $gte: pastdate,
+        $lt: date
+      }
+    });
+    const GetAllReportsData = await DeliveryDeatils.find({driver_id: req.user});
+
+    const GetWalletdata = await Walltes.find(driver_id)
+    res.status(200).json({
+      message: "All Reports", UserDeatils,
+      Total_Deliveries: Total_Delivery.length,
+      weekly_Deliveries: GetAllReportsData.length, GetWalletdata
+    })
+
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+
+  }
+}
 
 
 module.exports = {
@@ -151,5 +220,6 @@ module.exports = {
   getallSuccesseddelivery,
   getallPendingdelivery,
   getalldelivery,
-  DetailDriverId
+  DetailDriverId,
+  WeeklyReport
 };

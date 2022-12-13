@@ -96,7 +96,7 @@ const transfer = async (req, res) => {
         date
   
       })
-      
+
       let notificationData = await notification(driver_id,"#","New Tranfer Request has been added")
       res.status(200).json({ message: "Transfer Request has sent", GetTransferRequest, notificationData })
   
@@ -140,7 +140,6 @@ const GetTransferRequest = async (req, res) => {
         res.send({ message: error.message, status: false });
     }
 };
-
 
 
 //driverApprovalupdate
