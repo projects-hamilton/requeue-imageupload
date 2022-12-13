@@ -11,7 +11,7 @@ const { DriverMultpleGroupPost,
      GetAllLocation, 
      GetDriversGroups, 
      DeleteDriverGroupsByID,
-     dailystatusofthedriver,
+
      GetAllDriverDetailsAndVihcleDeatils,
      AddWalletsPost,
      DeliveryDeatilsAlll,
@@ -31,7 +31,6 @@ router.post('/add-area',AddArea)
 router.patch('/edit-area/:id',UpdatedArea)
 router.get('/get-all-location',GetAllLocation)
 router.get('/get-group',GetDriversGroups)
-router.post('/driver-daily-status',dailystatusofthedriver)
 router.get('/get-all-driver-details-vichile',GetAllDriverDetailsAndVihcleDeatils)
 router.post('/delivery-deatils',DeliveryDeatilsAlll)
 router.post('/add-wallet',AddWalletsPost)

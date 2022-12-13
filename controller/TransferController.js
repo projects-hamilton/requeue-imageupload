@@ -1,6 +1,6 @@
 
 
-const notification = require("../models/notification");
+const notificationAll = require("../models/notification");
 const Transition = require("../models/transition");
 const Walltes = require('../models/wallet')
 const User = require("../models/user");
@@ -22,53 +22,114 @@ const Storedata = (search, data) => {
     return [true, ""];
 };
 
+//Function of Notification---
+// async function notification(user_id,link,message) {
+//     try {
+//       let create = await Notification.create({ user_id, link, message })
+//       return[true,create]
+//     } catch (error) {
+//       return [false, error.message]
+//     }
+//   }
+  
+//   let a = await notification("asodjiaosijwq90qi0qi0qw", "/hello", "uper waala function h or esa use karna h")
+//   if (a[0] == false) return res.status(400).json({ message: a[1], data: [] });
+//   let notification = a[1]
+  
+
+
+// const transfer = async (req, res) => {
+//     try {
+
+//         let search = Storedata(["driver_id", "amount_Value"], req.body);
+
+//         if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
+
+//         const { driver_id, amount_Value } = req.body;
+//         const d = new Date();
+//         let year = d.getFullYear();
+//         let month = d.getMonth() + 1;
+//         let day = d.getDate();
+//         let date = year + "-" + month + "-" + day;
+
+//         const GetCashInhandValue = await Walltes.findOne({ driver_id, amount_type: "cash_in_hand" });
+//         if (!GetCashInhandValue) return res.status(400).json({ message: "No Cash in hand found" })
+//         if (GetCashInhandValue.amount_Value < amount_Value) return res.status(400).json({ message: "No balance" })
+
+//         const GetTransferRequest = await Transition.create({
+//             driver_id,
+//             amount_Value,
+//             date
+
+//         })
+
+//         res.status(200).json({ message: "Transfer Request has sent", GetTransferRequest})
+
+//     } catch (error) {
+//         res.status(400).json({ message: error.message, status: false });
+
+//     }
+
+// }
+
 
 const transfer = async (req, res) => {
     try {
-
-        let search = Storedata(["driver_id", "amount_Value"], req.body);
-        if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
-
-        const { driver_id, amount_Value } = req.body;
-        const d = new Date();
-        let year = d.getFullYear();
-        let month = d.getMonth() + 1;
-        let day = d.getDate();
-        let date = year + "-" + month + "-" + day;
-
-        const GetCashInhandValue = await Walltes.findOne({ driver_id, amount_type: "cash_in_hand" });
-        if (!GetCashInhandValue) return res.status(400).json({ message: "No Cash in hand found" })
-        if (GetCashInhandValue.amount_Value < amount_Value) return res.status(400).json({ message: "No balance" })
-
-        const GetTransferRequest = await Transition.create({
-            driver_id,
-            amount_Value,
-            date
-
-        })
-        res.status(200).json({ message: "Transfer Request has sent", GetTransferRequest })
-
+  
+      let search = Storedata(["driver_id", "amount_Value"], req.body);
+      if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
+  
+      const { driver_id, amount_Value } = req.body;
+      const d = new Date();
+      let year = d.getFullYear();
+      let month = d.getMonth() + 1;
+      let day = d.getDate();
+      let date = year + "-" + month + "-" + day;
+  
+      const GetCashInhandValue = await Walltes.findOne({ driver_id, amount_type: "cash_in_hand" });
+      if (!GetCashInhandValue) return res.status(400).json({ message: "No Cash in hand found" })
+      if (GetCashInhandValue.amount_Value < amount_Value) return res.status(400).json({ message: "No balance" })
+  
+      const GetTransferRequest = await Transition.create({
+        driver_id,
+        amount_Value,
+        date
+  
+      })
+      
+      let notificationData = await notification(driver_id,"#","New Tranfer Request has been added")
+      res.status(200).json({ message: "Transfer Request has sent", GetTransferRequest, notificationData })
+  
     } catch (error) {
-        res.status(400).json({ message: error.message, status: false });
-
+      res.status(400).json({ message: error.message, status: false });
+  
     }
+  
+  }
 
-}
-
-
+  async function notification(user_id,link,message) {
+    try {
+      let create = await notificationAll.create({ user_id, link, message })
+      return[true,create]
+    } catch (error) {
+      return [false, error.message]
+    }
+  }
+  
+  
 
 //get---
 const GetTransferRequest = async (req, res) => {
     try {
         if(req.query.status){
             let status = req.query.status ? req.query.status : ""
-            const getResponce = await Transition.find({ status }).populate({ path: "User", strictPopulate: false })
+            const getResponce = await Transition.find({ status }).populate('driver_id')
             res
                 .status(200)
                 .json({ message: "SuccessFully-", status: true, data: getResponce });
 
         }else{
-            const getResponce = await Transition.find().populate({ path: "User", strictPopulate: false })
+            const getResponce = await Transition.find().populate('driver_id')
             res
                 .status(200)
                 .json({ message: "SuccessFully-", status: true, data: getResponce });
@@ -79,6 +140,8 @@ const GetTransferRequest = async (req, res) => {
         res.send({ message: error.message, status: false });
     }
 };
+
+
 
 //driverApprovalupdate
 const TransferApproved = async (req, res) => {

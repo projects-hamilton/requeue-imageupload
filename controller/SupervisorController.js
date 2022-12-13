@@ -190,82 +190,6 @@ const GetAllLocation = async (req, res) => {
   }
 };
 
-//dailystatusofthedriver
-const dailystatusofthedriver = async (req, res) => {
-  try {
-    let Search = Storedata(
-      [
-        "Total_Deliveries",
-        "Today_Deliveries",
-        "Cash_In_Hand",
-        "Borrowed_Cash",
-        "Driver_Groups",
-        "driver_id",
-        "Date",
-      ],
-      req.body
-    );
-    const {
-      Total_Deliveries,
-      Today_Deliveries,
-      Cash_In_Hand,
-      Borrowed_Cash,
-      Driver_Groups,
-      driver_id,
-      Date,
-    } = req.body;
-    if (Search[0] == false)
-      return res
-        .status(400)
-        .json({ message: `${Search[1]} Field Required`, data: [] });
-
-    const Existing = await DriverDailyStatus.findOne({ driver_id, Date });
-    if (Existing) {
-      const GetSattus = await DriverDailyStatus.findOneAndUpdate(
-        { driver_id, Date },
-        {
-          Total_Deliveries,
-          Today_Deliveries,
-          Cash_In_Hand,
-          Borrowed_Cash,
-          Driver_Groups,
-        }
-      );
-
-      if (!GetSattus)
-        return res
-          .status(400)
-          .json({ message: "Something Went Wrong", status: false });
-      return res.status(200).json({
-        message: "Updated Sucessfully ",
-        data: GetSattus,
-        status: true,
-      });
-    } else {
-      const GetSattus = await DriverDailyStatus.create({
-        Total_Deliveries,
-        Today_Deliveries,
-        Cash_In_Hand,
-        Borrowed_Cash,
-        Driver_Groups,
-        driver_id,
-        Date,
-      });
-      if (!GetSattus) {
-        res.status(400).json({ message: "Went Wrong", status: false });
-      } else {
-        res.status(200).json({
-          message: "SuccessFully Data",
-          data: GetSattus,
-          status: true,
-        });
-      }
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message, status: false });
-  }
-};
-
 ///DriverDeatils
 const GetAllDriverDetailsAndVihcleDeatils = async (req, res) => {
   console.log("hhhh");
@@ -624,7 +548,6 @@ module.exports = {
   DeleteArea,
   GetAllLocation,
   GetDriversGroups,
-  dailystatusofthedriver,
   GetAllDriverDetailsAndVihcleDeatils,
   AddWalletsPost,
   DeliveryDeatilsAlll,
