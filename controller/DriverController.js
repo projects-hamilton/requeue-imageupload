@@ -179,11 +179,14 @@ const DetailDriverId = async (req, res) => {
 
 
 
+ 
 const WeeklyReport = async (req, res) => {
   try {
     let date = new Date();
     let driver_id
     let pastdate =new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
+    let monthlyReport = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30);
+    let dailyreport = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 0);
 
     // let UserDeatils = await User.findById(req.user);
     let UserDeatils = await User.findOne(
@@ -199,19 +202,70 @@ const WeeklyReport = async (req, res) => {
         $lt: date
       }
     });
+
+    const Daily_Delivery = await DeliveryDeatils.find({
+      driver_id: req.user, createdAt: {
+        $gte: dailyreport,
+        $lt: date
+      }
+    });
+
+    const Monthly_Delivery = await DeliveryDeatils.find({
+      driver_id: req.user, createdAt: {
+        $gte: monthlyReport,
+        $lt: date
+      }
+    });
+
     const GetAllReportsData = await DeliveryDeatils.find({driver_id: req.user});
 
     const GetWalletdata = await Walltes.find(driver_id)
     res.status(200).json({
       message: "All Reports", UserDeatils,
-      Total_Deliveries: Total_Delivery.length,
-      weekly_Deliveries: GetAllReportsData.length, GetWalletdata
+      weekly_Deliveries: Total_Delivery.length,
+      Total_Deliveries: GetAllReportsData.length,Monthly_Delivery: Monthly_Delivery.length,
+      Daily_Delivery: Daily_Delivery.length,GetWalletdata,
     })
 
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
 
   }
+}
+
+//post api
+const monthly_Bonus = async(req,res)=>{
+
+  try {
+    let date = new Date();
+    let Currentdate = new Date(date.getFullYear(), date.getMonth(),1);
+    let Lastdate = new Date(date.getFullYear(), date.getMonth(),31);
+
+    let search = Storedata(["driver_id"], req.body);
+    if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
+
+    const { driver_id } = req.body;
+
+    const Total_Delivery = await DeliveryDeatils.find({
+      
+      driver_id, createdAt: {
+        $gte: Currentdate,
+        $lt: Lastdate
+      }
+    });
+
+    let array = {}
+    for (let i = 0; i < Total_Delivery.length; i++) {
+      let a = Total_Delivery[i].date
+      array[a] = array[a] ? array[a] + 1 : 1
+    }
+
+    console.log(array)
+
+  } catch (error) {
+    
+  }
+  
 }
 
 
@@ -221,5 +275,6 @@ module.exports = {
   getallPendingdelivery,
   getalldelivery,
   DetailDriverId,
-  WeeklyReport
+  WeeklyReport,
+  monthly_Bonus
 };
