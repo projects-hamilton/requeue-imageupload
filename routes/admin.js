@@ -6,9 +6,13 @@ const { SearchAnyUserNamew,
        AddVechileDetails, 
        EditVechileDetails, 
        DeleteVichle,
-        AddAnyDrivers, 
+        AddAnyDrivers,
+        DaiyAndMonthlyReport, 
          } = require("../controller/AdminController");
 
+
+
+const { isAuthenticated } = require("../middilware/auth");
 const express = require("express");
 const router = express.Router();
 
@@ -41,6 +45,7 @@ router.post('/add-vechile-deatils',upload.single("imgUrl"),AddVechileDetails)
 router.patch('/edit-vihicle-detail/:id',upload.single("imgUrl"),EditVechileDetails)
 router.delete('/delete-vihcile/:id',DeleteVichle)
 router.post('/add-any-driver',upload.single("driver_images"),AddAnyDrivers)
+router.get('/get-daily-and-monthly-report',isAuthenticated,DaiyAndMonthlyReport)
 // router.get('/export-users',exportUsers)
 
 

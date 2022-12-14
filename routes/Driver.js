@@ -41,7 +41,7 @@ router.get("/get-all-delivery-details", isAuthenticated, getalldelivery);
 
 router.post('/get-deatils',DetailDriverId)
 router.get('/get-alls-reports',isAuthenticated,WeeklyReport)
-router.post('/get-monthly-bonus',monthly_Bonus)
+router.get('/get-monthly-bonus',isAuthenticated,monthly_Bonus)
 
 module.exports= router
 

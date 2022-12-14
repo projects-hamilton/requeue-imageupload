@@ -30,6 +30,17 @@ const userSchema = new mongoose.Schema({
   dob: {
     type: String
   },
+  
+  latitude: {
+    type:String,
+},
+
+longitude: {
+    type:String,
+},
+driver_id: {
+  type: String,
+},
 
   role: {
     type: String,

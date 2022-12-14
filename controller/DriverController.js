@@ -217,8 +217,8 @@ const WeeklyReport = async (req, res) => {
       }
     });
 
-    const GetAllReportsData = await DeliveryDeatils.find({driver_id: req.user});
 
+    const GetAllReportsData = await DeliveryDeatils.find({driver_id: req.user});
     const GetWalletdata = await Walltes.find(driver_id)
     res.status(200).json({
       message: "All Reports", UserDeatils,
@@ -234,39 +234,94 @@ const WeeklyReport = async (req, res) => {
 }
 
 //post api
-const monthly_Bonus = async(req,res)=>{
+// const monthly_Bonus = async(req,res)=>{
 
+//   try {
+//     let date = new Date();
+//     let Currentdate = new Date(date.getFullYear(), date.getMonth(),1);
+//     console.log(Currentdate)
+
+//     let Lastdate = new Date(date.getFullYear(), date.getMonth(),31);
+//     console.log(Lastdate)
+
+//     let search = Storedata(["driver_id"], req.body);
+//     if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
+
+//     const { driver_id } = req.body;
+
+//     const Total_Delivery = await DeliveryDeatils.find({
+      
+//       driver_id, createdAt: {
+//         $gte: Currentdate,
+//         $lt: Lastdate
+//       }
+//     });
+
+//     let array = {}
+//     let count = 0;
+//     let total_order =0
+//     for (let i = 0; i < Total_Delivery.length; i++) {
+//       let a = Total_Delivery[i].date
+//       array[a] = array[a] ? array[a] + 1 : 1
+//       count++
+//       total_order =count*100
+//     }
+    
+//     res.status(200).json({message:"Monthly-Bonus",total_order,Total_Delivery:Total_Delivery.length,})
+
+//     // console.log(total_order)
+
+//   } catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+    
+//   }
+// }
+
+const monthly_Bonus = async(req,res)=>{
+ 
   try {
     let date = new Date();
     let Currentdate = new Date(date.getFullYear(), date.getMonth(),1);
+    console.log(Currentdate)
+ 
     let Lastdate = new Date(date.getFullYear(), date.getMonth(),31);
-
+    console.log(Lastdate)
+ 
     let search = Storedata(["driver_id"], req.body);
     if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
-
+ 
     const { driver_id } = req.body;
-
+ 
     const Total_Delivery = await DeliveryDeatils.find({
-      
+     
       driver_id, createdAt: {
         $gte: Currentdate,
         $lt: Lastdate
       }
     });
-
+ 
     let array = {}
+    let count = 0;
+    let total_order =0
     for (let i = 0; i < Total_Delivery.length; i++) {
       let a = Total_Delivery[i].date
       array[a] = array[a] ? array[a] + 1 : 1
+      if (array[a]>10) count++
     }
-
-    console.log(array)
-
+   
+   total_order= count*100 
+   res.status(200).json({message:"Monthly-Bonus",total_order,Total_Delivery:Total_Delivery.length,})
+ 
+    // console.log(total_order)
+ 
   } catch (error) {
-    
+    res.status(400).json({ message: error.message, status: false });
+   
   }
-  
 }
+ 
+
+
 
 
 module.exports = {
@@ -278,3 +333,4 @@ module.exports = {
   WeeklyReport,
   monthly_Bonus
 };
+

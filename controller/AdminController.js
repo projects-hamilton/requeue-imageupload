@@ -6,6 +6,8 @@ const DriverDetails = require("../models/driver-business-detail");
 const VehicleDetails = require("../models/vehicle ");
 // const DriverDetailsAll = require('../models/driver-business-detail')
 const DriverProfiles = require("../models/driver");
+const DeliveryDeatils = require("../models/delivery ");
+const Walltes = require("../models/wallet");
 
 
 // const moment = require('moment');
@@ -416,47 +418,52 @@ const AddAnyDrivers = async (req, res) => {
   }
 };
 
-// //export users data
-// const exportUsers = async (req, res) => {
-//   try {
-//     const workbook = new exceljs.Workbook();
-//     const worksheet = workbook.addWorksheet("My Users");
-//     worksheet.columns = [
-//       { header: "ID", key: "_id" },
-//       { header: "FirstName", key: "firstname" },
-//       { header: "Lastname", key: "lastname" },
-//       { header: "Password", key: "password" },
-//       { header: "Email", key: "email" },
-//       { header: "Role", key: "role" },
-//     ];
-//     let counter = 1;
-//     const userdata = await User.find();
-//     userdata.forEach((user) => {
-//       user.s_no = counter;
-//       worksheet.addRow(user);
-//       counter++;
-//     });
-//     console.log(userdata);
-//     worksheet.getRow(1).eachCell((cell) => {
-//       cell.font = { bold: true };
-//     });
+//DaiyAndMonthlyReport
+const DaiyAndMonthlyReport = async (req, res) => {
+  try {
+    let date = new Date();
+    let driver_id
+    let monthlyReport = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30);
+    let dailyreport = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 0);
 
-//     res.setHeader(
-//       "Content-Type",
-//       "application/vnd.openxmlformats-officedocument.spreadsheatml.sheet"
-//     );
+    // let UserDeatils = await User.findById(req.user);
+    let UserDeatils = await User.findOne(
+      { _id: req.user },
+      { _id: 1, firstname: 1, email: 1 }
+    );
 
-//     res.setHeader("Content-Disposition", `attatchement;filename=user.xlsx`);
-//     return workbook.xlsx.write(res).then(() => {
-//       // console.log("res", res);
-//       res.status(200);
-//     });
-//   } catch (error) {
-//     res.status(400).json({ message: error.message, status: false });
-//   }
-// };
+    // console.log(req.user)
+    const Daily_Delivery = await DeliveryDeatils.find({
+      driver_id: req.user, createdAt: {
+        $gte: dailyreport,
+        $lt: date
+      }
+    });
 
+    console.log(Daily_Delivery)
 
+    const Monthly_Delivery = await DeliveryDeatils.find({
+      driver_id: req.user, createdAt: {
+        $gte: monthlyReport,
+        $lt: date
+      }
+    });
+
+    console.log(Monthly_Delivery)
+
+    const GetAllReportsData = await DeliveryDeatils.find({driver_id: req.user});
+    const GetWalletdata = await Walltes.find(driver_id)
+    res.status(200).json({
+      message: "All Reports", UserDeatils,
+      Monthly_Delivery: Monthly_Delivery.length,
+      Daily_Delivery: Daily_Delivery.length,GetWalletdata,
+    })
+
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+
+  }
+}
 
 
 module.exports = {
@@ -470,6 +477,7 @@ module.exports = {
   EditVechileDetails,
   DeleteVichle,
   AddAnyDrivers,
+  DaiyAndMonthlyReport
   // exportUsers,
 
 };

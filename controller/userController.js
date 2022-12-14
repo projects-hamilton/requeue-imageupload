@@ -34,6 +34,7 @@ function storedetails(status, message, res, data) {
 }
 
 //Signup
+
 const Signup = async (req, res) => {
   try {
     let search = Storedata(
@@ -45,7 +46,7 @@ const Signup = async (req, res) => {
         "mobile",
         "country",
         "confirmPassword",
-        "role"
+        "role",
       ],
       req.body
     );
@@ -62,7 +63,7 @@ const Signup = async (req, res) => {
       country,
       mobile,
       confirmPassword,
-      role
+      role,
     } = req.body;
 
     const oldUser = await User.findOne({ email });
@@ -102,7 +103,6 @@ const Signup = async (req, res) => {
       }
     }
 
-  
     // let encryptedPassword = await bcrypt.hash(password, 10);
     const hashedPassword = await encrypt(password);
     const otpGenerated = Math.floor(100000 + Math.random() * 9000);
@@ -116,7 +116,7 @@ const Signup = async (req, res) => {
       country,
       mobile,
       otp: otpGenerated,
-      role
+      role,
     });
     // if(!user)return res.status(400).json({
     //   message: 'Unable to create new user',
@@ -148,7 +148,6 @@ const Signup = async (req, res) => {
   }
 };
 
-
 //login
 const Login = async (req, res) => {
   try {
@@ -179,7 +178,6 @@ const Login = async (req, res) => {
   }
 };
 
-
 //Varify Otp
 const verify_OTP = async (req, res) => {
   try {
@@ -190,10 +188,10 @@ const verify_OTP = async (req, res) => {
         .status(400)
         .json({ message: `${search[1]} Field Requried`, data: [] });
 
-    const { email, otp ,role} = req.body;
+    const { email, otp, role } = req.body;
 
-    let Existing = await User.findOne({email});
-    console.log(Existing,"ghggggg")
+    let Existing = await User.findOne({ email });
+    console.log(Existing, "ghggggg");
 
     if (!Existing) return res.status(400).json({ message: "User not found" });
     const updatedUser = await User.findByIdAndUpdate(Existing._id, {
@@ -202,7 +200,7 @@ const verify_OTP = async (req, res) => {
 
     let token = generateJwtToken(Existing);
 
-    res.status(200).json({message:"Varify OTP",user: updatedUser, token });
+    res.status(200).json({ message: "Varify OTP", user: updatedUser, token });
 
     if (Existing && Existing.otp !== otp)
       return res.status(400).json({ message: "Invalid OTP" });
@@ -220,7 +218,6 @@ const verify_OTP = async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 };
-
 
 // const verify_OTP = async (req, res) => {
 //   try {
@@ -243,8 +240,6 @@ const verify_OTP = async (req, res) => {
 //   }
 
 // };
-
-
 
 //Reset Password
 const RestPasswordsendOTP = async (req, res) => {
@@ -275,7 +270,6 @@ const RestPasswordsendOTP = async (req, res) => {
   }
 };
 
-
 //.RestPasswordOtp
 const CheckOtpSendSMS = async (req, res) => {
   try {
@@ -293,7 +287,6 @@ const CheckOtpSendSMS = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
 
 //RestPasswordLink ---
 const RestPassword = async (req, res) => {
@@ -317,7 +310,6 @@ const RestPassword = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
 
 module.exports = {
   Login,
