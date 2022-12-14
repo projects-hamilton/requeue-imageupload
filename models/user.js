@@ -38,9 +38,6 @@ const userSchema = new mongoose.Schema({
 longitude: {
     type:String,
 },
-driver_id: {
-  type: String,
-},
 
   role: {
     type: String,

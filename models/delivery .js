@@ -29,6 +29,13 @@ const DeliveryDetailsschema = mongoose.Schema({
       type:String,
       default:"pending"
     },
+     
+  latitude: {
+    type:String,
+},
+longitude: {
+    type:String,
+},
 
     photo:{
       type:String
