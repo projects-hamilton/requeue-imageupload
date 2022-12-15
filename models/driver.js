@@ -34,6 +34,9 @@ const DriversProfilesSchema = mongoose.Schema({
     fix_slary:{
       type:String
     },
+    Company_id:{
+      type:String
+    }
 
 
 },{ timestamps: true });

@@ -15,6 +15,9 @@ const Transitionschema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
     },
+    Company_id:{
+      type:String
+    },
 
     status: {
       type: String,

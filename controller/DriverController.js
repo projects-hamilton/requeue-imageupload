@@ -94,9 +94,6 @@ const getalldelivery = async (req, res) => {
 };
 
 
-
-
-
 // postapi
 const DetailDriverId = async (req, res) => {
   try {
@@ -145,6 +142,7 @@ const DetailDriverId = async (req, res) => {
   }
 }
 
+
 // const WeeklyReport = async (req,res) => {
 //   console.log("enter")
 //   try {
@@ -180,7 +178,6 @@ const DetailDriverId = async (req, res) => {
 
 
 
- 
 const WeeklyReport = async (req, res) => {
   try {
     let date = new Date();
@@ -285,7 +282,7 @@ const monthly_Bonus = async(req,res)=>{
    
   }
 }
- 
+
 
 module.exports = {
   getstatusbyDriverid,

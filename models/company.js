@@ -13,6 +13,7 @@ const CompanyProfilesSchema = mongoose.Schema({
   company_email:{
     type:String
   },
+  
   Company_id:{
     type:String
   }

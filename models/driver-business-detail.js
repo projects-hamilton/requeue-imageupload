@@ -24,6 +24,9 @@ const DriverBusinessDetailsSchema = new mongoose.Schema(
   status:{
     type:String
   },
+  Company_id:{
+    type:String
+  },
 
     is_approved: {
       type: Boolean,
@@ -32,6 +35,7 @@ const DriverBusinessDetailsSchema = new mongoose.Schema(
     
     location:{type:String}
   },
+  
 
   {
     modelName: "DriverBusinessDetails",

@@ -34,6 +34,9 @@ const InvoiceDetailsschema = mongoose.Schema({
 
     date:{
       type:String
+    },
+    Company_id:{
+      type:String
     }
 
 

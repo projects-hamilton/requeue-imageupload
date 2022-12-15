@@ -49,6 +49,12 @@ longitude: {
     picked_location:{
         type:String
     },
+    Company_id:{
+      type:String
+    },
+    Company_id:{
+      type:String
+    }
 
 
 },{ timestamps: true });

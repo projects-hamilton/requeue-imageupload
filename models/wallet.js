@@ -20,6 +20,9 @@ const WalletDetailsschema = mongoose.Schema({
     amount_Paid:{
       type:String
     },
+    Company_id:{
+      type:String
+    }
   
 
 },{ timestamps: true });
