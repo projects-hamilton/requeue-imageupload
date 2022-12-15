@@ -38,41 +38,6 @@ const Storedata = (search, data) => {
   
 
 
-// const transfer = async (req, res) => {
-//     try {
-
-//         let search = Storedata(["driver_id", "amount_Value"], req.body);
-
-//         if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
-
-//         const { driver_id, amount_Value } = req.body;
-//         const d = new Date();
-//         let year = d.getFullYear();
-//         let month = d.getMonth() + 1;
-//         let day = d.getDate();
-//         let date = year + "-" + month + "-" + day;
-
-//         const GetCashInhandValue = await Walltes.findOne({ driver_id, amount_type: "cash_in_hand" });
-//         if (!GetCashInhandValue) return res.status(400).json({ message: "No Cash in hand found" })
-//         if (GetCashInhandValue.amount_Value < amount_Value) return res.status(400).json({ message: "No balance" })
-
-//         const GetTransferRequest = await Transition.create({
-//             driver_id,
-//             amount_Value,
-//             date
-
-//         })
-
-//         res.status(200).json({ message: "Transfer Request has sent", GetTransferRequest})
-
-//     } catch (error) {
-//         res.status(400).json({ message: error.message, status: false });
-
-//     }
-
-// }
-
-
 const transfer = async (req, res) => {
     try {
   
@@ -179,11 +144,35 @@ const TransferApproved = async (req, res) => {
 
 
 
+//Upadte-Amount
+const UpdatedAmount = async (req, res) => {
+    try {
+      let Search = Storedata(["driver_id", "amount_Value"], req.body);
+      if (Search[0] == false)
+        return res
+          .status(400)
+          .json({ message: `${Search[1]} Field Required`, data: [] });
+      const { driver_id, amount_Value } = req.body;
+      const UpdateedAmount = await Transition.findOneAndUpdate(
+        { _id: req.params.id },
+        { driver_id, amount_Value }
+      );
+      res.status(200).json({
+        message: "Update Amount Successfully",
+        data: UpdateedAmount,
+        status: true,
+      });
+    } catch (error) {
+      res.status(400).json({ message: error.message, status: false });
+    }
+  };
+
 
 
 module.exports = {
     transfer,
     GetTransferRequest,
-    TransferApproved
+    TransferApproved,
+    UpdatedAmount
 
 }

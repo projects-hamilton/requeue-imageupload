@@ -466,6 +466,33 @@ const DaiyAndMonthlyReport = async (req, res) => {
 }
 
 
+
+
+//Upadte-Amount
+const UpdatedDriverProfiles = async (req, res) => {
+  try {
+    let Search = Storedata(["driver_id", "amount_Value"], req.body);
+    if (Search[0] == false)
+      return res
+        .status(400)
+        .json({ message: `${Search[1]} Field Required`, data: [] });
+    const { driver_id, amount_Value } = req.body;
+    const UpdateedAmount = await Transition.findOneAndUpdate(
+      { _id: req.params.id },
+      { driver_id, amount_Value }
+    );
+    res.status(200).json({
+      message: "Update Amount Successfully",
+      data: UpdateedAmount,
+      status: true,
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+  }
+};
+
+
+
 module.exports = {
   SearchAnyUserNamew,
   getUsers,
@@ -477,7 +504,8 @@ module.exports = {
   EditVechileDetails,
   DeleteVichle,
   AddAnyDrivers,
-  DaiyAndMonthlyReport
+  DaiyAndMonthlyReport,
+  UpdatedDriverProfiles
   // exportUsers,
 
 };

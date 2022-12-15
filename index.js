@@ -34,6 +34,7 @@ app.use('/',require('./routes/admin'))
 app.use('/',require("./routes/Driver"))
 app.use('/',require('./routes/TransferRoutes'))
 app.use('/',require('./routes/StoreRoutes'))
+app.use('/',require('./routes/companyRoutes'))
 
 
 app.listen(port, () => {

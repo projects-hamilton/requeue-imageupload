@@ -22,13 +22,21 @@ const DriversProfilesSchema = mongoose.Schema({
     time:{
         type:String
     },
-    date:{
+
+    date: {
       type:String
     },
-   
+
+    monthly_target:{
+      type:String
+    },
+  
+    fix_slary:{
+      type:String
+    },
+
 
 },{ timestamps: true });
-
 
 module.exports = mongoose.model("Drivre", DriversProfilesSchema);
 

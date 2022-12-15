@@ -6,6 +6,7 @@ const DeliveryDeatils = require("../models/delivery ");
 const User = require("../models/user");
 // const Walltes = require("../models/wallet");
 
+
 const getstatusbyDriverid = async (req, res) => {
   try {
     const Driver_id = req.params.driver_id;
@@ -233,55 +234,13 @@ const WeeklyReport = async (req, res) => {
   }
 }
 
-//post api
-// const monthly_Bonus = async(req,res)=>{
-
-//   try {
-//     let date = new Date();
-//     let Currentdate = new Date(date.getFullYear(), date.getMonth(),1);
-//     console.log(Currentdate)
-
-//     let Lastdate = new Date(date.getFullYear(), date.getMonth(),31);
-//     console.log(Lastdate)
-
-//     let search = Storedata(["driver_id"], req.body);
-//     if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
-
-//     const { driver_id } = req.body;
-
-//     const Total_Delivery = await DeliveryDeatils.find({
-      
-//       driver_id, createdAt: {
-//         $gte: Currentdate,
-//         $lt: Lastdate
-//       }
-//     });
-
-//     let array = {}
-//     let count = 0;
-//     let total_order =0
-//     for (let i = 0; i < Total_Delivery.length; i++) {
-//       let a = Total_Delivery[i].date
-//       array[a] = array[a] ? array[a] + 1 : 1
-//       count++
-//       total_order =count*100
-//     }
-    
-//     res.status(200).json({message:"Monthly-Bonus",total_order,Total_Delivery:Total_Delivery.length,})
-
-//     // console.log(total_order)
-
-//   } catch (error) {
-//     res.status(400).json({ message: error.message, status: false });
-    
-//   }
-// }
 
 const monthly_Bonus = async(req,res)=>{
  
   try {
     let date = new Date();
     let Currentdate = new Date(date.getFullYear(), date.getMonth(),1);
+    let monthlyReport = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30);
     console.log(Currentdate)
  
     let Lastdate = new Date(date.getFullYear(), date.getMonth(),31);
@@ -299,18 +258,25 @@ const monthly_Bonus = async(req,res)=>{
         $lt: Lastdate
       }
     });
- 
+    
+    const Monthly_Orders = await DeliveryDeatils.find({
+      driver_id: req.user, createdAt: {
+        $gte: monthlyReport,
+        $lt: date
+      }
+    });
+
     let array = {}
     let count = 0;
-    let total_order =0
+    let Total_Bonuus = 0
     for (let i = 0; i < Total_Delivery.length; i++) {
       let a = Total_Delivery[i].date
       array[a] = array[a] ? array[a] + 1 : 1
       if (array[a]>10) count++
     }
    
-   total_order= count*100 
-   res.status(200).json({message:"Monthly-Bonus",total_order,Total_Delivery:Total_Delivery.length,})
+   Total_Bonuus= count*100 
+   res.status(200).json({message:"Monthly-Bonus",Total_Bonuus,Total_Delivery:Total_Delivery.length,Monthly_Orders:Monthly_Orders.length})
  
     // console.log(total_order)
  
@@ -320,9 +286,6 @@ const monthly_Bonus = async(req,res)=>{
   }
 }
  
-
-
-
 
 module.exports = {
   getstatusbyDriverid,

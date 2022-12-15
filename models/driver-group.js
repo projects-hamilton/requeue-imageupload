@@ -12,6 +12,13 @@ const DriverGroupSchema = new mongoose.Schema({
       Driver_Imgaes:{
         type:String
       },
+      monthly_target:{
+        type:String
+      },
+    
+      fix_slary:{
+        type:String
+      },
 
 }, { timestamps: true });
 
