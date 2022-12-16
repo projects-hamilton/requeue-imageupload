@@ -233,7 +233,6 @@ const WeeklyReport = async (req, res) => {
 
 
 const monthly_Bonus = async(req,res)=>{
- 
   try {
     let date = new Date();
     let Currentdate = new Date(date.getFullYear(), date.getMonth(),1);
@@ -282,6 +281,7 @@ const monthly_Bonus = async(req,res)=>{
    
   }
 }
+
 
 
 module.exports = {

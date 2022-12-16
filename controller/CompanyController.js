@@ -109,6 +109,7 @@ const GetByCompanyId = async (req, res) => {
 };
 
 
+
 module.exports = {
   CompanyProfilesPost,
   DeleteCompanyDetailsById,

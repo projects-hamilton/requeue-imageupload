@@ -47,6 +47,7 @@ const Signup = async (req, res) => {
         "country",
         "confirmPassword",
         "role",
+        "Company_id"
       ],
       req.body
     );
@@ -64,6 +65,7 @@ const Signup = async (req, res) => {
       mobile,
       confirmPassword,
       role,
+      Company_id
     } = req.body;
 
     const oldUser = await User.findOne({ email });
@@ -117,6 +119,8 @@ const Signup = async (req, res) => {
       mobile,
       otp: otpGenerated,
       role,
+      Company_id
+  
     });
     // if(!user)return res.status(400).json({
     //   message: 'Unable to create new user',
