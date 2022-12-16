@@ -34,7 +34,6 @@ function storedetails(status, message, res, data) {
 }
 
 //Signup
-
 const Signup = async (req, res) => {
   try {
     let search = Storedata(
@@ -46,8 +45,7 @@ const Signup = async (req, res) => {
         "mobile",
         "country",
         "confirmPassword",
-        "role",
-        "Company_id"
+        "role"
       ],
       req.body
     );
@@ -64,11 +62,10 @@ const Signup = async (req, res) => {
       country,
       mobile,
       confirmPassword,
-      role,
-      Company_id
+      role
     } = req.body;
 
-    const oldUser = await User.findOne({ email });
+    const oldUser = await User.findOne({ email, Company_id: req.company_id });
     if (oldUser)
       return storedetails(400, "User Already Exist. Please Login", res, []);
 
@@ -119,8 +116,8 @@ const Signup = async (req, res) => {
       mobile,
       otp: otpGenerated,
       role,
-      Company_id
-  
+      Company_id: req.company_id
+
     });
     // if(!user)return res.status(400).json({
     //   message: 'Unable to create new user',
@@ -325,3 +322,6 @@ module.exports = {
   CheckOtpSendSMS,
   RestPasswordsendOTP,
 };
+
+///
+

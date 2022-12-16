@@ -56,15 +56,13 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-
-app.use("/", isCompany,require("./routes/SupervisorRoutes"));
-app.use("/", isCompany,require("./routes/user"));
-app.use("/",isCompany, require("./routes/admin"));
-app.use("/", isCompany,require("./routes/Driver"));
-app.use("/",isCompany, require("./routes/TransferRoutes"));
-app.use("/",isCompany, require("./routes/StoreRoutes"));
-app.use("/", isCompany,require("./routes/companyRoutes"));
-
+app.use("/", isCompany, require("./routes/SupervisorRoutes"));
+app.use("/", isCompany, require("./routes/user"));
+app.use("/", isCompany, require("./routes/admin"));
+app.use("/", isCompany, require("./routes/Driver"));
+app.use("/", isCompany, require("./routes/TransferRoutes"));
+app.use("/", isCompany, require("./routes/StoreRoutes"));
+app.use("/", require("./routes/companyRoutes"));
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

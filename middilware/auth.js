@@ -26,18 +26,15 @@ module.exports.isAuthenticated = (req, res, next) => {
   }
 };
 
-
 module.exports.isCompany = (req, res, next) => {
-  if(req.headers.Company_id){
-    const token = req.headers.Company_id
-    if (token == "")
-    res.status(401).json({ message: "Company_Id required" });
-    req.Company_id = token;
+  if (req.headers.company_id) {
+    const token = req.headers.company_id;
+    if (token == "") return res.status(401).json({ message: "company_id required" });
+
+    req.company_id = token;
     return next();
-  }
-  else{
-    return res.status(401).json({ message: "Authorization required" });
-  }
-}
 
-
+  } else {
+    return res.status(401).json({ message: "company_id required" });
+  }
+};
