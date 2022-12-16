@@ -27,16 +27,17 @@ module.exports.isAuthenticated = (req, res, next) => {
 };
 
 
-module.exports.checkAPIHeaders = (req, res, next) => {
-  if(req.headers['Company_id'] === undefined || ['1','2'].indexOf(req.headers['Company_id']) === -1){
-      return res.status(200).json({ status: 'fail', message: 'Company_id header is missing' });
-    
+module.exports.isCompany = (req, res, next) => {
+  if(req.headers.Company_id){
+    const token = req.headers.Company_id
+    if (token == "")
+    res.status(401).json({ message: "Company_Id required" });
+    req.Company_id = token;
+    return next();
   }
-  // else{
-  //   return res.status(401).json({ message: "Id is wrong" });
-
-next();
-
+  else{
+    return res.status(401).json({ message: "Authorization required" });
+  }
 }
 
 

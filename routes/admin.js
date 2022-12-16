@@ -13,7 +13,7 @@ const { SearchAnyUserNamew,
 
 
 
-const { isAuthenticated,checkAPIHeaders } = require("../middilware/auth");
+const { isAuthenticated } = require("../middilware/auth");
 const express = require("express");
 const router = express.Router();
 
@@ -47,7 +47,7 @@ router.patch('/edit-vihicle-detail/:id',upload.single("imgUrl"),EditVechileDetai
 router.delete('/delete-vihcile/:id',DeleteVichle)
 router.post('/add-any-driver',upload.single("driver_images"),AddAnyDrivers)
 router.get('/get-daily-and-monthly-report',isAuthenticated,DaiyAndMonthlyReport)
-router.get('/get-companies-details',checkAPIHeaders,GetUserCompanyDetails)
+// router.get('/get-companies-details/:id',checkAPIHeaders,GetUserCompanyDetails)
 // router.get('/export-users',exportUsers)
 
 

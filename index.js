@@ -4,6 +4,7 @@ const app = express();
 require("dotenv").config();
 const db = process.env.DB_URI;
 const cors = require("cors");
+const { isCompany } = require("./middilware/auth");
 app.use(cors());
 
 app.use(express.json());
@@ -56,13 +57,13 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.use("/", require("./routes/SupervisorRoutes"));
-app.use("/", require("./routes/user"));
-app.use("/", require("./routes/admin"));
-app.use("/", require("./routes/Driver"));
-app.use("/", require("./routes/TransferRoutes"));
-app.use("/", require("./routes/StoreRoutes"));
-app.use("/", require("./routes/companyRoutes"));
+app.use("/", isCompany,require("./routes/SupervisorRoutes"));
+app.use("/", isCompany,require("./routes/user"));
+app.use("/",isCompany, require("./routes/admin"));
+app.use("/", isCompany,require("./routes/Driver"));
+app.use("/",isCompany, require("./routes/TransferRoutes"));
+app.use("/",isCompany, require("./routes/StoreRoutes"));
+app.use("/", isCompany,require("./routes/companyRoutes"));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

@@ -493,25 +493,37 @@ const UpdatedDriverProfiles = async (req, res) => {
 };
 
 //easch user his company 
-const GetUserCompanyDetails = async(req,res)=>{
+const GetUserCompanyDetails = async (req, res) => {
   try {
-    // const company_id = req.params.company_id
-    let id = req.params.Company_id;
-
-    const GetDetails = await User.findById(id);
-    console.log(GetDetails)
-    for (let index = 0; index < GetDetails ,index++;) {
-      const element = GetDetails[index];
-      console.log(element)
-      
-    }
-    res.status(200).json({message:"Company Details",data:GetDetails})
-
-    
+    const Company_id = req.params.id;
+    let getResponce = await DriverProfiles.find({ Company_id });
+    res
+      .status(200)
+      .json({ message: "Drivers Groups", getResponce: getResponce.length });
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
-}
+};
+
+// const GetUserCompanyDetails = async(req,res)=>{
+//   try {
+//     // const company_id = req.params.company_id
+//     let id = req.params.Company_id;
+
+//     const GetDetails = await User.findById(id);
+//     // console.log(GetDetails)
+//     // for (let index = 0; index < GetDetails ,index++;) {
+//     //   const element = GetDetails[index];
+//     //   console.log(element)
+      
+//     // }
+//     res.status(200).json({message:"Company Details",data:GetDetails})
+
+    
+//   } catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+//   }
+// }
 
 module.exports = {
   SearchAnyUserNamew,
