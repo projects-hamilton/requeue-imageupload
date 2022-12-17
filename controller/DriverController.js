@@ -5,8 +5,11 @@ const Walltes = require('../models/wallet')
 const DeliveryDeatils = require("../models/delivery ");
 const User = require("../models/user");
 // const Walltes = require("../models/wallet");
+// const DeliveryDeatils = require("../models/delivery ");
 
 
+
+//CountSuccessStatus--all
 const getstatusbyDriverid = async (req, res) => {
   try {
     const Driver_id = req.params.driver_id;
@@ -17,14 +20,14 @@ const getstatusbyDriverid = async (req, res) => {
         c++;
       }
     }
-    res.status(200).json({ message: "Alll Status", totalDelivery: c });
+    res.status(200).json({ message: "Alll Status", totalDelivery: c});
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
 };
 
 
-//Storedata
+//Storedata This is function for every If Condition
 const Storedata = (search, data) => {
   for (let i = 0; i < search.length; i++) {
     if (
@@ -38,7 +41,8 @@ const Storedata = (search, data) => {
   return [true, ""];
 };
 
-// get all Successed delivery
+
+// CountSuccessStatus---And Complet Status Delvery----
 const getallSuccesseddelivery = async (req, res) => {
   try {
     const Driver_id = req.params.driver_id;
@@ -94,6 +98,7 @@ const getalldelivery = async (req, res) => {
 };
 
 
+
 // postapi
 const DetailDriverId = async (req, res) => {
   try {
@@ -143,41 +148,7 @@ const DetailDriverId = async (req, res) => {
 }
 
 
-// const WeeklyReport = async (req,res) => {
-//   console.log("enter")
-//   try {
-//     let driver_id;
-//     let createdAt
-//     // let userId = req.user;
-//     let UserDeatils = await User.findOne(
-//       { _id: req.user },
-//       { _id: 1, firstname: 1, email: 1 }
-//     );
-//     // console.log(UserDeatils);
-//     console.log(req.user)
-//     const Total_Delivery = await DeliveryDeatils.find({ driver_id: req.user });
-//     // console.log(Total_Delivery)
-//     const GetWeeklyReport = await Walltes.find(driver_id,createdAt,{
-//       $gte:"Mon May 30 18:47:00 +0000 2015",
-//       $Lt:"Sun May 3020:40:36+0000 2010"})
-
-//       // console.log(GetWeeklyReport)
-//       let GetAllReportsData = await DeliveryDeatils .find({
-//         driver_id:req.user
-//       })
-//     // console.log(GetAllReportsData,"hhhhhh")
-//     res.status(200).json({message:"All Reports",UserDeatils,
-//     Total_Deliveries: Total_Delivery.length,
-//     Today_Deliveries: GetAllReportsData.length,GetWeeklyReport})
-
-//   } catch (error) {
-//     res.status(400).json({ message: error.message, status: false });
-    
-//   }
-// }
-
-
-
+//Weekly Report Drivers 
 const WeeklyReport = async (req, res) => {
   try {
     let date = new Date();
@@ -283,6 +254,47 @@ const monthly_Bonus = async(req,res)=>{
 }
 
 
+const gettodaydelivery = async (req, res) => {
+  try {
+    const d = new Date();
+    let year = d.getFullYear();
+    let month = d.getMonth() + 1;
+    let day = d.getDate();
+    let date = year + "-" + month + "-" + day;
+    const GetAllReportsData = await DeliveryDeatils.find({ driver_id: req.user, date });
+    res.status(200).json({ message: "All Today delivery", Data: GetAllReportsData });
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+  }
+};
+
+
+//GetByDriverIdDriversHistory--POending
+// const GetDelveryHistoryByDriverId = async (req, res) => {
+//   try {
+//     // const id = req.params.id;
+//     let getResponce = await DriverDetailsAll.findOne({_id:req.params.id});
+
+//     res.status(200).json({ message: "History", getResponce});
+//   } catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+//   }
+// };
+const GetDelveryHistoryByDriverId = async (req, res) => {
+  try {
+    // const driver_id = req.params.id;
+    let getResponce = await DeliveryDeatils.find({ _id:req.params.id});
+    res
+      .status(200)
+      .json({ message: " Delvery History",Responce: getResponce});
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+  }
+};
+
+
+
+//GetByidHistory
 
 module.exports = {
   getstatusbyDriverid,
@@ -291,6 +303,9 @@ module.exports = {
   getalldelivery,
   DetailDriverId,
   WeeklyReport,
-  monthly_Bonus
+  monthly_Bonus,
+  gettodaydelivery,
+  GetDelveryHistoryByDriverId
+  
 };
 

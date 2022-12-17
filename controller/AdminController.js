@@ -495,15 +495,16 @@ const UpdatedDriverProfiles = async (req, res) => {
 //easch user his company 
 const GetUserCompanyDetails = async (req, res) => {
   try {
-    const Company_id = req.params.id;
-    let getResponce = await DriverProfiles.find({ Company_id });
+    // const Company_id = req.params.id;
+    const user = await User.find({Company_id:req.Company_id });
     res
       .status(200)
-      .json({ message: "Drivers Groups", getResponce: getResponce.length });
+      .json({ message: "User company Details", user});
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
 };
+
 
 // const GetUserCompanyDetails = async(req,res)=>{
 //   try {
