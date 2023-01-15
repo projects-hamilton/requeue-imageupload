@@ -1,16 +1,20 @@
 const express = require("express");
 
 const { transfer, GetTransferRequest, TransferApproved, UpdatedAmount } = require("../controller/TransferController");
+// const { isAuthenticated } = require("../middilware/auth");
 
 const router = express.Router();
+// isAuthenticated
 
 
-router.get('/get-transfer',GetTransferRequest)
 
-router.post('/add-transfer-request',transfer)
 
-router.patch('/upadte-request/:id',TransferApproved)
-router.patch('/update-amount/:id',UpdatedAmount)
+const { isAuthenticated } = require("../middilware/auth");
+router.get('/get-transfer', isAuthenticated, GetTransferRequest)
+router.post('/add-transfer-request',isAuthenticated,transfer)
+
+router.patch('/upadte-request/:id',isAuthenticated,TransferApproved)
+router.patch('/update-amount/:id',isAuthenticated,UpdatedAmount)
 
 
 module.exports = router

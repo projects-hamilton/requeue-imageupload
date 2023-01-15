@@ -1,8 +1,8 @@
 //  count of success delivery
-const DriverDetailsAll = require("../models/delivery ");
+const DriverDetailsAll = require("../models/driver");
 
 const Walltes = require('../models/wallet')
-const DeliveryDeatils = require("../models/delivery ");
+const DeliveryDeatils = require("../models/driver");
 const User = require("../models/user");
 // const Walltes = require("../models/wallet");
 
@@ -83,11 +83,21 @@ const getallPendingdelivery = async (req, res) => {
 
 
 //get all delivery details
-const getalldelivery = async (req, res) => {
+const getallDriver = async (req, res) => {
+  console.log("jjjj")
   try {
-    const Driver_id = req.params.driver_id;
-    let getResponce = await DriverDetailsAll.find({ Driver_id });
-    res.status(200).json({ message: "All delivery", Data: getResponce });
+    let currentpage = req.query.page ? req.query.page : 1
+    let pagelimit = req.query.pagelimit ? req.query.pagelimit : 2
+    let page = currentpage * pagelimit - pagelimit;
+    const name = req.query.name ? req.query.name : "";
+    // let email = req.query.email
+    let getResponce = await DriverDetailsAll.find({ driver_name: { "$regex": name } }).limit(pagelimit).skip(page)
+
+    res.status(200).json({
+      message: "All delivery", Data: getResponce, currentpage,
+      pagelimit
+    });
+
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
@@ -120,7 +130,7 @@ const DetailDriverId = async (req, res) => {
     } else {
       let current1 = GetborrowedDetails.amount_Value
       let current2 = Getborrowedcash.amount_Value
-      if(current2+add_amount>20){
+      if (current2 + add_amount > 20) {
         return res.status(400).json({ message: "limit exid" })
 
       }
@@ -172,7 +182,7 @@ const DetailDriverId = async (req, res) => {
 
 //   } catch (error) {
 //     res.status(400).json({ message: error.message, status: false });
-    
+
 //   }
 // }
 
@@ -182,7 +192,7 @@ const WeeklyReport = async (req, res) => {
   try {
     let date = new Date();
     let driver_id
-    let pastdate =new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
+    let pastdate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
     let monthlyReport = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30);
     let dailyreport = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 0);
 
@@ -216,13 +226,13 @@ const WeeklyReport = async (req, res) => {
     });
 
 
-    const GetAllReportsData = await DeliveryDeatils.find({driver_id: req.user});
+    const GetAllReportsData = await DeliveryDeatils.find({ driver_id: req.user });
     const GetWalletdata = await Walltes.find(driver_id)
     res.status(200).json({
       message: "All Reports", UserDeatils,
       weekly_Deliveries: Total_Delivery.length,
-      Total_Deliveries: GetAllReportsData.length,Monthly_Delivery: Monthly_Delivery.length,
-      Daily_Delivery: Daily_Delivery.length,GetWalletdata,
+      Total_Deliveries: GetAllReportsData.length, Monthly_Delivery: Monthly_Delivery.length,
+      Daily_Delivery: Daily_Delivery.length, GetWalletdata,
     })
 
   } catch (error) {
@@ -232,29 +242,31 @@ const WeeklyReport = async (req, res) => {
 }
 
 
-const monthly_Bonus = async(req,res)=>{
+
+const monthly_Bonus = async (req, res) => {
+  
   try {
     let date = new Date();
-    let Currentdate = new Date(date.getFullYear(), date.getMonth(),1);
+    let Currentdate = new Date(date.getFullYear(), date.getMonth(), 1);
     let monthlyReport = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30);
     console.log(Currentdate)
- 
-    let Lastdate = new Date(date.getFullYear(), date.getMonth(),31);
+
+    let Lastdate = new Date(date.getFullYear(), date.getMonth(), 31);
     console.log(Lastdate)
- 
-    let search = Storedata(["driver_id"], req.body);
+
+    let search = Storedata(["driver_id"], req.params);
     if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
- 
-    const { driver_id } = req.body;
- 
+
+    const { driver_id } = req.params;
+
     const Total_Delivery = await DeliveryDeatils.find({
-     
+
       driver_id, createdAt: {
         $gte: Currentdate,
         $lt: Lastdate
       }
     });
-    
+
     const Monthly_Orders = await DeliveryDeatils.find({
       driver_id: req.user, createdAt: {
         $gte: monthlyReport,
@@ -268,29 +280,29 @@ const monthly_Bonus = async(req,res)=>{
     for (let i = 0; i < Total_Delivery.length; i++) {
       let a = Total_Delivery[i].date
       array[a] = array[a] ? array[a] + 1 : 1
-      if (array[a]>10) count++
+      if (array[a] > 10) count++
     }
-   
-   Total_Bonuus= count*100 
-   res.status(200).json({message:"Monthly-Bonus",Total_Bonuus,Total_Delivery:Total_Delivery.length,Monthly_Orders:Monthly_Orders.length})
- 
+
+    Total_Bonuus = count * 100
+    res.status(200).json({ message: "Monthly-Bonus", Total_Bonuus, Total_Delivery: Total_Delivery.length, Monthly_Orders: Monthly_Orders.length })
+
     // console.log(total_order)
- 
+
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
-   
+
   }
 }
-
 
 
 module.exports = {
   getstatusbyDriverid,
   getallSuccesseddelivery,
   getallPendingdelivery,
-  getalldelivery,
+  getallDriver,
   DetailDriverId,
   WeeklyReport,
   monthly_Bonus
 };
+
 

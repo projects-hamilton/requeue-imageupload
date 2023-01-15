@@ -29,6 +29,7 @@ const Storedata = (search, data) => {
   return [true, ""];
 };
 
+
 function storedetails(status, message, res, data) {
   res.status(status).json({ message, data });
 }
@@ -107,7 +108,7 @@ const Signup = async (req, res) => {
     const otpGenerated = Math.floor(100000 + Math.random() * 9000);
     console.log(otpGenerated);
 
-    const user = await User.create({
+    let user = await User.create({
       firstname,
       password: hashedPassword,
       email,
@@ -119,6 +120,8 @@ const Signup = async (req, res) => {
       Company_id: req.company_id
 
     });
+    
+    user = await User.findById(user._id).select(['-password', '-otp'])
     // if(!user)return res.status(400).json({
     //   message: 'Unable to create new user',
     // });

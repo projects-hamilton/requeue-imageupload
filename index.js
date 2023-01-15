@@ -56,7 +56,7 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-app.use("/", isCompany, require("./routes/SupervisorRoutes"));
+app.use("/",  require("./routes/SupervisorRoutes"));
 app.use("/", isCompany, require("./routes/user"));
 app.use("/", isCompany, require("./routes/admin"));
 app.use("/", isCompany, require("./routes/Driver"));

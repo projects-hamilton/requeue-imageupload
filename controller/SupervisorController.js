@@ -434,14 +434,78 @@ const GetByStatus = async (req, res) => {
 };
 
 
+// const exportDelivery = async (req, res) => {
+//   try {
+//     const workbook = new exceljs.Workbook();
+//     const worksheet = workbook.addWorksheet("My Invoice");
+//     worksheet.columns = [
+//       { header: "ID", key: "_id" },
+//       { header: "Delivered By", key: "firstname" },
+//       { header: "Driver_Id", key: "driver_id" },
+//       { header: "Delivery Address", key: "delivery_address" },
+//       { header: "date", key: "date" },
+//       { header: "Item", key: "itmes" },
+//       { header: "picked Location", key: "picked_location" },
+//       { header: "amount Value", key: "amount_Value" },
+//       { header: "pay Type", key: "pay_type" },
+//     ];
+//     let counter = 1;
+//     let Deliverdata = await InvoiceDetails.find();
+//     console.log(Deliverdata)
+
+//     for (let index = 0; index < Deliverdata.length; index++) {
+//       let data = Deliverdata[index]
+
+//       let id = data.driver_id;
+//       let name = await User.findById(id);
+//       console.log(name)
+//       data.firstname = name.firstname 
+//       console.log(data)
+//       data.s_no = counter;
+//       worksheet.addRow(data);
+//       counter++;
+//     }
+
+//     // Deliverdata.forEach((data) => {
+//     //   let name = await User.findById(data.driver_id);
+//     //   data.firstname = name.firstname
+//     //   data.s_no = counter;
+//     //   worksheet.addRow(data);
+//     //   counter++;
+//     // });
+
+//     worksheet.getRow(1).eachCell((cell) => {
+//       cell.font = { bold: true };
+//     });
+
+//     res.setHeader(
+//       "Content-Type",
+//       "application/vnd.openxmlformats-officedocument.spreadsheatml.sheet"
+//     );
+
+//     res.setHeader("Content-Disposition", `attatchement;filename=user.xlsx`);
+//     return workbook.xlsx.write(res).then(() => {
+//       // console.log("res", res);
+//       res.status(200);
+//     });
+//   } catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+//   }
+// };
+
+
+
+
+
 const exportDelivery = async (req, res) => {
+  console.log("kkkkk")
   try {
     const workbook = new exceljs.Workbook();
     const worksheet = workbook.addWorksheet("My Invoice");
     worksheet.columns = [
       { header: "ID", key: "_id" },
       { header: "Delivered By", key: "firstname" },
-      { header: "Driver_Id", key:"driver_id" },
+      { header: "Driver_Id", key: "driver_id" },
       { header: "Delivery Address", key: "delivery_address" },
       { header: "date", key: "date" },
       { header: "Item", key: "itmes" },
@@ -452,7 +516,7 @@ const exportDelivery = async (req, res) => {
     let counter = 1;
     let Deliverdata = await InvoiceDetails.find();
     console.log(Deliverdata)
-    
+
     for (let index = 0; index < Deliverdata.length; index++) {
       let data = Deliverdata[index]
 
@@ -487,56 +551,55 @@ const exportDelivery = async (req, res) => {
       // console.log("res", res);
       res.status(200);
     });
+
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
 };
 
-
 //createInvoiceGetAPIS
-const createInvoice = async(req,res) =>{
+const createInvoice = async (req, res) => {
   try {
-    const id =req.params.id
+    const id = req.params.id
     let userDetails = await User.findById(id);
     const d = new Date();
     let year = d.getFullYear();
     let month = d.getMonth() + 1;
     let day = d.getDate();
     let date = year + "-" + month + "-" + day;
-    let Existing = await InvoiceDetails.find({driver_id:id,date})
+    let Existing = await InvoiceDetails.find({ driver_id: id, date })
     console.log(Existing)
-    if(Existing.length>0){
-     return res.status(400).json({message:"All Ready Existing"})
+    if (Existing.length > 0) {
+      return res.status(400).json({ message: "All Ready Existing" })
     }
-  let Delivery = await DeliveryDeatils.find({ driver_id: id, date })
-  let totalamount = 0
+    let Delivery = await DeliveryDeatils.find({ driver_id: id, date })
+    let totalamount = 0
 
     for (let index = 0; index < Delivery.length; index++) {
-    const element = Delivery[index];
-    totalamount+=100
-  }
+      const element = Delivery[index];
+      totalamount += 100
+    }
 
-  let a = {
-    firstname:userDetails.firstname,
-    lastname:userDetails.lastname,
-    driver_id:id,
-    email:userDetails.email,
-    mobile:userDetails.mobile,
-    total_amount:totalamount,
-    today_total_delevery:Delivery.length,
-    date:date
-  }
+    let a = {
+      firstname: userDetails.firstname,
+      lastname: userDetails.lastname,
+      driver_id: id,
+      email: userDetails.email,
+      mobile: userDetails.mobile,
+      total_amount: totalamount,
+      today_total_delevery: Delivery.length,
+      date: date
+    }
     let Invoice = await InvoiceDetails.create(a)
     console.log(Invoice)
-    res.status(200).json({ message:"data",Invoice})
-    
+    res.status(200).json({ message: "data", Invoice })
+
   } catch (error) {
-    res.status(403).json({message:error.message
+    res.status(403).json({
+      message: error.message
     })
   }
 }
-
-
 
 
 module.exports = {
@@ -564,3 +627,4 @@ module.exports = {
   createInvoice
   // driverApproval
 };
+

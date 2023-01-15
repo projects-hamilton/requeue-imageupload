@@ -11,7 +11,7 @@ const Walltes = require("../models/wallet");
 const { checkAPIHeaders } = require("../middilware/auth");
 
 
-// const moment = require('moment');
+const moment = require('moment');
 // // const yesterday = moment();
 // // console.log(yesterday.format());
 
@@ -31,7 +31,8 @@ const SearchAnyUserNamew = async (req, res) => {
     const { Name } = req.params;
     const getUserName = await User.find({
       firstname: { $regex: Name.toString(), $options: "i" },
-    });
+    }).select(['-password','-otp']);
+    
     if (!getUserName) {
       res.json({ message: "there is no Subject", status: false });
     }
@@ -60,101 +61,112 @@ const Storedata = (search, data) => {
 };
 
 //Add users
-const AddUsers = async (req, res) => {
-  try {
-    let search = Storedata(
-      [
-        "firstname",
-        "password",
-        "lastname",
-        "role",
-        "email",
-        "mobile",
-        "country",
-      ],
-      req.body
-    );
-    if (search[0] == false)
-      return res
-        .status(400)
-        .json({ message: `${search[1]} Field Required`, data: [] });
 
-    const { firstname, password, email, lastname, country, mobile } = req.body;
 
-    const oldUser = await User.findOne({ email });
-    if (oldUser)
-      return storedetails(400, "User Already Exist. Please Login", res, []);
 
-    if (
-      ["Supervisor", "Maintainers", "ADMIN", "DRIVER", "Company"].indexOf(
-        req.body.role
-      ) === -1
-    ) {
-      return res
-        .status(400)
-        .json({ message: "role must be either DRIVER or STORE or ADMIN" });
-    }
+// const AddUsers = async (req, res) => {
+//   try {
+//     let search = Storedata(
+//       [
+//         "firstname",
+//         "password",
+//         "lastname",
+//         "role",
+//         "email",
+//         "mobile",
+//         "country",
+//       ],
+//       req.body
+//     );
+//     if (search[0] == false)
+//       return res
+//         .status(400)
+//         .json({ message: `${search[1]} Field Required`, data: [] });
 
-    if (req.body.role == "DRIVER") {
-      let search = Storedata(["motor_type", "address", "id"], req.body);
-      if (search[0] == false)
-        return res
-          .status(400)
-          .json({ message: `${search[1]} Field Required`, data: [] });
+//     const { firstname, password, email, lastname, country, mobile } = req.body;
 
-      if (
-        ["BIKE", "SMALL_CAB", "BIG_CAB", "MINI_TRUCK", "BIG_TRUCK"].indexOf(
-          req.body.motor_type
-        ) == -1
-      ) {
-        return res.status(400).json({
-          message:
-            "motorType must be either BIKE or SMALL_CAB or BIG_CAB or MINI_TRUCK or BIG_TRUCK",
-        });
-      }
-    }
+//     const oldUser = await User.findOne({ email });
+//     if (oldUser)
+//       return storedetails(400, "User Already Exist. Please Login", res, []);
 
-    let encryptedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({
-      firstname,
-      password: encryptedPassword,
-      email,
-      lastname,
-      country,
-      mobile,
-    });
+//     if (
+//       ["Supervisor", "Maintainers", "ADMIN", "DRIVER", "Company"].indexOf(
+//         req.body.role
+//       ) === -1
+//     ) {
+//       return res
+//         .status(400)
+//         .json({ message: "role must be either DRIVER or STORE or ADMIN" });
+//     }
 
-    if (req.body.role == "DRIVER") {
-      const { motor_type, address, id } = req.body;
-      const GetDrivesDetails = await DriverDetails.create({
-        driver_id: user._id,
-        motor_type,
-        address,
-        id,
-      });
+//     if (req.body.role == "DRIVER") {
+//       let search = Storedata(["motor_type", "address", "id"], req.body);
+//       if (search[0] == false)
+//         return res
+//           .status(400)
+//           .json({ message: `${search[1]} Field Required`, data: [] });
 
-      const token = jwt.sign({ user }, process.env.TOKEN_KEY);
-      res.status(201).json({ user, GetDrivesDetails, token });
-    }
+//       if (
+//         ["BIKE", "SMALL_CAB", "BIG_CAB", "MINI_TRUCK", "BIG_TRUCK"].indexOf(
+//           req.body.motor_type
+//         ) == -1
+//       ) {
+//         return res.status(400).json({
+//           message:
+//             "motorType must be either BIKE or SMALL_CAB or BIG_CAB or MINI_TRUCK or BIG_TRUCK",
+//         });
+//       }
+//     }
 
-    const token = jwt.sign({ user }, process.env.TOKEN_KEY);
-    res.status(201).json({ user, token });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+//     let encryptedPassword = await bcrypt.hash(password, 10);
+//     let user = await User.create({
+//       firstname,
+//       password: encryptedPassword,
+//       email,
+//       lastname,
+//       country,
+//       mobile,
+//       otp: otpGenerated,
+//     });
+//     user = await User.findById(user._id).select(['-password','-otp'])
+//     if (req.body.role == "DRIVER") {
+//       const { motor_type, address, id } = req.body;
+//       const GetDrivesDetails = await DriverDetails.create({
+//         driver_id: user._id,
+//         motor_type,
+//         address,
+//         id,
+//       });
+
+
+//       const token = jwt.sign({ user }, process.env.TOKEN_KEY);
+//       res.status(201).json({ user, GetDrivesDetails, token });
+//     }
+
+//     const token = jwt.sign({ user }, process.env.TOKEN_KEY);
+//     res.status(201).json({ user, token });
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
 
 //getUsers
 const getUsers = async (req, res) => {
-  let page = req.query.page * 10 - 10;
+  let currentpage = req.query.page?req.query.page:1
+  let pagelimit=req.query.pagelimit?req.query.pagelimit:5
+  let page = currentpage * pagelimit - pagelimit;
   try {
-    const getUserDetails = await User.find().limit(10).skip(page);
+    const getUserDetails = await User.find().limit(pagelimit).skip(page).select(['-password','-otp']);
+    let count=await User.find().count()
     if (!getUserDetails) {
       res.json({ message: "there is no data ", status: false });
     }
     res.json({
       message: "Found  details ",
       data: getUserDetails,
+      totaldata:count,
+      currentpage,
+      pagelimit,
       status: true,
     });
   } catch (error) {
@@ -528,7 +540,7 @@ const GetUserCompanyDetails = async (req, res) => {
 module.exports = {
   SearchAnyUserNamew,
   getUsers,
-  AddUsers,
+  // AddUsers,
   DeleteUsers,
   DeleteDriverDetails,
   AddVechileDetails,

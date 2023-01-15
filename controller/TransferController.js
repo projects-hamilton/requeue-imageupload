@@ -41,7 +41,7 @@ const Storedata = (search, data) => {
 const transfer = async (req, res) => {
     try {
   
-      let search = Storedata(["driver_id", "amount_Value"], req.body);
+      let search = Storedata(["driver_id", "add_amount"], req.body);
       if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
   
       const { driver_id, amount_Value } = req.body;
@@ -72,6 +72,7 @@ const transfer = async (req, res) => {
   
   }
 
+
   async function notification(user_id,link,message) {
     try {
       let create = await notificationAll.create({ user_id, link, message })
@@ -80,7 +81,6 @@ const transfer = async (req, res) => {
       return [false, error.message]
     }
   }
-  
   
 
 //get---
@@ -166,7 +166,6 @@ const UpdatedAmount = async (req, res) => {
       res.status(400).json({ message: error.message, status: false });
     }
   };
-
 
 
 module.exports = {

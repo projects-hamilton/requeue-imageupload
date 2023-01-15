@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 // const  = require("../controller/userController");
 const { Signup, Login, verify_OTP, RestPasswordsendOTP,RestPassword, CheckOtpSendSMS } = require("../controller/userController");
+const { isCompany } = require("../middilware/auth");
 
 
 router.post("/signup",Signup)

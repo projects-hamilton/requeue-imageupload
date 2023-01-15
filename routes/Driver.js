@@ -5,10 +5,11 @@ const {
   getstatusbyDriverid,
   getallSuccesseddelivery,
   getallPendingdelivery,
-  getalldelivery,
+  // getalldelivery,
   DetailDriverId,
   WeeklyReport,
   monthly_Bonus,
+  getallDriver,
 } = require("../controller/DriverController");
 
 const { isAuthenticated } = require("../middilware/auth");
@@ -37,11 +38,11 @@ router.get("/get-all-pending-delivery", isAuthenticated, getallPendingdelivery);
 
 
 // get all  delivery details
-router.get("/get-all-delivery-details", isAuthenticated, getalldelivery);
+router.get('/all-drivers', getallDriver);
 
-router.post('/get-deatils',DetailDriverId)
-router.get('/get-alls-reports',isAuthenticated,WeeklyReport)
-router.get('/get-monthly-bonus',isAuthenticated,monthly_Bonus)
+router.post('/get-deatils', DetailDriverId)
+router.get('/get-alls-reports', isAuthenticated, WeeklyReport)
+router.get('/get-monthly-bonus/:driver_id', isAuthenticated,monthly_Bonus)
 
-module.exports= router
+module.exports = router
 
