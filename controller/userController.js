@@ -5,6 +5,7 @@ const DriverDetails = require("../models/driver-business-detail");
 const { bcrypt, compare } = require("../services/crypto");
 const { encrypt } = require("../services/crypto");
 const { sendMail } = require("../services/MAIL");
+const bookidgen = require("bookidgen");
 
 const JWTkey = process.env.TOKEN_KEY;
 // const dotenv = require(')
@@ -117,7 +118,7 @@ const Signup = async (req, res) => {
       mobile,
       otp: otpGenerated,
       role,
-      Company_id: req.company_id
+      company_id: req.company_id
 
     });
     
@@ -133,12 +134,14 @@ const Signup = async (req, res) => {
 
     if (req.body.role == "DRIVER") {
       const { motor_type, address, id } = req.body;
+   
       const GetDrivesDetails = await DriverDetails.create({
         driver_id: user._id,
         motor_type,
         address,
         id,
-        otp: otpGenerated,
+ 
+   
       });
 
       const token = jwt.sign({ user }, process.env.TOKEN_KEY);

@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
   latitude: {
     type:String,
 },
-Company_id:{
+company_id:{
   type:String
 },
 

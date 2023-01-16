@@ -19,8 +19,8 @@ module.exports.isAuthenticated = (req, res, next) => {
     if (!user) res.status(401).json({ message: "Authorization required" });
     req.user = user.user._id;
     // console.log( user,"effe");
-   return next();
-    
+    return next();
+
   } else {
     return res.status(401).json({ message: "Authorization required" });
   }
@@ -29,7 +29,7 @@ module.exports.isAuthenticated = (req, res, next) => {
 module.exports.isCompany = (req, res, next) => {
   if (req.headers.company_id) {
     const token = req.headers.company_id;
-    if (token == "") return res.status(401).json({ message: "company_id required" });
+    if (token == "") return res.status(401).json({ message: "company_id required", req });
 
     req.company_id = token;
     return next();

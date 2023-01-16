@@ -6,8 +6,6 @@ const DriverBusinessDetailsSchema = new mongoose.Schema(
       type: Number,
       autoIncrement: true,
     },
-    
-    otp: { type: String, required: true },
     driver_id: {
       type: String,
     },

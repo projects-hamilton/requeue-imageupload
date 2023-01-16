@@ -5,8 +5,11 @@ const Walltes = require('../models/wallet')
 const DeliveryDeatils = require("../models/driver");
 const User = require("../models/user");
 // const Walltes = require("../models/wallet");
+// const DeliveryDeatils = require("../models/delivery ");
 
 
+
+//CountSuccessStatus--all
 const getstatusbyDriverid = async (req, res) => {
   try {
     const Driver_id = req.params.driver_id;
@@ -17,14 +20,14 @@ const getstatusbyDriverid = async (req, res) => {
         c++;
       }
     }
-    res.status(200).json({ message: "Alll Status", totalDelivery: c });
+    res.status(200).json({ message: "Alll Status", totalDelivery: c});
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
 };
 
 
-//Storedata
+//Storedata This is function for every If Condition
 const Storedata = (search, data) => {
   for (let i = 0; i < search.length; i++) {
     if (
@@ -38,7 +41,8 @@ const Storedata = (search, data) => {
   return [true, ""];
 };
 
-// get all Successed delivery
+
+// CountSuccessStatus---And Complet Status Delvery----
 const getallSuccesseddelivery = async (req, res) => {
   try {
     const Driver_id = req.params.driver_id;
@@ -102,6 +106,7 @@ const getallDriver = async (req, res) => {
     res.status(400).json({ message: error.message, status: false });
   }
 };
+
 
 
 // postapi
@@ -295,6 +300,48 @@ const monthly_Bonus = async (req, res) => {
 }
 
 
+const gettodaydelivery = async (req, res) => {
+  try {
+    const d = new Date();
+    let year = d.getFullYear();
+    let month = d.getMonth() + 1;
+    let day = d.getDate();
+    let date = year + "-" + month + "-" + day;
+    const GetAllReportsData = await DeliveryDeatils.find({ driver_id: req.user, date });
+    res.status(200).json({ message: "All Today delivery", Data: GetAllReportsData });
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+  }
+};
+
+
+//GetByDriverIdDriversHistory--POending
+// const GetDelveryHistoryByDriverId = async (req, res) => {
+//   try {
+//     // const id = req.params.id;
+//     let getResponce = await DriverDetailsAll.findOne({_id:req.params.id});
+
+//     res.status(200).json({ message: "History", getResponce});
+//   } catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+//   }
+// };
+const GetDelveryHistoryByDriverId = async (req, res) => {
+  try {
+    // const driver_id = req.params.id;
+    let getResponce = await DeliveryDeatils.find({ _id:req.params.id});
+    res
+      .status(200)
+      .json({ message: " Delvery History",Responce: getResponce});
+  } catch (error) {
+    res.status(400).json({ message: error.message, status: false });
+  }
+};
+
+
+
+//GetByidHistory
+
 module.exports = {
   getstatusbyDriverid,
   getallSuccesseddelivery,
@@ -302,7 +349,10 @@ module.exports = {
   getallDriver,
   DetailDriverId,
   WeeklyReport,
-  monthly_Bonus
+  monthly_Bonus,
+  gettodaydelivery,
+  GetDelveryHistoryByDriverId
+  
 };
 
 

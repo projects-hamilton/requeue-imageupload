@@ -9,6 +9,9 @@ const DeliveryDeatils = require("../models/delivery ");
 const DriverProfiles = require("../models/driver");
 const exceljs = require("exceljs");
 const InvoiceDetails = require('../models/invoice')
+
+const bookidgen = require("bookidgen");
+
 // const { read } = require("xlsx");
 
 const Storedata = (search, data) => {
@@ -37,6 +40,8 @@ const DriverMultpleGroupPost = async (req, res) => {
     res.status(200).json({
       message: "Data successfully",
       data: GetDriverGroups,
+      
+
       status: true,
     });
   } catch (error) {
@@ -494,9 +499,6 @@ const GetByStatus = async (req, res) => {
 // };
 
 
-
-
-
 const exportDelivery = async (req, res) => {
   console.log("kkkkk")
   try {
@@ -626,5 +628,6 @@ module.exports = {
   exportDelivery,
   createInvoice
   // driverApproval
+  
 };
 

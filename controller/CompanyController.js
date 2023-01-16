@@ -1,7 +1,7 @@
 // driver_id: user._id,
 
 const Company_Profiles = require("../models/company");
-
+const bookidgen = require("bookidgen");
 const Storedata = (search, data) => {
   for (let i = 0; i < search.length; i++) {
     if (
@@ -16,6 +16,7 @@ const Storedata = (search, data) => {
 };
 
 const CompanyProfilesPost = async (req, res) => {
+  console.log("aAa");
   try {
     let Search = Storedata(
       ["Company_Name", "Company_Address", "company_email"],
@@ -26,10 +27,12 @@ const CompanyProfilesPost = async (req, res) => {
         .status(400)
         .json({ message: `${Search[1]} Field Required`, data: [] });
     const { Company_Name, Company_Address, company_email } = req.body;
+    let company_id = bookidgen("", 14522, 199585)
     const GetCompanyDetails = await Company_Profiles.create({
       Company_Address,
       Company_Name,
       company_email,
+      company_id: company_id,
     });
     res.status(200).json({
       message: "Company Details successfully",
@@ -69,10 +72,10 @@ const UpdatedCompanyDetails = async (req, res) => {
       return res
         .status(400)
         .json({ message: `${Search[1]} Field Required`, data: [] });
-    const { Company_Name, Company_Address, company_email} = req.body;
+    const { Company_Name, Company_Address, company_email } = req.body;
     const UpdateedAmount = await Company_Profiles.findOneAndUpdate(
       { _id: req.params.id },
-      {Company_Name, Company_Address, company_email }
+      { Company_Name, Company_Address, company_email }
     );
     res.status(200).json({
       message: "Update Company Details  Successfully",
@@ -99,10 +102,10 @@ const GetAllComapnyDetails = async (req, res) => {
 const GetByCompanyId = async (req, res) => {
   try {
     // const driver_id = req.params.id;
-    let getResponce = await Company_Profiles.find({ _id:req.params.id});
+    let getResponce = await Company_Profiles.find({ _id: req.params.id });
     res
       .status(200)
-      .json({ message: "Company Details",Responce: getResponce});
+      .json({ message: "Company Details", Responce: getResponce });
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }

@@ -27,7 +27,6 @@ var storage = multer.diskStorage({
         cb(null, "public")
     },
 
-
     filename: function (req, file, cb) {
         let newname = Math.floor(10000000000 + Math.random() * 90000000000) + "." + file.originalname.split(".")[1]
         file.originalname = newname
@@ -35,11 +34,8 @@ var storage = multer.diskStorage({
     },
 });
 
+
 var upload = multer({ storage: storage });
-
-
-
-
 //get book
 router.get("/search-any-user-name/:Name", SearchAnyUserNamew);
 
@@ -55,7 +51,6 @@ router.post('/add-any-driver', upload.single("driver_images"), AddAnyDrivers)
 router.get('/get-daily-and-monthly-report', isAuthenticated, DaiyAndMonthlyReport)
 // router.get('/get-companies-details/:id',checkAPIHeaders,GetUserCompanyDetails)
 // router.get('/export-users',exportUsers)
-
 
 module.exports = router
 

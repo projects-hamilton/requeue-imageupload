@@ -48,7 +48,7 @@ const port = process.env.PORT || 3000;
 mongoose
   .connect(db, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: false
   })
   .then(() => console.log("mongodb connected..."))
   .catch((err) => console.log(err));
@@ -56,13 +56,14 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-app.use("/",  require("./routes/SupervisorRoutes"));
+app.use("/", require("./routes/companyRoutes"));
+app.use("/", require("./routes/SupervisorRoutes"));
 app.use("/", isCompany, require("./routes/user"));
 app.use("/", isCompany, require("./routes/admin"));
 app.use("/", isCompany, require("./routes/Driver"));
 app.use("/", isCompany, require("./routes/TransferRoutes"));
 app.use("/", isCompany, require("./routes/StoreRoutes"));
-app.use("/", require("./routes/companyRoutes"));
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
