@@ -51,9 +51,11 @@ longitude: {
     type: String,
     comment: "Kuwait = KW, UAE= AE, SAUDI ARAB = SA, Oman = OM, QATAR = QA, Baharain = BH"
   },
+  
   confirmPassword:{
     type:String
   },
+  
   otp: { type: String, required: true },
 
 }, { timestamps: true });

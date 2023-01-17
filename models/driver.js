@@ -43,4 +43,3 @@ const DriversProfilesSchema = mongoose.Schema({
 
 module.exports = mongoose.model("Drivre", DriversProfilesSchema);
 
-

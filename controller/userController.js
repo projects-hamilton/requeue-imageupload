@@ -6,6 +6,7 @@ const { bcrypt, compare } = require("../services/crypto");
 const { encrypt } = require("../services/crypto");
 const { sendMail } = require("../services/MAIL");
 const bookidgen = require("bookidgen");
+const { findOne } = require("../models/notification");
 
 const JWTkey = process.env.TOKEN_KEY;
 // const dotenv = require(')
@@ -107,7 +108,7 @@ const Signup = async (req, res) => {
     // let encryptedPassword = await bcrypt.hash(password, 10);
     const hashedPassword = await encrypt(password);
     const otpGenerated = Math.floor(100000 + Math.random() * 9000);
-    console.log(otpGenerated);
+    console.log(otpGenerated,"otp here");
 
     let user = await User.create({
       firstname,
@@ -121,7 +122,7 @@ const Signup = async (req, res) => {
       company_id: req.company_id
 
     });
-    
+
     user = await User.findById(user._id).select(['-password', '-otp'])
     // if(!user)return res.status(400).json({
     //   message: 'Unable to create new user',
@@ -134,14 +135,14 @@ const Signup = async (req, res) => {
 
     if (req.body.role == "DRIVER") {
       const { motor_type, address, id } = req.body;
-   
+
       const GetDrivesDetails = await DriverDetails.create({
         driver_id: user._id,
         motor_type,
         address,
         id,
- 
-   
+
+
       });
 
       const token = jwt.sign({ user }, process.env.TOKEN_KEY);
@@ -167,9 +168,12 @@ const Login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
+    console.log(user, "hhhhh")
 
     if (!user) return res.status(400).json({ message: "No User existing" });
     if (user && (await compare(password, user.password))) {
+      let user = await User.findOne({ email }).select(['-password', '-otp']);
+
       // Create token
       // const token = generateJwtToken(user);
       const token = jwt.sign({ user }, process.env.TOKEN_KEY, {
@@ -186,7 +190,8 @@ const Login = async (req, res) => {
 };
 
 
-//Varify Otp
+// //Varify Otp
+
 const verify_OTP = async (req, res) => {
   try {
     // const { email, otp } = req.body;
@@ -201,17 +206,21 @@ const verify_OTP = async (req, res) => {
     let Existing = await User.findOne({ email });
     console.log(Existing, "ghggggg");
 
-    if (!Existing) return res.status(400).json({ message: "User not found" });
+    if (!Existing) 
+    return res.status(400).json({ message: "User not found" });
     const updatedUser = await User.findByIdAndUpdate(Existing._id, {
       $set: { active: true },
     });
 
+
     let token = generateJwtToken(Existing);
+    
 
     res.status(200).json({ message: "Varify OTP", user: updatedUser, token });
 
     if (Existing && Existing.otp !== otp)
-      return res.status(400).json({ message: "Invalid OTP" });
+       return res.status(400).json({ message: "Invalid OTP" });
+      Existing = await User.findOne({ email }).select(['-password', '-otp']);;
 
     if ("DRIVER" == Existing.role) {
       let driverDetails = await DriverDetails.find({
@@ -227,27 +236,6 @@ const verify_OTP = async (req, res) => {
   }
 };
 
-// const verify_OTP = async (req, res) => {
-//   try {
-//     const { email, otp } = req.body;
-
-//     let Existing = await User.findOne({ email })
-
-//     if (!Existing) return res.status(400).json({ message: 'User not found' });
-
-//     if (Existing && Existing.otp !== otp) return res.status(400).json({ message: 'Invalid OTP' });
-
-//     const updatedUser = await User.findByIdAndUpdate(Existing._id, { $set: { active: true } });
-
-//     let token = generateJwtToken(Existing)
-
-//     res.status(200).json({ user: updatedUser, token });
-
-//   } catch (error) {
-//     return res.status(400).json({ message: error.message });
-//   }
-
-// };
 
 //Reset Password
 const RestPasswordsendOTP = async (req, res) => {
@@ -257,7 +245,9 @@ const RestPasswordsendOTP = async (req, res) => {
     let Existing = await User.findOne({ Email: email });
 
     if (!Existing) return res.status(400).json({ message: "User not found" });
-
+    Existing = await User.findOne({ Email: email });
+    // console.log(Existing,"hhhhhhhhhhhhhhhhhhhhhhhhhh")
+    
     const otpGenerated = Math.floor(100000 + Math.random() * 900000);
 
     const updatedUser = await User.findByIdAndUpdate(Existing._id, {

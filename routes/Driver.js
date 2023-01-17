@@ -10,6 +10,7 @@ const {
   WeeklyReport,
   monthly_Bonus,
   getallDriver,
+  gettodaydelivery,
 } = require("../controller/DriverController");
 // const { GetAllDriverDetailsAndVihcleDeatils } = require("../controller/SupervisorController");
 
@@ -41,5 +42,6 @@ router.get("/get-alls-reports", isAuthenticated, WeeklyReport);
 router.get("/get-monthly-bonus/:driver_id", isAuthenticated, monthly_Bonus);
 // router.get("/get-today-delevery-deatils", isAuthenticated, gettodaydelivery);
 // router.get('/get-history-by-driver-id/:id',isAuthenticated,GetDelveryHistoryByDriverId)
+router.get('/get-today-delevry-deatils',gettodaydelivery)
 
 module.exports = router;
