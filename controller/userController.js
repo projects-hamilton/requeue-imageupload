@@ -108,7 +108,7 @@ const Signup = async (req, res) => {
     // let encryptedPassword = await bcrypt.hash(password, 10);
     const hashedPassword = await encrypt(password);
     const otpGenerated = Math.floor(100000 + Math.random() * 9000);
-    console.log(otpGenerated,"otp here");
+    console.log(otpGenerated, "otp here");
 
     let user = await User.create({
       firstname,
@@ -190,8 +190,53 @@ const Login = async (req, res) => {
 };
 
 
-// //Varify Otp
+// // //Varify Otp
 
+// const verify_OTP = async (req, res) => {
+//   try {
+//     // const { email, otp } = req.body;
+//     let search = Storedata(["otp", "email"], req.body);
+//     if (search[0] == false)
+//       return res
+//         .status(400)
+//         .json({ message: `${search[1]} Field Requried`, data: [] });
+
+//     const { email, otp, role } = req.body;
+
+//     let Existing = await User.findOne({ email });
+//     console.log(Existing, "ghggggg");
+
+//     if (!Existing) 
+//     return res.status(400).json({ message: "User not found" });
+//     const updatedUser = await User.findByIdAndUpdate(Existing._id, {
+//       $set: { active: true },
+//     });
+
+
+//     let token = generateJwtToken(Existing);
+
+
+//     res.status(200).json({ message: "Varify OTP", user: updatedUser, token });
+
+//     if (Existing && Existing.otp !== otp)
+//        return res.status(400).json({ message: "Invalid OTP" });
+//       Existing = await User.findOne({ email }).select(['-password', '-otp']);;
+
+//     if ("DRIVER" == Existing.role) {
+//       let driverDetails = await DriverDetails.find({
+//         driver_id: Existing._id,
+//       });
+
+//       return res.status(200).json({ driverDetails, user: updatedUser, token });
+//     }
+
+//     // return res.status(200).json({ user: updatedUser, token });
+//   } catch (error) {
+//     return res.status(400).json({ message: error.message });
+//   }
+// };
+
+//Varify Otp
 const verify_OTP = async (req, res) => {
   try {
     // const { email, otp } = req.body;
@@ -206,36 +251,38 @@ const verify_OTP = async (req, res) => {
     let Existing = await User.findOne({ email });
     console.log(Existing, "ghggggg");
 
-    if (!Existing) 
-    return res.status(400).json({ message: "User not found" });
+    if (!Existing) return res.status(400).json({ message: "User not found" });
+
+
+
+    let token = generateJwtToken(Existing);
+
+    // res.send(200).json({ message: "Varify OTP", user: updatedUser, token });
+
+    if (Existing && Existing.otp != otp) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
     const updatedUser = await User.findByIdAndUpdate(Existing._id, {
       $set: { active: true },
     });
 
 
-    let token = generateJwtToken(Existing);
-    
-
-    res.status(200).json({ message: "Varify OTP", user: updatedUser, token });
-
-    if (Existing && Existing.otp !== otp)
-       return res.status(400).json({ message: "Invalid OTP" });
-      Existing = await User.findOne({ email }).select(['-password', '-otp']);;
+    Existing = await User.findOne({ email }).select(['-password', '-otp']);
 
     if ("DRIVER" == Existing.role) {
       let driverDetails = await DriverDetails.find({
         driver_id: Existing._id,
       });
 
-      return res.status(200).json({ driverDetails, user: updatedUser, token });
+      return res.status(200).json({ message: "Varify OTP", driverDetails, user: Existing, token });
     }
 
-    // return res.status(200).json({ user: updatedUser, token });
+    return res.status(200).json({ user: Existing, token });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
 };
-
 
 //Reset Password
 const RestPasswordsendOTP = async (req, res) => {
@@ -247,7 +294,7 @@ const RestPasswordsendOTP = async (req, res) => {
     if (!Existing) return res.status(400).json({ message: "User not found" });
     Existing = await User.findOne({ Email: email });
     // console.log(Existing,"hhhhhhhhhhhhhhhhhhhhhhhhhh")
-    
+
     const otpGenerated = Math.floor(100000 + Math.random() * 900000);
 
     const updatedUser = await User.findByIdAndUpdate(Existing._id, {
