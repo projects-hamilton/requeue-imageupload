@@ -26,6 +26,7 @@ module.exports.isAuthenticated = (req, res, next) => {
   }
 };
 
+
 module.exports.isCompany = (req, res, next) => {
   if (req.headers.company_id) {
     const token = req.headers.company_id;

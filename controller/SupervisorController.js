@@ -3,14 +3,15 @@ const AreaDetails = require("../models/area");
 const User = require("../models/user");
 const DriverDailyStatus = require("../models/dailystatus");
 // const DriverDetailsAll = require("../models/driver-business-detail");
-const VehiclAllDetails = require("../models/vehicle ");
+// const VehiclAllDetails = require("../models/vehicle ");
 const Walltes = require("../models/wallet");
 const DeliveryDeatils = require("../models/delivery ");
 const DriverProfiles = require("../models/driver");
 const exceljs = require("exceljs");
 const InvoiceDetails = require('../models/invoice')
+const DriverDetails = require("../models/driver-business-detail");
 
-const bookidgen = require("bookidgen");
+// const bookidgen = require("bookidgen");
 
 // const { read } = require("xlsx");
 
@@ -206,7 +207,7 @@ const GetAllDriverDetailsAndVihcleDeatils = async (req, res) => {
     for (let i = 0; i < d; i++) {
       let data2 = {};
       data2["DriversDeatils"] = await DriverProfiles.find(getDriverGroup[i]);
-      data2["VihcileDetails"] = await VehiclAllDetails.find(
+      data2["VihcileDetails"] = await DriverDetails.find(
         VehiclAllDetails[i]
       );
       data1.push(data2);

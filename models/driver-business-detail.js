@@ -19,6 +19,19 @@ const DriverBusinessDetailsSchema = new mongoose.Schema(
       type: String,
     },
 
+    Vehicle_Company_Name: {
+      type: String
+    },
+    Vehicle_type: {
+      type: String,
+    },
+    Vehicle_number: {
+      type: String
+    },
+    Vehicle_model: {
+      type: String
+    },
+
   status:{
     type:String
   },
@@ -34,7 +47,6 @@ const DriverBusinessDetailsSchema = new mongoose.Schema(
     location:{type:String}
   },
   
-
   {
     modelName: "DriverBusinessDetails",
     timestamps: true,
@@ -42,7 +54,6 @@ const DriverBusinessDetailsSchema = new mongoose.Schema(
   },
 
 );
-
 
 module.exports = mongoose.model("DriverDetails", DriverBusinessDetailsSchema);
 
