@@ -9,6 +9,13 @@ app.use(cors());
 
 app.use(express.json());
 const port = process.env.PORT || 3000;
+
+
+
+
+
+
+
 // const Location = require("./models/location");
 
 // const server = require("http").createServer(app);
@@ -56,13 +63,24 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-app.use("/", require("./routes/companyRoutes"));
-app.use("/", require("./routes/SupervisorRoutes"));
-app.use("/", isCompany, require("./routes/user"));
-app.use("/", isCompany, require("./routes/admin"));
-app.use("/", isCompany, require("./routes/Driver"));
-app.use("/", isCompany, require("./routes/TransferRoutes"));
-app.use("/", isCompany, require("./routes/StoreRoutes"));
+
+
+
+
+
+app.use("/api/imageupload", require("./routes/image"));
+app.use("/api/company", require("./routes/companyRoutes"));
+app.use("/api/auth",isCompany, require("./routes/auth"));
+app.use("/api/user", isCompany, require("./routes/user"));
+
+
+
+app.use("/api/", require("./routes/SupervisorRoutes"));
+
+app.use("/api/admin", isCompany, require("./routes/admin"));
+app.use("/api/", isCompany, require("./routes/Driver"));
+app.use("/api/", isCompany, require("./routes/TransferRoutes"));
+app.use("/api/", isCompany, require("./routes/StoreRoutes"));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

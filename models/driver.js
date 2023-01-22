@@ -34,7 +34,7 @@ const DriversProfilesSchema = mongoose.Schema({
     fix_slary:{
       type:String
     },
-    Company_id:{
+    company_id:{
       type:String
     }
 

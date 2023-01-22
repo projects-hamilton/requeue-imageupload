@@ -25,7 +25,7 @@ const VehicleDetailsschema = mongoose.Schema({
     Vehicle_model:{
       type:String
     },
-    Company_id:{
+    company_id:{
       type:String
     }
 

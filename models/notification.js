@@ -23,7 +23,7 @@ const Notificationschema = mongoose.Schema({
   link:{
     type:String
   },
-  Company_id:{
+  company_id:{
     type:String
   }
 

@@ -2,38 +2,32 @@ const mongoose = require("mongoose");
 
 const DriverBusinessDetailsSchema = new mongoose.Schema(
   {
-    id: {
-      type: Number,
-      autoIncrement: true,
-    },
+
     driver_id: {
       type: String,
     },
 
-    motor_type: {
-      type: String,
-      comment: "BIKE, SMALL_CAB, BIG_CAB, MINI_TRUCK, BIG_TRUCK",
-    },
-
-    address: {
+    Vehicle_type: {
       type: String,
     },
 
-  status:{
-    type:String
-  },
-  Company_id:{
-    type:String
+    Vehicle_Company_Name: {
+      type: String
+    },
+
+    Vehicle_number: {
+      type: String
+    },
+    Vehicle_model: {
+      type: String
+    },
+    company_id: {
+      type: String
+    }
   },
 
-    is_approved: {
-      type: Boolean,
-      defaultValue: false
-  },
-    
-    location:{type:String}
-  },
-  
+
+
 
   {
     modelName: "DriverBusinessDetails",

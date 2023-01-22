@@ -34,7 +34,7 @@ const DriverDailyStatusSchema = new mongoose.Schema({
     Date:{
         type:String
     },
-    Company_id:{
+    company_id:{
       type:String
     }
 

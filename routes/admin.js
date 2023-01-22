@@ -1,4 +1,4 @@
-const { SearchAnyUserNamew,
+const { 
     getUsers,
     //  AddUsers, 
     DeleteUsers,
@@ -8,6 +8,7 @@ const { SearchAnyUserNamew,
     DeleteVichle,
     AddAnyDrivers,
     DaiyAndMonthlyReport,
+    AddUsers,
     // GetUserCompanyDetails, 
 } = require("../controller/AdminController");
 
@@ -19,7 +20,6 @@ const router = express.Router();
 
 const path = require("path");
 const multer = require("multer");
-const { Signup } = require("../controller/userController");
 
 var storage = multer.diskStorage({
 
@@ -36,19 +36,17 @@ var storage = multer.diskStorage({
 
 
 var upload = multer({ storage: storage });
-//get book
-router.get("/search-any-user-name/:Name", SearchAnyUserNamew);
 
-router.get('/get-user-deatils', getUsers)
-router.post('/add-users', Signup)
-router.delete('/delete-user-details/:id', DeleteUsers)
-router.delete('/delete-driver-details/:id', DeleteDriverDetails)
-router.post('/add-vechile-deatils', upload.single("imgUrl"), AddVechileDetails)
+// router.get('/get-user-deatils', isAuthenticated,getUsers)
+// router.post('/add-users', AddUsers)
+// router.delete('/delete-user-details/:id', isAuthenticated,DeleteUsers)
+// router.delete('/driver-details/:id', isAuthenticated, DeleteDriverDetails)
+// router.post('/add-vechile-deatils', isAuthenticated,upload.single("imgUrl"), AddVechileDetails)
 // router.get('/get-driver-deatils-vichile-deatils',GetAllDriverDetails)
-router.patch('/edit-vihicle-detail/:id', upload.single("imgUrl"), EditVechileDetails)
-router.delete('/delete-vihcile/:id', DeleteVichle)
-router.post('/add-any-driver', upload.single("driver_images"), AddAnyDrivers)
-router.get('/get-daily-and-monthly-report', isAuthenticated, DaiyAndMonthlyReport)
+// router.patch('/edit-vihicle-detail/:id', isAuthenticated,upload.single("imgUrl"), EditVechileDetails)
+// router.delete('/delete-vihcile/:id', isAuthenticated, DeleteVichle)
+// router.post('/add-any-driver', isAuthenticated,upload.single("driver_images"), AddAnyDrivers)
+// router.get('/get-daily-and-monthly-report', isAuthenticated, DaiyAndMonthlyReport)
 // router.get('/get-companies-details/:id',checkAPIHeaders,GetUserCompanyDetails)
 // router.get('/export-users',exportUsers)
 

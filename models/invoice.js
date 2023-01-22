@@ -35,7 +35,7 @@ const InvoiceDetailsschema = mongoose.Schema({
     date:{
       type:String
     },
-    Company_id:{
+    company_id:{
       type:String
     }
 
