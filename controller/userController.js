@@ -7,8 +7,6 @@ const { encrypt } = require("../services/crypto");
 const JWTkey = process.env.TOKEN_KEY;
 require("dotenv");
 
-
-
 const Storedata = (search, data) => {
   for (let i = 0; i < search.length; i++) {
     if (
@@ -21,8 +19,6 @@ const Storedata = (search, data) => {
   }
   return [true, ""];
 };
-
-
 
 
 const AddUsers = async (req, res) => {
@@ -74,10 +70,6 @@ const AddUsers = async (req, res) => {
 };
 
 
-
-
-
-
 const DeleteUsers = async (req, res) => {
   try {
     const DeleteUserDetails = await User.findOneAndDelete({_id: req.params.id,
@@ -91,12 +83,6 @@ const DeleteUsers = async (req, res) => {
     res.send({ message: error.message, status: false });
   }
 };
-
-
-
-
-
-
 
 const EditUsers = async (req, res) => {
   try {
@@ -151,9 +137,6 @@ const getUsers = async (req, res) => {
     res.status(500).json({ message: error.message, status: false });
   }
 };
-
-
-
 
 
 const GetSingleUser = async (req, res) => {

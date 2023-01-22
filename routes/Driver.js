@@ -12,11 +12,9 @@ const {
   getallDriver,
   gettodaydelivery,
 } = require("../controller/DriverController");
-// const { GetAllDriverDetailsAndVihcleDeatils } = require("../controller/SupervisorController");
+
 
 const { isAuthenticated } = require("../middilware/auth");
-
-// get status by driver id
 
 router.get(
   "/get-by-driver-id-status/:Driver_id",
