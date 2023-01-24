@@ -6,10 +6,9 @@ const {  Login,  RestPasswordsendOTP,RestPassword, CheckOtpSendSMS } = require("
 
 
 router.post("/login",Login)
-router.post('/reset-password',RestPasswordsendOTP);
+router.post('/reset-password-otp',RestPasswordsendOTP);
 router.post('/otpcheck',CheckOtpSendSMS);
 router.post('/reset-password',RestPassword);
-
 
 
 module.exports=router

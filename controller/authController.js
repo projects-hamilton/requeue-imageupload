@@ -63,10 +63,10 @@ const RestPasswordsendOTP = async (req, res) => {
   try {
     const { email } = req.body;
     // Check if user already exist
-    const Existing = await User.findOne({ company_id: req.company_id, email });
+    let Existing = await User.findOne({ company_id: req.company_id, email });
 
     if (!Existing) return res.status(400).json({ message: "User not found" });
-    Existing = await User.findOne({ Email: email });
+
 
     const otpGenerated = Math.floor(100000 + Math.random() * 900000);
 
@@ -83,7 +83,7 @@ const RestPasswordsendOTP = async (req, res) => {
 
     return res.status(200).json({ message: "Mail Send" });
   } catch (error) {
-    return res.send("Unable to Send OTP, Please try again later", error);
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -99,7 +99,7 @@ const CheckOtpSendSMS = async (req, res) => {
     if (Existing.otp == otp) {
       return res.status(200).json({ message: "Correct OTP" });
     } else {
-      return res.status(400).json({ message: "No User existing" });
+      return res.status(400).json({ message: "Invalid OTP" });
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });

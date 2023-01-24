@@ -21,6 +21,10 @@ const Storedata = (search, data) => {
 };
 
 
+function storedetails(status, message, res, data) {
+  res.status(status).json({ message, data });
+}
+
 const AddUsers = async (req, res) => {
   try {
     let search = Storedata(["firstname","password","dob","lastname","email","mobile","confirmPassword","role","profile_image"],req.body);
@@ -70,7 +74,8 @@ const AddUsers = async (req, res) => {
 };
 
 
-const DeleteUsers = async (req, res) => {
+const DeleteUsersAll = async (req, res) => {
+  console.log("enter")
   try {
     const DeleteUserDetails = await User.findOneAndDelete({_id: req.params.id,
     });
@@ -83,6 +88,7 @@ const DeleteUsers = async (req, res) => {
     res.send({ message: error.message, status: false });
   }
 };
+
 
 const EditUsers = async (req, res) => {
   try {
@@ -111,7 +117,6 @@ const EditUsers = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
 
 
 
@@ -159,8 +164,43 @@ const GetSingleUser = async (req, res) => {
 };
 
 
+const EditVechileDetails = async (req, res) => {
+  try {
+    let search = Storedata(["Vehicle_type", "Vehicle_Company_Name", "Vehicle_number", "Vehicle_model",], req.body);
+    if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Required`, data: [] });
+
+    const { Vehicle_type, Vehicle_Company_Name, Vehicle_number, Vehicle_model } = req.body;
+
+    let getResponce = await DriverDetails.findOneAndUpdate({ _id: req.params.id, }, { 
+      Vehicle_type, 
+      Vehicle_Company_Name, 
+      Vehicle_number, 
+      Vehicle_model
+
+    });
+
+    res.status(201).json({ message: "Update Vechiles Details", VehicleDetails: getResponce,status:true });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 
+
+const DeleteVehicleDetails = async (req, res) => {
+  try {
+    const DeleteUserDetails = await DriverDetails.findOneAndDelete({
+      _id: req.params.id,
+    });
+    if (!DeleteUserDetails) {
+      res.status(400).json({ message: "Enter the correct id", status: false });
+    } else {
+      res.status(200).json({ message: "Vehicle Details removed", status: true, });
+    }
+  } catch (error) {
+    res.send({ message: error.message, status: false });
+  }
+};
 
 
 
@@ -170,7 +210,9 @@ module.exports = {
   getUsers,
   GetSingleUser,
   EditUsers,
-  DeleteUsers
+  DeleteUsersAll,
+  EditVechileDetails,
+  DeleteVehicleDetails
 };
 
 
