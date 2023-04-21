@@ -186,7 +186,6 @@ const EditVechileDetails = async (req, res) => {
 };
 
 
-
 const DeleteVehicleDetails = async (req, res) => {
   try {
     const DeleteUserDetails = await DriverDetails.findOneAndDelete({
@@ -201,9 +200,6 @@ const DeleteVehicleDetails = async (req, res) => {
     res.send({ message: error.message, status: false });
   }
 };
-
-
-
 
 module.exports = {
   AddUsers,

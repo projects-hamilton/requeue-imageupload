@@ -33,6 +33,5 @@ const path = req.file;
   }
 });
 
-
 module.exports=router
 

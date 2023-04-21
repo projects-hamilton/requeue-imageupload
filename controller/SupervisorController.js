@@ -501,7 +501,7 @@ const GetByStatus = async (req, res) => {
 
 
 const exportDelivery = async (req, res) => {
-  console.log("kkkkk")
+  // console.log("kkkkk")
   try {
     const workbook = new exceljs.Workbook();
     const worksheet = workbook.addWorksheet("My Invoice");

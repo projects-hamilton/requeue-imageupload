@@ -8,7 +8,6 @@ const User = require("../models/user");
 // const DeliveryDeatils = require("../models/delivery ");
 
 
-
 //CountSuccessStatus--all
 const getstatusbyDriverid = async (req, res) => {
   try {
@@ -64,7 +63,6 @@ const getallSuccesseddelivery = async (req, res) => {
 
 
 // get all Pending delivery
-
 const getallPendingdelivery = async (req, res) => {
   try {
     const Driver_id = req.params.driver_id;
@@ -85,17 +83,15 @@ const getallPendingdelivery = async (req, res) => {
 };
 
 
-
 //get all delivery details
 const getallDriver = async (req, res) => {
-  console.log("jjjj")
   try {
     let currentpage = req.query.page ? req.query.page : 1
     let pagelimit = req.query.pagelimit ? req.query.pagelimit : 2
     let page = currentpage * pagelimit - pagelimit;
     const name = req.query.name ? req.query.name : "";
-    // let email = req.query.email
     let getResponce = await DriverDetailsAll.find({ driver_name: { "$regex": name } }).limit(pagelimit).skip(page)
+    console.log(getResponce);
 
     res.status(200).json({
       message: "All delivery", Data: getResponce, currentpage,
@@ -230,7 +226,6 @@ const WeeklyReport = async (req, res) => {
       }
     });
 
-
     const GetAllReportsData = await DeliveryDeatils.find({ driver_id: req.user });
     const GetWalletdata = await Walltes.find(driver_id)
     res.status(200).json({
@@ -246,10 +241,7 @@ const WeeklyReport = async (req, res) => {
   }
 }
 
-
-
 const monthly_Bonus = async (req, res) => {
-  
   try {
     let date = new Date();
     let Currentdate = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -326,6 +318,8 @@ const gettodaydelivery = async (req, res) => {
 //     res.status(400).json({ message: error.message, status: false });
 //   }
 // };
+
+
 const GetDelveryHistoryByDriverId = async (req, res) => {
   try {
     // const driver_id = req.params.id;
@@ -341,7 +335,6 @@ const GetDelveryHistoryByDriverId = async (req, res) => {
 
 
 //GetByidHistory
-
 module.exports = {
   getstatusbyDriverid,
   getallSuccesseddelivery,

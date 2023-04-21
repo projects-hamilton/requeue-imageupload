@@ -14,7 +14,5 @@ router.delete("/delete-vehicle/:id",DeleteVehicleDetails)
 
 
 
-
-
 module.exports=router
 

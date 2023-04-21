@@ -1,13 +1,13 @@
 const express = require("express");
 
-const { transfer, GetTransferRequest, TransferApproved, UpdatedAmount } = require("../controller/TransferController");
-// const { isAuthenticated } = require("../middilware/auth");
+const { transfer, 
+    GetTransferRequest, 
+    TransferApproved, 
+    UpdatedAmount } = require("../controller/TransferController");
+
 
 const router = express.Router();
 // isAuthenticated
-
-
-
 
 const { isAuthenticated } = require("../middilware/auth");
 router.get('/get-transfer', isAuthenticated, GetTransferRequest)

@@ -5,41 +5,37 @@ const {
   getstatusbyDriverid,
   getallSuccesseddelivery,
   getallPendingdelivery,
-  // getalldelivery,
   DetailDriverId,
   WeeklyReport,
   monthly_Bonus,
   getallDriver,
   gettodaydelivery,
+  GetDelveryHistoryByDriverId,
 } = require("../controller/DriverController");
 
 
-const { isAuthenticated } = require("../middilware/auth");
-
 router.get(
   "/get-by-driver-id-status/:Driver_id",
-  isAuthenticated,
   getstatusbyDriverid
 );
 
 // get all successed delivery
 router.get(
   "/get-all-success-delivery",
-  isAuthenticated,
   getallSuccesseddelivery
 );
 
 // get all pending delivery
-router.get("/get-all-pending-delivery", isAuthenticated, getallPendingdelivery);
+router.get("/get-all-pending-delivery",getallPendingdelivery);
 
 // get all  delivery details
 router.get('/all-drivers', getallDriver);
 
 router.post("/get-deatils", DetailDriverId);
-router.get("/get-alls-reports", isAuthenticated, WeeklyReport);
-router.get("/get-monthly-bonus/:driver_id", isAuthenticated, monthly_Bonus);
-// router.get("/get-today-delevery-deatils", isAuthenticated, gettodaydelivery);
-// router.get('/get-history-by-driver-id/:id',isAuthenticated,GetDelveryHistoryByDriverId)
+router.get("/get-alls-reports",WeeklyReport);
+router.get("/get-monthly-bonus/:driver_id", monthly_Bonus);
+router.get("/get-today-delevery-deatils", gettodaydelivery);
+router.get('/get-history-by-driver-id/:id',GetDelveryHistoryByDriverId)
 router.get('/get-today-delevry-deatils',gettodaydelivery)
 
 module.exports = router;

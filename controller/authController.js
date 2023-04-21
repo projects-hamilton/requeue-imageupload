@@ -22,8 +22,6 @@ const Storedata = (search, data) => {
 };
 
 
-
-
 //login
 const Login = async (req, res) => {
   try {
@@ -55,7 +53,6 @@ const Login = async (req, res) => {
     console.log(err);
   }
 };
-
 
 
 //Reset Password
@@ -105,8 +102,6 @@ const CheckOtpSendSMS = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
-
 
 //RestPasswordLink ---
 const RestPassword = async (req, res) => {

@@ -12,46 +12,7 @@ const port = process.env.PORT || 3000;
 
 
 
-
-
-
-
-// const Location = require("./models/location");
-
-// const server = require("http").createServer(app);
-// const io = require("socket.io")(server, {
-//   cors: {
-//     origin: "*",
-//     methods: ["GET", "POST"],
-//   },
-// });
-
-
-// const rooms = ["general", "Our-team", "College-Fridens", "News"];
-
-// socket.on("message-room", async (room, content, sender, time, date) => {
-//   const newMessage = await Location.create({
-//     location,
-//     from: sender,
-//     time,
-//     date,
-//     to: room,
-
-//   });
-
-//   let roomMessages = await getLastMessagesFromRoom(room);
-//   roomMessages = sortRoomMessagesByDate(roomMessages);
-//   // sending message to room
-//   socket.emit("room-messages", roomMessages);
-//   socket.broadcast.emit("notifications", room);
-// });
-
-// //rooms
-// app.get("/rooms", (req, res) => {
-//   res.json(rooms);
-// });
-
-
+mongoose.set('strictQuery', true);
 mongoose
   .connect(db, {
     useNewUrlParser: true,
@@ -70,8 +31,9 @@ app.get("/", (req, res) => {
 
 app.use("/api/imageupload", require("./routes/image"));
 app.use("/api/company", require("./routes/companyRoutes"));
-app.use("/api/auth",isCompany, require("./routes/auth"));
+app.use("/api/auth", isCompany, require("./routes/auth"));
 app.use("/api/user", isCompany, require("./routes/user"));
+app.use('/api/superadmin', require("./routes/superadmin"))
 
 
 

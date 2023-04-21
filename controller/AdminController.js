@@ -21,10 +21,7 @@ const Storedata = (search, data) => {
   return [true, ""];
 };
 
-
-
 //VechilePostapi
-
 const editVechileDetails = async (req, res) => {
   try {
     let Search = Storedata(
