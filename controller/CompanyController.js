@@ -2,23 +2,12 @@
 
 const Company_Profiles = require("../models/company");
 const bookidgen = require("bookidgen");
-const Storedata = (search, data) => {
-  for (let i = 0; i < search.length; i++) {
-    if (
-      data[search[i]] == "" ||
-      data[search[i]] == undefined ||
-      data[search[i]] == null
-    ) {
-      return [false, search[i]];
-    }
-  }
-  return [true, ""];
-};
+const { validater } = require("../services/helper");
+
 
 const CompanyProfilesPost = async (req, res) => {
-  console.log("aAa");
   try {
-    let Search = Storedata(
+    let Search = validater(
       ["Company_Name", "Company_Address", "company_email"],
       req.body
     );
@@ -67,7 +56,7 @@ const DeleteCompanyDetailsById = async (req, res) => {
 //PatchDetails
 const UpdatedCompanyDetails = async (req, res) => {
   try {
-    let Search = Storedata(["Company_Name", "Company_Address", "company_email"], req.body);
+    let Search = validater(["Company_Name", "Company_Address", "company_email"], req.body);
     if (Search[0] == false)
       return res
         .status(400)

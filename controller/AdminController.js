@@ -6,25 +6,14 @@ const { encrypt } = require("../services/crypto");
 const { sendMail } = require("../services/MAIL");
 
 const moment = require('moment');
+const { validater } = require("../services/helper");
 
-//fUNCTION
-const Storedata = (search, data) => {
-  for (let i = 0; i < search.length; i++) {
-    if (
-      data[search[i]] == "" ||
-      data[search[i]] == undefined ||
-      data[search[i]] == null
-    ) {
-      return [false, search[i]];
-    }
-  }
-  return [true, ""];
-};
+
 
 //VechilePostapi
 const editVechileDetails = async (req, res) => {
   try {
-    let Search = Storedata(
+    let Search = validater(
       [
         "Vehicle_type",
         "Vehicle_Company_Name",

@@ -1,31 +1,32 @@
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const adminuser = require('../models/adminuser');
+const Adminuser = require('../models/adminuser');
+const { HandleRes } = require('../services/helper');
 
 const signup = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const existingUser = await adminuser.findOne({ email });
+        const existingUser = await Adminuser.findOne({ email });
 
         if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
+            return HandleRes(res, 400, 'User already exists')
+
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new adminuser({ email, password: hashedPassword });
+        const user = new Adminuser({ email, password: hashedPassword });
         await user.save();
         res.status(201).json({ message: 'User created successfully' });
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: 'Internal server error' });
+        return HandleRes(res)
     }
 };
 
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await adminuser.findOne({ email });
+        const user = await Adminuser.findOne({ email });
         if (!user) {
             return res.status(401).json({ message: 'Authentication failed' });
         }

@@ -19,15 +19,15 @@ const getstatusbyDriverid = async (req, res) => {
         c++;
       }
     }
-    res.status(200).json({ message: "Alll Status", totalDelivery: c});
+    res.status(200).json({ message: "Alll Status", totalDelivery: c });
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
 };
 
 
-//Storedata This is function for every If Condition
-const Storedata = (search, data) => {
+//validater This is function for every If Condition
+const validater = (search, data) => {
   for (let i = 0; i < search.length; i++) {
     if (
       data[search[i]] == "" ||
@@ -109,7 +109,7 @@ const getallDriver = async (req, res) => {
 const DetailDriverId = async (req, res) => {
   try {
 
-    let search = Storedata(["driver_id", "add_amount"], req.body);
+    let search = validater(["driver_id", "add_amount"], req.body);
     if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
 
     const { driver_id, add_amount } = req.body;
@@ -251,7 +251,7 @@ const monthly_Bonus = async (req, res) => {
     let Lastdate = new Date(date.getFullYear(), date.getMonth(), 31);
     console.log(Lastdate)
 
-    let search = Storedata(["driver_id"], req.params);
+    let search = validater(["driver_id"], req.params);
     if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
 
     const { driver_id } = req.params;
@@ -323,10 +323,10 @@ const gettodaydelivery = async (req, res) => {
 const GetDelveryHistoryByDriverId = async (req, res) => {
   try {
     // const driver_id = req.params.id;
-    let getResponce = await DeliveryDeatils.find({ _id:req.params.id});
+    let getResponce = await DeliveryDeatils.find({ _id: req.params.id });
     res
       .status(200)
-      .json({ message: " Delvery History",Responce: getResponce});
+      .json({ message: " Delvery History", Responce: getResponce });
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }
@@ -345,7 +345,7 @@ module.exports = {
   monthly_Bonus,
   gettodaydelivery,
   GetDelveryHistoryByDriverId
-  
+
 };
 
 

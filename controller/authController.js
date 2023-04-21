@@ -4,28 +4,17 @@ const jwt = require("jsonwebtoken");
 const { bcrypt, compare } = require("../services/crypto");
 const { encrypt } = require("../services/crypto");
 const { sendMail } = require("../services/MAIL");
+const { validater } = require("../services/helper");
 
 require("dotenv");
 
 
-const Storedata = (search, data) => {
-  for (let i = 0; i < search.length; i++) {
-    if (
-      data[search[i]] == "" ||
-      data[search[i]] == undefined ||
-      data[search[i]] == null
-    ) {
-      return [false, search[i]];
-    }
-  }
-  return [true, ""];
-};
 
 
 //login
 const Login = async (req, res) => {
   try {
-    let search = Storedata(["email", "password"], req.body);
+    let search = validater(["email", "password"], req.body);
     if (search[0] == false) {
       res
         .status(400)

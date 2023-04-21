@@ -10,28 +10,18 @@ const DriverProfiles = require("../models/driver");
 const exceljs = require("exceljs");
 const InvoiceDetails = require('../models/invoice')
 const DriverDetails = require("../models/driver-business-detail");
+const { validater } = require("../services/helper");
 
 // const bookidgen = require("bookidgen");
 
 // const { read } = require("xlsx");
 
-const Storedata = (search, data) => {
-  for (let i = 0; i < search.length; i++) {
-    if (
-      data[search[i]] == "" ||
-      data[search[i]] == undefined ||
-      data[search[i]] == null
-    ) {
-      return [false, search[i]];
-    }
-  }
-  return [true, ""];
-};
+
 
 //DriverMultpleGroupPost
 const DriverMultpleGroupPost = async (req, res) => {
   try {
-    let Search = Storedata(["driver_id", "area_id"], req.body);
+    let Search = validater(["driver_id", "area_id"], req.body);
     if (Search[0] == false)
       return res
         .status(400)
@@ -41,7 +31,7 @@ const DriverMultpleGroupPost = async (req, res) => {
     res.status(200).json({
       message: "Data successfully",
       data: GetDriverGroups,
-      
+
 
       status: true,
     });
@@ -53,7 +43,7 @@ const DriverMultpleGroupPost = async (req, res) => {
 //Edit
 const UpdatedDriverMultipleGroups = async (req, res) => {
   try {
-    let Search = Storedata(["driver_id", "area_id"], req.body);
+    let Search = validater(["driver_id", "area_id"], req.body);
     if (Search[0] == false)
       return res
         .status(400)
@@ -125,7 +115,7 @@ const GetDriversGroups = async (req, res) => {
 //DriverMultpleGroupPost
 const AddArea = async (req, res) => {
   try {
-    let Search = Storedata(["location", "user_id"], req.body);
+    let Search = validater(["location", "user_id"], req.body);
     if (Search[0] == false)
       return res
         .status(400)
@@ -145,7 +135,7 @@ const AddArea = async (req, res) => {
 //Edit
 const UpdatedArea = async (req, res) => {
   try {
-    let Search = Storedata(["location", "user_id"], req.body);
+    let Search = validater(["location", "user_id"], req.body);
     if (Search[0] == false)
       return res
         .status(400)
@@ -222,7 +212,7 @@ const GetAllDriverDetailsAndVihcleDeatils = async (req, res) => {
 //AddWalletsPost
 const AddWalletsPost = async (req, res) => {
   try {
-    let Search = Storedata(
+    let Search = validater(
       ["amount_Value", "amount_type", "driver_id", "currency"],
       req.body
     );
@@ -265,7 +255,7 @@ const AddWalletsPost = async (req, res) => {
 //DeliveryDetails
 const DeliveryDeatilsAlll = async (req, res) => {
   try {
-    let Search = Storedata(
+    let Search = validater(
       [
         "amount_Value",
         "pay_type",
@@ -629,6 +619,6 @@ module.exports = {
   exportDelivery,
   createInvoice
   // driverApproval
-  
+
 };
 
