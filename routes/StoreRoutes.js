@@ -25,7 +25,7 @@ var upload = multer({ storage: storage });
 // const store_controller = require("../controllers/storeController");
 
 // router.post('/create-store',auth,upload.single('logo'),store_controller)
-router.post('/create-store',isAuthenticated,upload.single('logo'),Create_store)
+router.get('/create-store',isAuthenticated,upload.single('logo'),Create_store)
 
 
 module.exports=router

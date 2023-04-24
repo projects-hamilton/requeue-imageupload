@@ -188,12 +188,12 @@ const GetAllLocation = async (req, res) => {
 
 ///DriverDeatils
 const GetAllDriverDetailsAndVihcleDeatils = async (req, res) => {
-  console.log("hhhh");
+  // console.log("hhhh");
   try {
     let data1 = [];
     const getDriverGroup = await DriverProfiles.find();
     const d = getDriverGroup.length - 3;
-    console.log(getDriverGroup, "hhhh");
+    // console.log(getDriverGroup, "hhhh");
     for (let i = 0; i < d; i++) {
       let data2 = {};
       data2["DriversDeatils"] = await DriverProfiles.find(getDriverGroup[i]);
