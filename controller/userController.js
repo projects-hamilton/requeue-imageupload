@@ -61,7 +61,6 @@ const AddUsers = async (req, res) => {
   }
 };
 
-
 const DeleteUsersAll = async (req, res) => {
   console.log("enter")
   try {
@@ -106,8 +105,6 @@ const EditUsers = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-
 
 const getUsers = async (req, res) => {
   let currentpage = req.query.page ? req.query.page : 1
@@ -173,7 +170,6 @@ const EditVechileDetails = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
 
 const DeleteVehicleDetails = async (req, res) => {
   try {

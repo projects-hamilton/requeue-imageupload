@@ -12,8 +12,6 @@ app.use(cors());
 app.use(express.json());
 const port = process.env.PORT || 3000;
 
-
-
 mongoose.set('strictQuery', true);
 mongoose
   .connect(db, {
@@ -32,27 +30,26 @@ app.get("/", (req, res) => {
 });
 
 
-
 app.use('/api/superadmin', require("./routes/superadmin"))
-app.group("/api", () => {
-  app.use("/", require("./routes/SupervisorRoutes"));
-  app.use("/imageupload", require("./routes/image"));
-  app.use("/company", require("./routes/companyRoutes"));
-})
-app.group("/api", () => {
-  app.use("/auth", isCompany, require("./routes/auth"));
-  app.use("/user", isCompany, require("./routes/user"));
-  app.use("/admin", isCompany, require("./routes/admin"));
-  app.use("/", isCompany, require("./routes/Driver"));
-  app.use("/", isCompany, require("./routes/TransferRoutes"));
-  app.use("/", isCompany, require("./routes/StoreRoutes"));
-});
 
+// app.group("/api", () => {
+//   app.use("/auth", isCompany, require("./routes/auth"));
+//   app.use("/user", isCompany, require("./routes/user"));
+//   app.use("/admin", isCompany, require("./routes/admin"));
+//   app.use("/", isCompany, require("./routes/Driver"));
+//   app.use("/", isCompany, require("./routes/TransferRoutes"));
+//   app.use("/", isCompany, require("./routes/StoreRoutes"));
+// });
 
-
-
-
-
+app.use("/api/", require("./routes/SupervisorRoutes"));
+app.use("/api/imageupload", require("./routes/image"));
+app.use("/api/company", require("./routes/companyRoutes"));
+app.use("/api/auth", isCompany, require("./routes/auth"));
+app.use("/api/user", isCompany, require("./routes/user"));
+app.use("/api/admin", isCompany, require("./routes/admin"));
+app.use("/api/", isCompany, require("./routes/Driver"));
+app.use("/api/", isCompany, require("./routes/TransferRoutes"));
+app.use("/api/", isCompany, require("./routes/StoreRoutes"));
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

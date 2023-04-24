@@ -76,6 +76,7 @@ const UpdatedCompanyDetails = async (req, res) => {
   }
 };
 
+
 const GetAllComapnyDetails = async (req, res) => {
   try {
     const GetAreaDetais = await Company_Profiles.find();

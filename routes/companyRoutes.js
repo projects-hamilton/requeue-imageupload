@@ -6,15 +6,16 @@ const { CompanyProfilesPost,
     GetAllComapnyDetails,
     GetByCompanyId,
     UpdatedCompanyDetails } = require("../controller/CompanyController");
-const { isAuthenticated } = require("../middilware/auth");
 
+// const { isAuthenticated } = require("../middilware/auth");
 
-router.post("/company-details", isAuthenticated, CompanyProfilesPost);
-router.delete('/delete-company-detials/:id', isAuthenticated,DeleteCompanyDetailsById)
-router.get('/get-all-comapny-deatils', isAuthenticated,GetAllComapnyDetails)
-router.get('/get-by-company-id/:id',isAuthenticated,GetByCompanyId)
-router.patch('/edit-company-deatils/:id', isAuthenticated,UpdatedCompanyDetails)
+router.post("/company-details", CompanyProfilesPost);
+router.delete('/delete-company-detials/:id', DeleteCompanyDetailsById)
+router.get('/get-all-comapny-deatils', GetAllComapnyDetails)
+router.get('/get-by-company-id/:id', GetByCompanyId)
+router.patch('/edit-company-deatils/:id', UpdatedCompanyDetails)
 
 module.exports = router;
+
 
 
