@@ -28,21 +28,21 @@ const DriverBusinessDetailsSchema = new mongoose.Schema(
       type: String
     },
 
-  status:{
-    type:String
-  },
-  Company_id:{
-    type:String
-  },
+    status: {
+      type: String
+    },
+    Company_id: {
+      type: String
+    },
 
     is_approved: {
       type: Boolean,
       defaultValue: false
+    },
+
+    location: { type: String }
   },
-    
-    location:{type:String}
-  },
-  
+
   {
     modelName: "DriverBusinessDetails",
     timestamps: true,
@@ -51,6 +51,7 @@ const DriverBusinessDetailsSchema = new mongoose.Schema(
 
 );
 
-module.exports = mongoose.model("DriverDetails", DriverBusinessDetailsSchema);
+const DriverDetails = mongoose.model("DriverDetails", DriverBusinessDetailsSchema);
+module.exports = DriverDetails
 
 

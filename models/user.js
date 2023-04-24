@@ -16,12 +16,14 @@ const userSchema = new mongoose.Schema({
   company_id: { type: String },
   otp: { type: String, required: true },
 
+  latitude:{type: String},
+  longitude:{type: String},
+  OnlineStatus: { type: String},
   role: {
     type: String,
     comment: "Supervisor, Maintainers, ADMIN, DRIVER,Company"
   },
   
-
 }, { timestamps: true });
 
 

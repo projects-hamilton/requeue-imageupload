@@ -91,11 +91,13 @@ const EditUsers = async (req, res) => {
     if (!oldUser) return storedetails(400, "User Not found", res, []);
 
     let user = await User.findOneAndUpdate({ _id: oldUser._id }, {
-      firstname,
-      email,
-      lastname,
-      profile_image,
-      mobile
+      $set: {
+        firstname,
+        email,
+        lastname,
+        profile_image,
+        mobile
+      }
     });
 
     user = await User.findById(user._id).select(['-password', '-otp'])
@@ -157,14 +159,17 @@ const EditVechileDetails = async (req, res) => {
 
     const { Vehicle_type, Vehicle_Company_Name, Vehicle_number, Vehicle_model } = req.body;
 
-    let getResponce = await DriverDetails.findOneAndUpdate({ _id: req.params.id, }, {
-      Vehicle_type,
-      Vehicle_Company_Name,
-      Vehicle_number,
-      Vehicle_model
+    let getResponce = await DriverDetails.findOneAndUpdate({ _id: req.params.id }, {
+      $set: {
 
+        Vehicle_type,
+        Vehicle_Company_Name,
+        Vehicle_number,
+        Vehicle_model
+
+      }
     });
-
+    getResponce = await DriverDetails.findById(req.params.id)
     res.status(201).json({ message: "Update Vechiles Details", VehicleDetails: getResponce, status: true });
   } catch (err) {
     res.status(500).json({ message: err.message });
