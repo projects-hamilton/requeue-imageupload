@@ -115,7 +115,7 @@ const DriverBorrowMoneyLimitation = async (req, res) => {
     const { driver_id, add_amount } = req.body;
     const GetborrowedDetails = await Walltes.findOne({ driver_id, amount_type: "cash_in_hand" });
     const Getborrowedcash = await Walltes.findOne({ driver_id, amount_type: "borrowed_cash" });
-
+    console.log(GetborrowedDetails);
     if (!GetborrowedDetails) return res.status(400).json({ message: "No Cash in hand found" })
     if (GetborrowedDetails.amount_Value < add_amount) return res.status(400).json({ message: "No balance" })
     if (add_amount > 20) return res.status(400).json({ message: "limit exid" })
@@ -375,7 +375,7 @@ const GetUploadScreshort = async (req, res) => {
     // Extract text from the screenshot using Tesseract
     let a = path.resolve('public', paths)
     const result = await Tesseract.recognize(a, 'eng');
-  
+
     // const result = await Tesseract.recognize(a,'ara',);
 
     // Parse the extracted text to get the required fields

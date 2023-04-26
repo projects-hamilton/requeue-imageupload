@@ -226,7 +226,7 @@ const AddWalletsPost = async (req, res) => {
     if (Existing) {
       const GetDetais = await Walltes.findOneAndUpdate(
         { amount_type, driver_id },
-        { currency, amount_Value, amount_type, driver_id }
+        { currency, amount_Value: parseInt(Existing.amount_Value) + parseInt(amount_Value), amount_type, driver_id }
       );
       return res.status(200).json({
         message: "Data successfully",
@@ -595,7 +595,7 @@ const createInvoice = async (req, res) => {
 
 //The supervisor will approve the request—
 
-const  approve_requests_supervisorNam = async (req, res) => {
+const approve_requests_supervisorNam = async (req, res) => {
   try {
     const supervisorName = req.params.supervisorName;
 
