@@ -593,6 +593,37 @@ const createInvoice = async (req, res) => {
   }
 }
 
+//The supervisor will approve the request—
+
+const  approve_requests_supervisorNam = async (req, res) => {
+  try {
+    const supervisorName = req.params.supervisorName;
+
+    // Connect to the MongoDB database
+    // await client.connect();
+    // const db = client.db('mydb');
+
+    // Update all pending requests with the given supervisor name to "approved"
+    const result = await DeliveryDeatils('requests').updateMany(
+      { supervisorName: supervisorName, status: 'pending' },
+      { $set: { status: 'approved' } }
+    );
+
+    console.log(`${result.modifiedCount} requests approved by ${supervisorName}`);
+
+    // Return a success response
+    res.status(200).json({ message: `${result.modifiedCount} requests approved by ${supervisorName}` });
+  } catch (err) {
+    console.error(err);
+
+    // Return an error response
+    res.status(500).json({ message: 'Internal server error' });
+  } finally {
+    // Close the MongoDB client
+    await client.close();
+  }
+
+}
 
 module.exports = {
   DriverMultpleGroupPost,
@@ -616,7 +647,8 @@ module.exports = {
   GetByDriverId,
   GetByStatus,
   exportDelivery,
-  createInvoice
+  createInvoice,
+  approve_requests_supervisorNam
   // driverApproval
 
 };

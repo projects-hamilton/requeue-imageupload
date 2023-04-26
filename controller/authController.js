@@ -16,7 +16,7 @@ const Login = async (req, res) => {
   try {
     let search = validater(["email", "password"], req.body);
     if (search[0] == false) {
-      res
+      return res
         .status(400)
         .json({ message: `${search[1]} Field Required`, data: [] });
     }
@@ -26,7 +26,7 @@ const Login = async (req, res) => {
 
     if (!user) return res.status(400).json({ message: "No User existing" });
     if (user && (await compare(password, user.password))) {
-      let user = await User.findOne({ email }).select(['-password', '-otp']);
+      let user = await User.findOne({ company_id: req.company_id, email }).select(['-password', '-otp']);
 
       // Create token
       // const token = generateJwtToken(user);
