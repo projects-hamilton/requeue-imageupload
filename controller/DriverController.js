@@ -105,16 +105,14 @@ const getallDriver = async (req, res) => {
 
 
 
-// postapi
-const DetailDriverId = async (req, res) => {
+// postapi //limited number (example: 20 KWD)--
+const DriverBorrowMoneyLimitation = async (req, res) => {
   try {
 
     let search = validater(["driver_id", "add_amount"], req.body);
     if (search[0] == false) return res.status(400).json({ message: `${search[1]} Field Requried`, data: [] });
 
     const { driver_id, add_amount } = req.body;
-
-
     const GetborrowedDetails = await Walltes.findOne({ driver_id, amount_type: "cash_in_hand" });
     const Getborrowedcash = await Walltes.findOne({ driver_id, amount_type: "borrowed_cash" });
 
@@ -333,6 +331,84 @@ const GetDelveryHistoryByDriverId = async (req, res) => {
 };
 
 
+// Tesseract.recognize('./public/time-tracking-invocing-2x.png')
+//   .then(result => {
+//     console.log(result.data.text)
+//   })
+//   .catch(err => {
+//     console.error(err)
+//   })
+
+
+// const GetUploadScreshort = async (req, res) => {
+//   try {
+//     // const driver_id = req.params.id;
+//     let getResponce = await DeliveryDeatils.find({ _id: req.params.id });
+//     res
+//       .status(200)
+//       .json({ message: " Delvery History", Responce: getResponce });
+//   } catch (error) {
+//     res.status(400).json({ message: error.message, status: false });
+//   }
+// };
+const Tesseract = require('tesseract.js');
+const path = require('path')
+
+// const GetUploadScreshort =  async (req, res) => {
+//   try {
+//     const filePath = './public/time-tracking-invocing-2x.png';
+//     const result = await Tesseract.recognize(filePath);
+//     const extractedText = result.data.text;
+//     res.json({ extractedText });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Failed to extract text from image' });
+//   }
+// }
+
+
+
+
+const GetUploadScreshort = async (req, res) => {
+  try {
+    const { paths } = req.body;
+    // Extract text from the screenshot using Tesseract
+    let a = path.resolve('public', paths)
+    const result = await Tesseract.recognize(a, 'eng');
+  
+    // const result = await Tesseract.recognize(a,'ara',);
+
+    // Parse the extracted text to get the required fields
+    const text = result.data.text.split((/\r?\n/));
+    // console.log(text);
+    let cal
+    let val
+    for (let i = 0; i < text.length; i++) {
+      if (text[i].includes("Distance") || text[i].includes("أكراميات")) {
+        // sal = text.cal[i].split("\n")
+        cal = text[i]
+        val = text[i + 2]
+        val = val.replace(" kd", "_kd")
+
+      }
+    }
+    console.log(cal, val, "ggg");
+    // const orderNumber = parseInt(match(/Order\s+#(\d+)/i));
+    // const distance = parseFloat(match(/Distance\s+(\d+\.\d+)\s+km/i));
+    // const totalCash = parseFloat(match(/Total\s+Cash\s+(\d+\.\d+)/i));
+
+    return res.status(201).json({
+      success: true,
+      data: { cal, val },
+      text
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 
 //GetByidHistory
 module.exports = {
@@ -340,11 +416,12 @@ module.exports = {
   getallSuccesseddelivery,
   getallPendingdelivery,
   getallDriver,
-  DetailDriverId,
+  DriverBorrowMoneyLimitation,
   WeeklyReport,
   monthly_Bonus,
   gettodaydelivery,
-  GetDelveryHistoryByDriverId
+  GetDelveryHistoryByDriverId,
+  GetUploadScreshort
 
 };
 

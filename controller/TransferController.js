@@ -42,6 +42,11 @@ const transfer = async (req, res) => {
     const GetCashInhandValue = await Walltes.findOne({ driver_id, amount_type: "cash_in_hand" });
     if (!GetCashInhandValue) return res.status(400).json({ message: "No Cash in hand found" })
     if (GetCashInhandValue.amount_Value < amount_Value) return res.status(400).json({ message: "No balance" })
+    const GetTransferRequestdata = await Transition.findOne({
+      driver_id,status:"pending"
+
+    })
+    if (GetTransferRequestdata) return res.status(400).json({ message: "All Reday Send Request", GetTransferRequestdata })
 
     const GetTransferRequest = await Transition.create({
       driver_id,

@@ -12,4 +12,3 @@ router.post('/reset-password',RestPassword);
 
 
 module.exports=router
-

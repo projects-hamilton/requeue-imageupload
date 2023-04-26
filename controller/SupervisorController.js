@@ -350,7 +350,7 @@ const Amountforeachdriver = async (req, res) => {
 //The supervisor can see the due amount for each driver-
 const EachDreiverAmountGetByid = async (req, res) => {
   try {
-    // let driver_id = req.user;
+    let driver_id = req.user;
     const GetDriverAmount = await Walltes.findOne({ driver_id });
     if (!GetDriverAmount) {
       res
@@ -370,16 +370,15 @@ const EachDreiverAmountGetByid = async (req, res) => {
 
 //--------
 const driverApprovalupdate = async (req, res) => {
-  console.log("Enter");
   try {
-    let a = await DeliveryDeatils.findOneAndUpdate(
+    let RequestRes = await DeliveryDeatils.findOneAndUpdate(
       {
         _id: req.params.id,
       },
       { status: req.body.status }
     );
 
-    res.status(200).json({ message: "Successs", a });
+    res.status(200).json({ message: "Successs", RequestRes });
   } catch (error) {
     res.status(400).json({ message: error.message, status: false });
   }

@@ -11,11 +11,8 @@ const userSchema = new mongoose.Schema({
   mobile: { type: String },
   profile_image: { type: String },
   dob: { type: String },
-  latitude: { type: String },
-  longitude: { type: String },
   company_id: { type: String },
   otp: { type: String, required: true },
-
   latitude:{type: String},
   longitude:{type: String},
   OnlineStatus: { type: String},

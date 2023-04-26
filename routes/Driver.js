@@ -11,6 +11,8 @@ const {
   getallDriver,
   gettodaydelivery,
   GetDelveryHistoryByDriverId,
+  GetUploadScreshort,
+  DriverBorrowMoneyLimitation,
 } = require("../controller/DriverController");
 
 
@@ -31,11 +33,12 @@ router.get("/get-all-pending-delivery",getallPendingdelivery);
 // get all  delivery details
 router.get('/all-drivers', getallDriver);
 
-router.post("/get-deatils", DetailDriverId);
+router.post("/driver-money-limit",DriverBorrowMoneyLimitation);
 router.get("/get-alls-reports",WeeklyReport);
 router.get("/get-monthly-bonus/:driver_id", monthly_Bonus);
 router.get("/get-today-delevery-deatils", gettodaydelivery);
 router.get('/get-history-by-driver-id/:id',GetDelveryHistoryByDriverId)
 router.get('/get-today-delevry-deatils',gettodaydelivery)
+router.post('/get-screnshort-data',GetUploadScreshort)
 
 module.exports = router;

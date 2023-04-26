@@ -33,5 +33,61 @@ const path = req.file;
   }
 });
 
+
+//Function
+
+// const Client = require('@veryfi/veryfi-sdk');
+
+// function createVeryfiClient(clientId, clientSecret, username, apiKey) {
+//   const myClient = new Client(clientId, clientSecret, username, apiKey);
+//   return myClient;
+// }
+
+// // Example usage
+// const clientId = 'your_client_id';
+// const clientSecret = 'your_client_secret';
+// const username = 'your_username';
+// const apiKey = 'your_password';
+
+// const myVeryfiClient = createVeryfiClient(clientId, clientSecret, username, apiKey);
+// // let file_path = ‘document.pdf’;
+// let response = async () => await myClient.process_document(file_path);
+// response().then(console.log);
+
+
+// const Client = require('@veryfi/veryfi-sdk');
+// const MongoClient = require('mongodb').MongoClient;
+// const path = require('path');
+
+// const uri = 'mongodb+srv://<username>:<password>@<cluster-url>/<database>?retryWrites=true&w=majority';
+
+// async function processDocumentAndSaveToMongoDB(clientId, clientSecret, username, apiKey, filePath) {
+//   const veryfiClient = new Client(clientId, clientSecret, username, apiKey);
+//   const results = await veryfiClient.process_document(filePath);
+
+//   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+//   try {
+//     await client.connect();
+//     const database = client.db('<database>');
+//     const collection = database.collection('<collection>');
+//     const insertResult = await collection.insertOne(results);
+//     console.log(`Inserted ${insertResult.insertedCount} document into the collection`);
+//   } catch (error) {
+//     console.error(error);
+//   } finally {
+//     await client.close();
+//   }
+// }
+
+// // Example usage
+// const clientId = 'your_client_id';
+// const clientSecret = 'your_client_secret';
+// const username = 'your_username';
+// const apiKey = 'your_password';
+// const filePath = 'document.pdf';
+
+// processDocumentAndSaveToMongoDB(clientId, clientSecret, username, apiKey, filePath);
+
+
 module.exports=router
 
