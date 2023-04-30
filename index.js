@@ -6,8 +6,6 @@ require("dotenv").config();
 const db = process.env.DB_URI;
 const cors = require("cors");
 
-
-
 const port = process.env.PORT || 3000;
 
 const bodyParser = require("body-parser");
@@ -45,12 +43,9 @@ app.get("/", (req, res) => {
 });
 
 
-
-
-
-
 app.use("/api/imageupload", require("./routes/image"));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+

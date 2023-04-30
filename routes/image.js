@@ -22,10 +22,10 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage })
 
-router.post("/", upload.single("data_image"), (req, res) => {
-    console.log(req.file,"req");
+router.post("/", upload.array("data_image"), (req, res) => {
+    console.log(req.files,"req");
     
-const path = req.file;
+const path = req.files;
   if (path) {
     res.status(400).json({ path, status: true });
   }else{
